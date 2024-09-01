@@ -15,7 +15,7 @@ class DateStamp(models.Model):
 class Address(DateStamp):
     """Адрес рабочего места"""
     id_address = ULIDField(verbose_name='id_address', db_comment='id_address', default=default, primary_key=True, editable=False)
-    name = models.CharField(verbose_name='Адрес рабочего места', db_comment='Адрес рабочего места', max_length=250)
+    name = models.CharField(verbose_name='Адрес рабочего места', db_comment='Адрес рабочего места', max_length=250, db_index=True)
 
     class Meta:
         verbose_name = 'Адрес рабочего места'
@@ -29,7 +29,7 @@ class Address(DateStamp):
 class Position(DateStamp):
     """Должность"""
     id_position = ULIDField(verbose_name='id_position', db_comment='id_position', default=default, primary_key=True, editable=False)
-    name = models.CharField(verbose_name='Должность', db_comment='Должность', max_length=250)
+    name = models.CharField(verbose_name='Должность', db_comment='Должность', max_length=250, db_index=True)
 
     class Meta:
         verbose_name = 'Должность'
@@ -43,7 +43,7 @@ class Position(DateStamp):
 class Subdivision(DateStamp):
     """Подразделение"""
     id_subdivision = ULIDField(verbose_name='id_subdivision', db_comment='id_subdivision', default=default, primary_key=True, editable=False)
-    name = models.CharField(verbose_name='Подразделение', db_comment='Подразделение', max_length=250)
+    name = models.CharField(verbose_name='Подразделение', db_comment='Подразделение', max_length=250, db_index=True)
 
     class Meta:
         verbose_name = 'Подразделение'
@@ -71,9 +71,9 @@ class Note(DateStamp):
 class CustomUser(AbstractUser):
     """Сотрудник"""
     id_custom_user = ULIDField(verbose_name='id_custom_user', db_comment='id_custom_user', default=default, primary_key=True, editable=False)
-    username = models.CharField(verbose_name='Логин', db_comment='Логин', max_length=50, unique=True)
+    username = models.CharField(verbose_name='Логин', db_comment='Логин', max_length=50, unique=True, db_index=True)
     photo = models.ImageField(verbose_name='Фотография', db_comment='Фотография', upload_to='media/photo_user/', blank=True, null=True)
-    fio = models.CharField(verbose_name='ФИО', db_comment='ФИО', max_length=250)
+    fio = models.CharField(verbose_name='ФИО', db_comment='ФИО', max_length=250, db_index=True)
     birthday = models.DateField(verbose_name='Дата рождения', db_comment='Дата рождения', blank=True, null=True)
     biography = models.TextField(verbose_name='Биография', db_comment='Биография', blank=True, null=True)
     email = models.EmailField(verbose_name='Почта', db_comment='Почта', blank=True, null=True)
