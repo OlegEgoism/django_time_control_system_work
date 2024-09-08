@@ -1,3 +1,5 @@
+from admin_auto_filters.filters import AutocompleteFilter
+
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.safestring import mark_safe
@@ -14,6 +16,37 @@ from user_guide.models import (
 )
 
 
+class AddressFilter(AutocompleteFilter):
+    title = 'Адрес рабочего места'
+    field_name = 'address'
+
+
+class SubdivisionFilter(AutocompleteFilter):
+    title = 'Подразделение'
+    field_name = 'subdivision'
+
+
+class PositionFilter(AutocompleteFilter):
+    title = 'Должность'
+    field_name = 'position'
+
+
+class NoteFilter(AutocompleteFilter):
+    title = 'Заметка'
+    field_name = 'note'
+
+
+class CustomUserFilter(AutocompleteFilter):
+    title = 'Сотрудник'
+    field_name = 'custom_user'
+
+
+class CameraFilter(AutocompleteFilter):
+    title = 'Камера'
+    field_name = 'camera'
+
+
+# ______________________________________________________
 class StatusLocationInline(admin.TabularInline):
     """Контроль времени"""
     model = StatusLocation
@@ -73,7 +106,6 @@ class NoteAdmin(admin.ModelAdmin):
     """Заметка"""
     list_display = 'name', 'count_note',
     readonly_fields = 'created', 'updated',
-    list_filter = 'name',
     search_fields = 'name',
     search_help_text = 'Поиск по заметкам'
     list_per_page = 20
@@ -97,7 +129,7 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('preview_photo', 'photo', 'fio', 'birthday', 'biography', 'email', 'phone_mobile', 'phone_working', 'address', 'note', 'position', 'subdivision',)},),
     )
     list_display = 'username', 'preview_photo', 'fio', 'phone_mobile', 'phone_working', 'note', 'subdivision', 'position', 'is_active',
-    list_filter = 'is_active',
+    list_filter = 'is_active', NoteFilter, SubdivisionFilter, PositionFilter,
     readonly_fields = 'last_login', 'date_joined', 'preview_photo',
     search_fields = 'username', 'fio', 'phone_mobile', 'phone_working', 'position', 'subdivision',
     search_help_text = 'Поиск по логину, имени пользователя и номеру телефона, должности, подразделению'
@@ -126,7 +158,7 @@ class StatusLocationAdmin(admin.ModelAdmin):
     """Контроль времени"""
     fields = 'camera', 'custom_user', 'created',
     list_display = 'created', 'camera', 'custom_user',
-    list_filter = 'camera__finding', 'camera__address', 'custom_user',
+    list_filter = CustomUserFilter, CameraFilter,
     readonly_fields = 'created',
     date_hierarchy = 'created'
     search_fields = 'custom_user__fio', 'camera__address__name'
@@ -134,13 +166,14 @@ class StatusLocationAdmin(admin.ModelAdmin):
     list_per_page = 20
 
 
-
 @admin.register(Camera)
 class CameraAdmin(admin.ModelAdmin):
     """Камера"""
     fields = 'finding', 'address', 'is_active',
     list_display = '__str__', 'id_camera', 'is_active',
-    list_filter = 'finding', 'is_active', 'address',
+    list_filter = 'is_active', 'finding', AddressFilter,
+    search_fields = 'address__name',
+    search_help_text = 'Поиск по адресу местонажождения камеры'
     list_per_page = 20
 
 
@@ -153,7 +186,7 @@ class SettingAdmin(admin.ModelAdmin):
 
     def preview_logo(self, obj):
         if obj.logo:
-            return mark_safe(f'<img src="{obj.logo.url}" width="60" height="60" />')
+            return mark_safe(f'<img src="{obj.logo.url}" width="100" height="100" />')
         else:
             return 'Нет логотипа'
 

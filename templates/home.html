@@ -55,9 +55,10 @@
                                                 {% if user.latest_status == 1 %}
                                                     На работе с
                                                 {% else %}
-                                                    Отсутствует с
+                                                    <div style="color: red">Отсутствует с
                                                 {% endif %}
-                                                {{ user.latest_created|date:"H:i" }} <br>
+                                            {{ user.latest_created|date:"H:i" }} <br>
+                                            </div>
                                                 {{ user.address.name }}
                                             {% else %}
                                                 Нет данных
