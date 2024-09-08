@@ -3,14 +3,13 @@
 {% block title %}Список пользователей{% endblock %}
 
 {% block content %}
-
     <div class="header-search">
-        <h1>Список пользователей</h1>
-        <form method="get" action="{% url 'user_list' %}">
-            <input type="text" class="search-input" name="q" value="{{ search_query }}" placeholder="Поиск по ФИО, должности, телефону, почте">
-            <button type="submit">Поиск</button>
-            <a href="{% url 'user_list' %}">Очистить</a>
-        </form>
+        <div class="info">Список пользователей</div>
+            <form method="get" action="{% url 'user_list' %}" class="d-flex align-items-center">
+                <input type="text" class="form-control mr-2 search-input" name="q" value="{{ search_query }}" placeholder="Поиск по ФИО, должности, телефону, почте">
+                <button type="submit" class="btn btn-primary mr-2">Поиск</button>
+                <a href="{% url 'user_list' %}" class="btn btn-secondary">Очистить</a>
+            </form>
     </div>
     <table>
         <tr>
@@ -40,7 +39,7 @@
                                                 {% else %}
                                                     Нет фото
                                                 {% endif %}
-                                                <span><a href="{% url 'user_info' user.fio %}">{{ user.fio }}</a></span>
+                                                <span><a href="{% url 'user_info' user.slug %}">{{ user.fio }}</a></span>
                                             </div>
                                         </td>
                                         <td>{{ user.email }}</td>
@@ -48,17 +47,20 @@
                                             {% if user.phone_mobile %}Мобильный: {{ user.phone_mobile }}{% endif %}<br>
                                             {% if user.phone_working %}Рабочий: {{ user.phone_working }}{% endif %}
                                         </td>
-                                        <td>{{ user.address }}</td>
-                                        <td>{{ user.birthday|date:"d.m.Y" }} г.</td>
-                                        <td style="font-size: 12px">
+                                        <td>
+                                            {% if user.address %}{{ user.address }}{% endif %}
+                                        </td>
+                                        <td>
+                                            {% if user.birthday|date:"d.m.Y" %}{{ user.birthday|date:"d.m.Y" }} г.{% endif %}
+                                        </td>
+                                        <td>
                                             {% if user.latest_status %}
                                                 {% if user.latest_status == 1 %}
                                                     На работе с
                                                 {% else %}
-                                                    <div style="color: red">Отсутствует с
+                                                    Отсутствует с
                                                 {% endif %}
-                                            {{ user.latest_created|date:"H:i" }} <br>
-                                            </div>
+                                                {{ user.latest_created|date:"H:i" }} <br>
                                                 {{ user.address.name }}
                                             {% else %}
                                                 Нет данных
@@ -74,5 +76,4 @@
         {% endfor %}
         </tbody>
     </table>
-
 {% endblock %}

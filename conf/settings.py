@@ -18,7 +18,6 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -29,7 +28,6 @@ SECRET_KEY = 'django-insecure-ulz@43p!f-*nk=)161)tl^bbpu-fpge*37y9b@r*x^3zf0e2q5
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -42,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user_guide',
 
-    'admin_auto_filters',
+    'ckeditor',  # Работа с текстом
+    'admin_auto_filters',  # Фильтрация по полям и поиску по названию
+    'rangefilter',  # Фильтрация для времени
 ]
 
 MIDDLEWARE = [
@@ -76,7 +76,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'conf.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
@@ -90,7 +89,6 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -110,7 +108,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -122,7 +119,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
@@ -130,8 +126,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "static",]
-
+STATICFILES_DIRS = [BASE_DIR / "static", ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -140,3 +135,24 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Для абстрактной модели пользователя
 AUTH_USER_MODEL = 'user_guide.CustomUser'
+
+"""Ckeditor"""
+CKEDITOR_UPLOAD_PATH = ''
+CKEDITOR_CONFIGS = {
+    'news': {
+        'allowedContent': True,
+        'toolbar': 'Custom',
+        'height': 360,
+        'width': 900,
+        'toolbar_Custom': [
+            ['Preview', 'Maximize', 'RemoveFormat', '-'],
+            ['Undo', 'Redo', '-', ],
+            ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', 'SpecialChar', '-'],
+            ['TextColor', 'BGColor'],
+            '/',
+            ['NumberedList', 'BulletedList', 'Outdent', 'Indent', '-'],
+            ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-'],
+            ['Styles', 'Format', 'Font', 'FontSize'],
+        ]
+    }
+}

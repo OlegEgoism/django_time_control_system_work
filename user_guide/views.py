@@ -1,43 +1,37 @@
+import os
 from datetime import timedelta, datetime
 from itertools import groupby
 from operator import attrgetter
+from urllib.parse import quote
+from django.conf import settings
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q, Subquery, OuterRef
-from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404, redirect
 from user_guide.models import (
     CustomUser,
     StatusLocation,
-    Setting
+    Setting,
+    News,
+    Files
 )
 
 
-def index(request):
-    return render(request, 'index.html')
-
-
 def user_list(request):
-    """Список пользователей с возможностью поиска"""
+    """Список пользователей"""
     settings = Setting.objects.first()
     search_query = request.GET.get('q', '')
 
-    # Создаем запрос для поиска
+    # Запрос для поиска
     query = Q(fio__icontains=search_query) | \
             Q(phone_mobile__icontains=search_query) | \
             Q(phone_working__icontains=search_query) | \
             Q(email__icontains=search_query) | \
             Q(position__name__icontains=search_query)
 
-    latest_status_subquery = StatusLocation.objects.filter(
-        custom_user=OuterRef('pk')
-    ).order_by('-created').values('camera__finding')[:1]
-
-    latest_created_subquery = StatusLocation.objects.filter(
-        custom_user=OuterRef('pk')
-    ).order_by('-created').values('created')[:1]
-
-    users = CustomUser.objects.filter(query).annotate(
-        latest_status=Subquery(latest_status_subquery),
-        latest_created=Subquery(latest_created_subquery)
-    ).order_by('subdivision', 'position', 'fio')
+    latest_status_subquery = StatusLocation.objects.filter(custom_user=OuterRef('pk')).order_by('-created').values('camera__finding')[:1]
+    latest_created_subquery = StatusLocation.objects.filter(custom_user=OuterRef('pk')).order_by('-created').values('created')[:1]
+    users = CustomUser.objects.filter(query).annotate(latest_status=Subquery(latest_status_subquery), latest_created=Subquery(latest_created_subquery)).order_by('subdivision', 'position', 'fio')
 
     grouped_users = {}
     for subdivision, sub_group in groupby(users, key=attrgetter('subdivision')):
@@ -45,77 +39,17 @@ def user_list(request):
         for position, pos_group in groupby(sub_group, key=attrgetter('position')):
             grouped_users[subdivision][position] = list(pos_group)
 
-    return render(request, template_name='home.html', context={
+    return render(request, template_name='user_list.html', context={
         'settings': settings,
         'grouped_users': grouped_users,
         'search_query': search_query
     })
 
 
-# def user_info(request, fio):
-#     """Информация о пользователе"""
-#     settings = Setting.objects.first()
-#     user = get_object_or_404(CustomUser, fio=fio)
-#     return render(request, template_name='user_info.html', context={
-#         'user': user,
-#         'settings': settings
-#     })
-
-
-# def user_info(request, fio):
-#     """Информация о пользователе"""
-#     settings = Setting.objects.first()
-#     user = get_object_or_404(CustomUser, fio=fio)
-#     status_locations = StatusLocation.objects.filter(custom_user=user)
-#     entries = status_locations.filter(camera__finding=1).order_by('created')
-#     exits = status_locations.filter(camera__finding=2).order_by('created')
-#
-#     total_time = timedelta()
-#     for entry, exit in zip(entries, exits):
-#         total_time += exit.created - entry.created
-#
-#     return render(request, template_name='user_info.html', context={
-#         'user': user,
-#         'settings': settings,
-#         'total_time': total_time
-#     })
-
-
-# def user_info(request, fio):
-#     """Информация о пользователе"""
-#     settings = Setting.objects.first()
-#     user = get_object_or_404(CustomUser, fio=fio)
-#
-#     # Получаем записи времени входа и выхода
-#     status_locations = StatusLocation.objects.filter(custom_user=user)
-#     entries = status_locations.filter(camera__finding=1).order_by('created')
-#     exits = status_locations.filter(camera__finding=2).order_by('created')
-#
-#     # Рассчитываем общее отработанное время
-#     total_time = timedelta()
-#     for entry, exit in zip(entries, exits):
-#         total_time += exit.created - entry.created
-#
-#     # Форматируем время в часы и минуты
-#     total_seconds = int(total_time.total_seconds())
-#     hours, remainder = divmod(total_seconds, 3600)
-#     minutes, seconds = divmod(remainder, 60)
-#     formatted_time = f"{hours}ч {minutes}м"
-#
-#     return render(request, template_name='user_info.html', context={
-#         'user': user,
-#         'settings': settings,
-#         'total_time': formatted_time
-#     })
-
-
-
-
-
-def user_info(request, fio):
+def user_info(request, slug):
     """Информация о пользователе"""
     settings = Setting.objects.first()
-    user = get_object_or_404(CustomUser, fio=fio)
+    user = get_object_or_404(CustomUser, slug=slug)
 
     # Получаем записи времени входа и выхода
     status_locations = StatusLocation.objects.filter(custom_user=user)
@@ -159,4 +93,66 @@ def user_info(request, fio):
         'daily_time': format_time(daily_time),
         'monthly_time': format_time(monthly_time),
         'yearly_time': format_time(yearly_time),
+    })
+
+
+# __________________-
+
+
+def news_list(request):
+    """Новости"""
+    settings = Setting.objects.first()
+    news_list = News.objects.filter(is_active=True)
+    total_news_count = news_list.count()
+    page_size = Setting.objects.first()
+    paginator = Paginator(news_list, page_size.news_page)
+    page = request.GET.get('page')
+    try:
+        news_all = paginator.page(page)
+    except PageNotAnInteger:
+        news_all = paginator.page(1)
+    except EmptyPage:
+        news_all = paginator.page(paginator.num_pages)
+    return render(request, template_name='news_list.html', context={
+        'settings': settings,
+        'news_all': news_all,
+        'total_news_count': total_news_count
+    })
+
+
+def news_info(request, name):
+    """Новость"""
+    news = get_object_or_404(News, name=name)
+    news.views_count += 1
+    news.save()
+    files_with_existence = []
+    for file in news.files_news.all():
+        file_path = os.path.join(settings.MEDIA_ROOT, str(file.files))
+        file_exists = os.path.exists(file_path)
+        files_with_existence.append((file, file_exists))
+    return render(request, template_name='news_info.html', context={
+        'news': news,
+        'files_with_existence': files_with_existence,
+    })
+
+
+def news_download_file(request, name):
+    """Скачивание файла"""
+    file_obj = get_object_or_404(Files, name=name)
+    file_path = os.path.join(settings.MEDIA_ROOT, str(file_obj.files))  # Путь к файлу
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as file_content:
+            response = HttpResponse(file_content.read(), content_type='application/octet-stream')
+            file_name = os.path.basename(file_path)
+            response['Content-Disposition'] = f'attachment; filename="{quote(file_name)}"'
+            return response
+    name = file_obj.name
+    return redirect('news_file_not_found', name=name)
+
+
+def news_file_not_found(request, name):
+    """Если файл не найден"""
+    news = get_object_or_404(News, name=name)
+    return render(request, 'news_file_not_found.html', {
+        'news': news,
     })

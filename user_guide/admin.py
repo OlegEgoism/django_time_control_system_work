@@ -3,7 +3,9 @@ from admin_auto_filters.filters import AutocompleteFilter
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.safestring import mark_safe
+from rangefilter.filters import DateRangeFilter
 
+from user_guide.forms import CustomUserChangeForm, CustomUserCreationForm
 from user_guide.models import (
     StatusLocation,
     Address,
@@ -12,7 +14,7 @@ from user_guide.models import (
     CustomUser,
     Note,
     Camera,
-    Setting
+    Setting, Files, News
 )
 
 
@@ -54,10 +56,13 @@ class StatusLocationInline(admin.TabularInline):
     classes = ['collapse']
     readonly_fields = 'created', 'camera'
     can_delete = False  # Запретить удаление объектов
-    #
-    # def has_add_permission(self, request, obj=None):
-    #     """Запретить добавление новых объектов"""
-    #     return False
+
+
+class FilesInline(admin.TabularInline):
+    """Файлы"""
+    model = Files
+    extra = 1
+    max_num = 10  # Лимит до 10 файлов
 
 
 # ______________________________________________________
@@ -119,6 +124,12 @@ class NoteAdmin(admin.ModelAdmin):
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
     """Сотрудник"""
+
+    # Подключаем кастомные формы для создания и изменения пользователя
+    add_form = CustomUserCreationForm  # Форма для создания
+    form = CustomUserChangeForm  # Форма для изменения
+    model = CustomUser
+
     fieldsets = (
         (None, {
             'fields': ('username', 'password',)}),
@@ -126,13 +137,20 @@ class CustomUserAdmin(UserAdmin):
             'classes': ('collapse',),
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions', 'last_login', 'date_joined',)}),
         ('ЛИЧНЫЕ ДАННЫЕ', {
-            'fields': ('preview_photo', 'photo', 'fio', 'birthday', 'biography', 'email', 'phone_mobile', 'phone_working', 'address', 'note', 'position', 'subdivision',)},),
+            'fields': ('preview_photo', 'photo', 'fio', 'slug', 'birthday', 'biography', 'email', 'phone_mobile', 'phone_working', 'address', 'note', 'position', 'subdivision',)},),
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'email', 'fio', 'slug', 'password1', 'password2'),
+        }),
     )
     list_display = 'username', 'preview_photo', 'fio', 'phone_mobile', 'phone_working', 'note', 'subdivision', 'position', 'is_active',
     list_filter = 'is_active', NoteFilter, SubdivisionFilter, PositionFilter,
     readonly_fields = 'last_login', 'date_joined', 'preview_photo',
     search_fields = 'username', 'fio', 'phone_mobile', 'phone_working', 'position', 'subdivision',
     search_help_text = 'Поиск по логину, имени пользователя и номеру телефона, должности, подразделению'
+    prepopulated_fields = {'slug': ('fio',)}
     inlines = StatusLocationInline,
     list_per_page = 20
 
@@ -158,7 +176,7 @@ class StatusLocationAdmin(admin.ModelAdmin):
     """Контроль времени"""
     fields = 'camera', 'custom_user', 'created',
     list_display = 'created', 'camera', 'custom_user',
-    list_filter = CustomUserFilter, CameraFilter,
+    list_filter = ("created", DateRangeFilter), CustomUserFilter, CameraFilter,
     readonly_fields = 'created',
     date_hierarchy = 'created'
     search_fields = 'custom_user__fio', 'camera__address__name'
@@ -177,10 +195,32 @@ class CameraAdmin(admin.ModelAdmin):
     list_per_page = 20
 
 
+@admin.register(News)
+class NewsAdmin(admin.ModelAdmin):
+    """Новость"""
+    list_display = 'name', 'views_count', 'file_count', 'is_active', 'created', 'updated',
+    list_editable = 'is_active',
+    list_filter = 'is_active', ('created', DateRangeFilter),
+    readonly_fields = 'created', 'updated', 'views_count',
+    inlines = FilesInline,
+    search_fields = 'name', 'description',
+    search_help_text = 'Поиск по названию новости и описанию'
+    date_hierarchy = 'created'
+    list_per_page = 20
+
+    def file_count(self, obj):
+        if obj.files_news.count() == 0:
+            return 'Нет файлов'
+        else:
+            return obj.files_news.count()
+
+    file_count.short_description = 'Количество файлов'
+
+
 @admin.register(Setting)
 class SettingAdmin(admin.ModelAdmin):
     """Настройки"""
-    fields = 'preview_logo', 'logo', 'name',
+    fields = 'preview_logo', 'logo', 'name', 'news_page'
     list_display = 'name', 'preview_logo', 'created', 'updated',
     readonly_fields = 'created', 'updated', 'preview_logo',
 

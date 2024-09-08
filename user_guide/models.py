@@ -1,3 +1,4 @@
+from ckeditor.fields import RichTextField
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django_ulid.models import default, ULIDField
@@ -71,8 +72,9 @@ class Note(DateStamp):
 class CustomUser(AbstractUser):
     """Сотрудник"""
     id_custom_user = ULIDField(verbose_name='id_custom_user', db_comment='id_custom_user', default=default, primary_key=True, editable=False)
+    slug = models.SlugField(verbose_name='slug', db_comment='slug', max_length=255, unique=True, db_index=True, blank=True, null=True)
     username = models.CharField(verbose_name='Логин', db_comment='Логин', max_length=50, db_index=True, unique=True)
-    photo = models.ImageField(verbose_name='Фотография', db_comment='Фотография', upload_to='photo_user/', blank=True, null=True)
+    photo = models.ImageField(verbose_name='Фотография', db_comment='Фотография', upload_to='photo_user/', default='photo_user/default/no_photo.png', blank=True, null=True)
     fio = models.CharField(verbose_name='ФИО', db_comment='ФИО', max_length=250, db_index=True, unique=True, blank=True, null=True)
     birthday = models.DateField(verbose_name='Дата рождения', db_comment='Дата рождения', blank=True, null=True)
     biography = models.TextField(verbose_name='Биография', db_comment='Биография', blank=True, null=True)
@@ -131,11 +133,47 @@ class Camera(models.Model):
         return f'{self.get_finding_display()} - ({self.address})'
 
 
+class Files(DateStamp):
+    """Файл"""
+    id_files = ULIDField(verbose_name='id_files', db_comment='id_files', default=default, primary_key=True, editable=False)
+    files = models.FileField(verbose_name='Файлы', upload_to='files/', blank=True, null=True)
+    news = models.ForeignKey('News', verbose_name='Новость', on_delete=models.CASCADE, null=True, blank=True, related_name='files_news')
+
+    class Meta:
+        verbose_name = 'Файл'
+        verbose_name_plural = 'Файлы'
+
+    def __str__(self):
+        return f'{self.id_files}'
+
+    @property
+    def get_file_size(self):  # Размер файла
+        return self.files.size if self.files else 0
+
+
+class News(DateStamp):
+    """Новость"""
+    id_news = ULIDField(verbose_name='id_news', db_comment='id_news', default=default, primary_key=True, editable=False)
+    name = models.CharField(verbose_name='Название', max_length=100)
+    description = RichTextField(verbose_name='Описание', config_name='news')
+    is_active = models.BooleanField(verbose_name='Опубликована', default=True)
+    views_count = models.PositiveIntegerField(verbose_name='Просмотров', default=0)
+
+    class Meta:
+        verbose_name = 'Новость'
+        verbose_name_plural = 'Новости'
+        ordering = '-created',
+
+    def __str__(self):
+        return self.name
+
+
 class Setting(DateStamp):
     """Настройки сайта"""
     id_setting = ULIDField(verbose_name='id_setting', db_comment='id_setting', default=default, primary_key=True, editable=False)
-    logo = models.ImageField(verbose_name='Логотип организации', db_comment='Логотип организации', upload_to='logo/', blank=True, null=True)
+    logo = models.ImageField(verbose_name='Логотип организации', db_comment='Логотип организации', upload_to='logo/', default='logo/default/default_logo.png', blank=True, null=True)
     name = models.CharField(verbose_name='Название организации', db_comment='Название организации', max_length=250)
+    news_page = models.IntegerField(verbose_name='Пагинация новостей', default=4)
 
     class Meta:
         verbose_name = 'Настройки сайта'

@@ -1,35 +1,50 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
     padding: 20px;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-table, th, td {
-    border: 2px solid #ddd;
-}
-
 th, td {
-    padding: 8px;
-    text-align: left;
+    border: 2px solid rgba(85, 71, 71, 0.88);
+    padding: 4px;
+    text-align: center;
 }
 
 th {
-    background-color: #ece8e8;
-    text-align: center;
+    background-color: #96e8f8;
+}
+
+.subdivision-table th, .subdivision-table td {
+    width: 100%; /* Позволяет вложенной таблице иметь свою ширину */
+}
+
+table {
+    table-layout: fixed; /* Фиксированная ширина таблицы */
+    width: 100%; /* Ширина таблицы будет 100% */
+}
+
+.logo_image {
+    border-radius: 10%;
+    height: 40px; /* Подберите высоту в зависимости от ваших нужд */
+    margin-right: 20px; /* Отступ между логотипом и текстом */
+}
+
+summary {
+    padding: 10px;
+}
+
+summary:hover {
+    background-color: #aaeccb;
 }
 
 img {
     max-width: 80px;
     margin-right: 10px;
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
+    border-radius: 20%;
     transition: transform 0.2s ease; /* Плавный переход для масштабирования */
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
 }
 
 .photo-fio {
@@ -47,35 +62,22 @@ img {
 
 .header-search {
     display: flex;
-    align-items: center; /* Выравнивание по вертикали */
     justify-content: space-between; /* Отступ между заголовком и формой */
 }
 
 .search-input {
-    width: 300px; /* Ширина поля поиска */
+    width: 420px; /* Ширина поля поиска */
+}
+
+.info {
+    font-size: 32px;
+}
+
+.navbar-custom {
+    background-color: #6fa881;
 }
 
 .logo_image {
-    cursor: pointer;
-    margin: 0 0px;
+    margin-right: 10px; /* Отступ между логотипом и текстом */
 }
-
-summary {
-    padding: 10px;
-    border-radius: 5px;
-}
-
-summary:hover {
-    background-color: #aaeccb;
-}
-
-.subdivision-table th, .subdivision-table td {
-    width: auto; /* Позволяет вложенной таблице иметь свою ширину */
-}
-
-table {
-    table-layout: fixed; /* Фиксированная ширина таблицы */
-    width: 100%; /* Ширина таблицы будет 100% */
-}
-
 
