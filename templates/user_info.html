@@ -5,11 +5,13 @@
 {% block content %}
 
     <div class="user-info">
-        {% if user.photo %}
-            <img src="{{ user.photo.url }}" alt="Фото {{ user.username }}">
-        {% else %}
-            Нет фото
-        {% endif %}
+        <div class="photo-fio">
+            {% if user.photo %}
+                <img src="{{ user.photo.url }}" alt="Фото {{ user.username }}">
+            {% else %}
+                Нет фото
+            {% endif %}
+        </div>
         <p>{% if user.subdivision.name %}Подразделение: {{ user.subdivision.name }}{% endif %}</p>
         <p>{% if user.position.name %}Должность: {{ user.position.name }}{% endif %}</p>
         <p>ФИО: {{ user.fio }}</p>
