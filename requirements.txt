@@ -1,5 +1,6 @@
 asgiref==3.8.1
 Django==4.2.4
+django-admin-autocomplete-filter==0.7.1
 django-ulid==0.0.4
 numpy==2.1.0
 opencv-python==4.10.0.84
