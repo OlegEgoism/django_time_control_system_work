@@ -1,0 +1,81 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 2px solid #ddd;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #ece8e8;
+    text-align: center;
+}
+
+img {
+    max-width: 80px;
+    margin-right: 10px;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    transition: transform 0.2s ease; /* Плавный переход для масштабирования */
+}
+
+.photo-fio {
+    display: flex;
+    align-items: center; /* Центрирует текст и изображение по вертикали */
+}
+
+.photo-fio span {
+    margin-left: 20px; /* Отступ между изображением и текстом */
+}
+
+.photo-fio img:hover {
+    transform: scale(2); /* Увеличение изображения в 4 раза */
+}
+
+.header-search {
+    display: flex;
+    align-items: center; /* Выравнивание по вертикали */
+    justify-content: space-between; /* Отступ между заголовком и формой */
+}
+
+.search-input {
+    width: 300px; /* Ширина поля поиска */
+}
+
+.logo_image {
+    cursor: pointer;
+    margin: 0 0px;
+}
+
+summary {
+    padding: 10px;
+    border-radius: 5px;
+}
+
+summary:hover {
+    background-color: #aaeccb;
+}
+
+.subdivision-table th, .subdivision-table td {
+    width: auto; /* Позволяет вложенной таблице иметь свою ширину */
+}
+
+table {
+    table-layout: fixed; /* Фиксированная ширина таблицы */
+    width: 100%; /* Ширина таблицы будет 100% */
+}
+
+

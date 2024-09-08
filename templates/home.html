@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Список пользователей{% endblock %}
+
+{% block content %}
+
+    <div class="header-search">
+        <h1>Список пользователей</h1>
+        <form method="get" action="{% url 'user_list' %}">
+            <input type="text" class="search-input" name="q" value="{{ search_query }}" placeholder="Поиск по ФИО, должности, телефону, почте">
+            <button type="submit">Поиск</button>
+            <a href="{% url 'user_list' %}">Очистить</a>
+        </form>
+    </div>
+    <table>
+        <tr>
+            <th>Подразделение/Должность</th>
+            <th>ФИО</th>
+            <th>Почта</th>
+            <th>Телефон <br> (мобильный/рабочий)</th>
+            <th>Адрес рабочего места</th>
+            <th>Дата рождения</th>
+            <th>Статус <br> нахождения</th>
+        </tr>
+        <tbody>
+        {% for subdivision, positions in grouped_users.items %}
+            <tr>
+                <td colspan="7">
+                    <details>
+                        <summary>{{ subdivision.name }}</summary>
+                        <table class="subdivision-table">
+                            {% for position, users in positions.items %}
+                                {% for user in users %}
+                                    <tr>
+                                        <td>{{ position.name }}</td>
+                                        <td>
+                                            <div class="photo-fio">
+                                                {% if user.photo %}
+                                                    <img src="{{ user.photo.url }}" alt="Фото {{ user.username }}">
+                                                {% else %}
+                                                    Нет фото
+                                                {% endif %}
+                                                <span><a href="{% url 'user_info' user.fio %}">{{ user.fio }}</a></span>
+                                            </div>
+                                        </td>
+                                        <td>{{ user.email }}</td>
+                                        <td>
+                                            {% if user.phone_mobile %}Мобильный: {{ user.phone_mobile }}{% endif %}<br>
+                                            {% if user.phone_working %}Рабочий: {{ user.phone_working }}{% endif %}
+                                        </td>
+                                        <td>{{ user.address }}</td>
+                                        <td>{{ user.birthday|date:"d.m.Y" }} г.</td>
+                                        <td style="font-size: 12px">
+                                            {% if user.latest_status %}
+                                                {% if user.latest_status == 1 %}
+                                                    На работе с
+                                                {% else %}
+                                                    Отсутствует с
+                                                {% endif %}
+                                                {{ user.latest_created|date:"H:i" }} <br>
+                                                {{ user.address.name }}
+                                            {% else %}
+                                                Нет данных
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endfor %}
+                        </table>
+                    </details>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

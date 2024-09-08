@@ -8,7 +8,9 @@ from user_guide.models import (
     Subdivision,
     Position,
     CustomUser,
-    Note, Camera
+    Note,
+    Camera,
+    Setting
 )
 
 
@@ -31,6 +33,8 @@ class AddressAdmin(admin.ModelAdmin):
     """Адрес рабочего места"""
     list_display = 'name', 'created', 'updated',
     readonly_fields = 'created', 'updated',
+    search_fields = 'name',
+    search_help_text = 'Поиск по адресу'
     list_per_page = 20
 
 
@@ -39,6 +43,8 @@ class PositionAdmin(admin.ModelAdmin):
     """Должность"""
     list_display = 'name', 'created', 'updated', 'count_position',
     readonly_fields = 'created', 'updated',
+    search_fields = 'name',
+    search_help_text = 'Поиск по должности'
     list_per_page = 20
 
     def count_position(self, obj):
@@ -52,6 +58,8 @@ class SubdivisionAdmin(admin.ModelAdmin):
     """Подразделение"""
     list_display = 'name', 'created', 'updated', 'count_subdivision',
     readonly_fields = 'created', 'updated',
+    search_fields = 'name',
+    search_help_text = 'Поиск по подразделению'
     list_per_page = 20
 
     def count_subdivision(self, obj):
@@ -66,6 +74,8 @@ class NoteAdmin(admin.ModelAdmin):
     list_display = 'name', 'count_note',
     readonly_fields = 'created', 'updated',
     list_filter = 'name',
+    search_fields = 'name',
+    search_help_text = 'Поиск по заметкам'
     list_per_page = 20
 
     def count_note(self, obj):
@@ -114,16 +124,42 @@ class CustomUserAdmin(UserAdmin):
 @admin.register(StatusLocation)
 class StatusLocationAdmin(admin.ModelAdmin):
     """Контроль времени"""
-    list_display = 'created', 'camera', 'custom_user'
+    fields = 'camera', 'custom_user', 'created',
+    list_display = 'created', 'camera', 'custom_user',
     list_filter = 'camera__finding', 'camera__address', 'custom_user',
+    readonly_fields = 'created',
     date_hierarchy = 'created'
+    search_fields = 'custom_user__fio', 'camera__address__name'
+    search_help_text = 'Поиск по ФИО и адресу местонажождения камеры'
     list_per_page = 20
+
 
 
 @admin.register(Camera)
 class CameraAdmin(admin.ModelAdmin):
     """Камера"""
+    fields = 'finding', 'address', 'is_active',
     list_display = '__str__', 'id_camera', 'is_active',
     list_filter = 'finding', 'is_active', 'address',
-    list_editable = 'is_active',
     list_per_page = 20
+
+
+@admin.register(Setting)
+class SettingAdmin(admin.ModelAdmin):
+    """Настройки"""
+    fields = 'preview_logo', 'logo', 'name',
+    list_display = 'name', 'preview_logo', 'created', 'updated',
+    readonly_fields = 'created', 'updated', 'preview_logo',
+
+    def preview_logo(self, obj):
+        if obj.logo:
+            return mark_safe(f'<img src="{obj.logo.url}" width="60" height="60" />')
+        else:
+            return 'Нет логотипа'
+
+    preview_logo.short_description = 'Логотип организации'
+
+    def has_add_permission(self, request):
+        if self.model.objects.count() >= 1:
+            return False
+        return True
