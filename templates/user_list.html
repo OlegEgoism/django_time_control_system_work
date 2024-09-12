@@ -5,11 +5,11 @@
 {% block content %}
     <div class="header-search">
         <div class="info">Список пользователей</div>
-            <form method="get" action="{% url 'user_list' %}" class="d-flex align-items-center">
-                <input type="text" class="form-control mr-2 search-input" name="q" value="{{ search_query }}" placeholder="Поиск по ФИО, должности, телефону, почте">
-                <button type="submit" class="btn btn-primary mr-2">Поиск</button>
-                <a href="{% url 'user_list' %}" class="btn btn-secondary">Очистить</a>
-            </form>
+        <form method="get" action="{% url 'user_list' %}" class="d-flex align-items-center">
+            <input type="text" class="form-control mr-2 search-input" name="q" value="{{ search_query }}" placeholder="Поиск по ФИО, должности, телефону, почте, адресу">
+            <button type="submit" class="btn btn-primary mr-2">Поиск</button>
+            <a href="{% url 'user_list' %}" class="btn btn-secondary">Очистить</a>
+        </form>
     </div>
     <table>
         <tr>
@@ -48,7 +48,11 @@
                                             {% if user.phone_working %}Рабочий: {{ user.phone_working }}{% endif %}
                                         </td>
                                         <td>
-                                            {% if user.address %}{{ user.address }}{% endif %}
+                                            {% if user.address %}{{ user.address }}{% endif %} <br>
+                                            {% if user.floor or user.office %}
+                                                {% if user.floor %}этаж {{ user.floor }}{% if user.office %}, {% endif %}{% endif %}
+                                                {% if user.office %}кабинет {{ user.office }}{% endif %}
+                                            {% endif %}
                                         </td>
                                         <td>
                                             {% if user.birthday|date:"d.m.Y" %}{{ user.birthday|date:"d.m.Y" }} г.{% endif %}

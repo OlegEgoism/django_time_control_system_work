@@ -3,28 +3,37 @@
 {% block title %}Информация о пользователе{% endblock %}
 
 {% block content %}
-
     <div class="user-info">
-        <div class="photo-fio">
+        <div class="photo-fio-edit">
             {% if user.photo %}
                 <img src="{{ user.photo.url }}" alt="Фото {{ user.username }}">
             {% else %}
                 Нет фото
             {% endif %}
+            <div class="user-details">
+                <h2>{{ user.fio }}</h2>
+                <p>{% if user.subdivision.name %}<strong>Подразделение:</strong> {{ user.subdivision.name }}{% endif %}</p>
+                <p>{% if user.position.name %}<strong>Должность:</strong> {{ user.position.name }}{% endif %}</p>
+                <p>
+                    {% if user.address.name %}<strong>Адрес рабочего места:</strong> {{ user.address.name }},{% else %}{% endif %}
+                    {% if user.floor.name %}этаж {{ user.floor.name }},{% else %}{% endif %}
+                    {% if user.office.name %}кабинет {{ user.office.name }}{% else %}{% endif %}
+                </p>
+                <p>{% if user.note.name %}<strong>Заметка:</strong> {{ user.note.name }}{% endif %}</p>
+            </div>
         </div>
-        <p>{% if user.subdivision.name %}Подразделение: {{ user.subdivision.name }}{% endif %}</p>
-        <p>{% if user.position.name %}Должность: {{ user.position.name }}{% endif %}</p>
-        <p>ФИО: {{ user.fio }}</p>
-        <p>Дата рождения: {{ user.birthday|date:"d.m.Y" }} г.</p>
-        <p>{% if user.email %}Почта: {{ user.email }}{% endif %}</p>
-        <p>{% if user.phone_mobile %}Мобильный телефон: {{ user.phone_mobile }}{% else %}{% endif %}</p>
-        <p>{% if user.phone_working %}Рабочий телефон: {{ user.phone_working }}{% else %}{% endif %}</p>
-        <p>{% if user.address.name %}Адрес рабочего места: {{ user.address.name }}{% else %}{% endif %}</p>
-        <p>{% if user.note.name %}Заметка: {{ user.note.name }}{% endif %}</p>
-        <p>{% if user.biography %}Биография: {{ user.biography }}{% endif %}</p>
-        <p>Отработанное время за текущий день: {{ daily_time }}</p>
-        <p>Отработанное время за текущий месяц: {{ monthly_time }}</p>
-        <p>Отработанное время за текущий год: {{ yearly_time }}</p>
+        <p>{% if user.email %}<strong>Почта:</strong> {{ user.email }}{% endif %}</p>
+        <p>{% if user.phone_mobile %}<strong>Мобильный телефон:</strong> {{ user.phone_mobile }}{% else %}{% endif %}</p>
+        <p>{% if user.phone_working %}<strong>Рабочий телефон:</strong> {{ user.phone_working }}{% else %}{% endif %}</p>
+        <p><strong>Дата рождения:</strong> {{ user.birthday|date:"d.m.Y" }} г.</p>
+        <p>{% if user.biography %}<strong>Биография:</strong> {{ user.biography }}{% endif %}</p>
+        <td >
+            <a href="{% url 'user_edit' user.slug %}" class="btn btn-warning btn-sm">Редактировать данные</a>
+        </td>
+        <div class="user-info">
+            <p>Отработанное время за текущий день: {{ daily_time }}</p>
+            <p>Отработанное время за текущий месяц: {{ monthly_time }}</p>
+            <p>Отработанное время за текущий год: {{ yearly_time }}</p>
+        </div>
     </div>
-
 {% endblock %}

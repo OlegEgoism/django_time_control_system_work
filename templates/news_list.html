@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Список новостей{% endblock %}
+
+{% block content %}
+    <div class="info">Новости</div>
+    <div class="home_page">
+        <h3 class="box_content">
+            Всего новостей: {{ total_news_count }}
+        </h3>
+        {% if news_all.object_list.exists %}
+            {% for new in news_all.object_list %}
+                <div class="news-item">
+                    <h2><a href="{% url 'news_info' new.name %}">{{ new.name }}</a></h2>
+                    <p class="description">{{ new.description|safe|slice:":50" }}... </p>
+                    <p><a href="{% url 'news' new.name %}">(читать дальше)</a></p>
+                    <p class="details">
+                        <span class="created">Дата публикации: {{ new.created|date:"d.m.Y г., H:i" }}</span>
+                        <span class="views">Просмотров: {{ new.views_count }}</span>
+                    </p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <h3>На данный момент нет опубликованных новостей</h3>
+        {% endif %}
+    </div>
+    <div class="box_paginator">
+        <span class="step-links">
+            {% if news_all.has_previous %}
+                <a class="button_def" href="?page=1">&laquo; первая</a>
+                <a class="button_def" href="?page={{ news_all.previous_page_number }}">предыдущая</a>
+            {% endif %}
+            <span class="current"> Страница {{ news_all.number }} из {{ news_all.paginator.num_pages }}</span>
+            {% if news_all.has_next %}
+                <a class="button_def" href="?page={{ news_all.next_page_number }}">следующая</a>
+                <a class="button_def" href="?page={{ news_all.paginator.num_pages }}">последняя &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}

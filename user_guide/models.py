@@ -1,5 +1,6 @@
 from ckeditor.fields import RichTextField
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
 from django.db import models
 from django_ulid.models import default, ULIDField
 
@@ -21,6 +22,34 @@ class Address(DateStamp):
     class Meta:
         verbose_name = 'Адрес рабочего места'
         verbose_name_plural = 'Адреса рабочего места'
+        ordering = 'name',
+
+    def __str__(self):
+        return self.name
+
+
+class Floor(DateStamp):
+    """Этаж рабочего места"""
+    id_floor = ULIDField(verbose_name='id_floor', db_comment='id_floor', default=default, primary_key=True, editable=False)
+    name = models.CharField(verbose_name='Этаж', db_comment='Этаж', max_length=250, db_index=True, unique=True)
+
+    class Meta:
+        verbose_name = 'Этаж рабочего места'
+        verbose_name_plural = 'Этажи рабочего места'
+        ordering = 'name',
+
+    def __str__(self):
+        return self.name
+
+
+class Office(DateStamp):
+    """Кабинет рабочего места"""
+    id_office = ULIDField(verbose_name='id_office', db_comment='id_office', default=default, primary_key=True, editable=False)
+    name = models.CharField(verbose_name='Кабинет', db_comment='Кабинет', max_length=250, db_index=True, unique=True)
+
+    class Meta:
+        verbose_name = 'Кабинет рабочего места'
+        verbose_name_plural = 'Кабинеты рабочего места'
         ordering = 'name',
 
     def __str__(self):
@@ -82,6 +111,8 @@ class CustomUser(AbstractUser):
     phone_mobile = models.CharField(verbose_name='Телефон мобильный', db_comment='Телефон мобильный', help_text='Формат 375(00)000-00-00', max_length=100, unique=True, blank=True, null=True)
     phone_working = models.CharField(verbose_name='Телефон рабочий', db_comment='Телефон рабочий', help_text='Формат 8(000)000-00-00', max_length=100, blank=True, null=True)
     address = models.ForeignKey(Address, verbose_name='Адрес рабочего места', db_comment='Адрес рабочего места', on_delete=models.PROTECT, related_name='custom_user_address', blank=True, null=True)
+    floor = models.ForeignKey(Floor, verbose_name='Этаж рабочего места', db_comment='Этаж рабочего места', on_delete=models.PROTECT, related_name='custom_user_floor', blank=True, null=True)
+    office = models.ForeignKey(Office, verbose_name='Кабинет рабочего места', db_comment='Кабинет рабочего места', on_delete=models.PROTECT, related_name='custom_user_floor', blank=True, null=True)
     subdivision = models.ForeignKey(Subdivision, verbose_name='Подразделение', db_comment='Подразделение', on_delete=models.PROTECT, related_name='custom_user_subdivision', blank=True, null=True)
     position = models.ForeignKey(Position, verbose_name='Должность', db_comment='Должность', on_delete=models.PROTECT, related_name='custom_user_position', blank=True, null=True)
     note = models.ForeignKey(Note, verbose_name='Заметка', db_comment='Заметка', on_delete=models.PROTECT, related_name='custom_user_note', blank=True, null=True)
@@ -94,6 +125,11 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.fio or self.username
+
+    def clean(self):
+        # Если заполнен этаж или кабинет, проверяем наличие адреса
+        if (self.floor or self.office) and not self.address:
+            raise ValidationError("Если указаны 'Этаж' или 'Кабинет', укажите поле 'Адрес рабочего места',")
 
 
 class StatusLocation(models.Model):

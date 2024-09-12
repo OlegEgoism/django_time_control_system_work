@@ -14,7 +14,7 @@ from user_guide.models import (
     CustomUser,
     Note,
     Camera,
-    Setting, Files, News
+    Setting, Files, News, Floor, Office
 )
 
 
@@ -66,6 +66,26 @@ class FilesInline(admin.TabularInline):
 
 
 # ______________________________________________________
+@admin.register(Floor)
+class FloorAdmin(admin.ModelAdmin):
+    """Этаж рабочего места"""
+    list_display = 'name', 'created', 'updated',
+    readonly_fields = 'created', 'updated',
+    search_fields = 'name',
+    search_help_text = 'Поиск по этажу рабочего места'
+    list_per_page = 20
+
+
+@admin.register(Office)
+class OfficeAdmin(admin.ModelAdmin):
+    """Кабинет рабочего места"""
+    list_display = 'name', 'created', 'updated',
+    readonly_fields = 'created', 'updated',
+    search_fields = 'name',
+    search_help_text = 'Поиск по кабинету рабочего места'
+    list_per_page = 20
+
+
 @admin.register(Address)
 class AddressAdmin(admin.ModelAdmin):
     """Адрес рабочего места"""
@@ -137,7 +157,7 @@ class CustomUserAdmin(UserAdmin):
             'classes': ('collapse',),
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions', 'last_login', 'date_joined',)}),
         ('ЛИЧНЫЕ ДАННЫЕ', {
-            'fields': ('preview_photo', 'photo', 'fio', 'slug', 'birthday', 'biography', 'email', 'phone_mobile', 'phone_working', 'address', 'note', 'position', 'subdivision',)},),
+            'fields': ('preview_photo', 'photo', 'fio', 'slug', 'birthday', 'biography', 'email', 'phone_mobile', 'phone_working', 'address', 'floor', 'office', 'note', 'position', 'subdivision',)},),
     )
     add_fieldsets = (
         (None, {

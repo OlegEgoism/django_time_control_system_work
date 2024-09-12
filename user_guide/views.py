@@ -8,6 +8,8 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q, Subquery, OuterRef
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
+
+from user_guide.forms import CustomUserForm
 from user_guide.models import (
     CustomUser,
     StatusLocation,
@@ -27,7 +29,10 @@ def user_list(request):
             Q(phone_mobile__icontains=search_query) | \
             Q(phone_working__icontains=search_query) | \
             Q(email__icontains=search_query) | \
-            Q(position__name__icontains=search_query)
+            Q(position__name__icontains=search_query) | \
+            Q(address__name__icontains=search_query) | \
+            Q(floor__name__icontains=search_query) | \
+            Q(office__name__icontains=search_query)
 
     latest_status_subquery = StatusLocation.objects.filter(custom_user=OuterRef('pk')).order_by('-created').values('camera__finding')[:1]
     latest_created_subquery = StatusLocation.objects.filter(custom_user=OuterRef('pk')).order_by('-created').values('created')[:1]
@@ -93,6 +98,24 @@ def user_info(request, slug):
         'daily_time': format_time(daily_time),
         'monthly_time': format_time(monthly_time),
         'yearly_time': format_time(yearly_time),
+    })
+
+
+def user_edit(request, slug):
+    """Редактирование биографии пользователя"""
+    settings = Setting.objects.first()
+    user = get_object_or_404(CustomUser, slug=slug)
+    if request.method == 'POST':
+        form = CustomUserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('user_info', slug=user.slug)
+    else:
+        form = CustomUserForm(instance=user)
+    return render(request, template_name='user_edit.html', context={
+        'settings': settings,
+        'user': user,
+        'form': form
     })
 
 
