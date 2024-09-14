@@ -8,7 +8,6 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q, Subquery, OuterRef
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-
 from user_guide.forms import CustomUserForm, StatusLocationFilterForm
 from user_guide.models import (
     CustomUser,
@@ -126,6 +125,7 @@ def time_info(request, slug):
     form = StatusLocationFilterForm(request.GET or None)
     status_locations = StatusLocation.objects.filter(custom_user=user).order_by('-created')
     total_worked_time = timedelta()
+
     if form.is_valid():
         date_from = form.cleaned_data.get('date_from')
         date_to = form.cleaned_data.get('date_to')
@@ -140,20 +140,25 @@ def time_info(request, slug):
             status_locations = status_locations.filter(camera__finding=finding)
         if address:
             status_locations = status_locations.filter(camera__address=address)
+
+    paginator = Paginator(status_locations, per_page=settings.time_page)  # Нумерация страниц
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     enter_times = status_locations.filter(camera__finding=1).order_by('created')  # Вход
     exit_times = status_locations.filter(camera__finding=2).order_by('created')  # Выход
     for enter, exit in zip(enter_times, exit_times):
-        if exit.created > enter.created:  # Убедимся, что Выход позже Входа
+        if exit.created > enter.created:
             total_worked_time += exit.created - enter.created
     total_seconds = int(total_worked_time.total_seconds())
     hours, remainder = divmod(total_seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
-    formatted_time = f'{hours:02d} часов {minutes:02d} минут {seconds:02d}секунд'
+    formatted_time = f'{hours:02d} часов {minutes:02d} минут {seconds:02d} секунд'
     return render(request, template_name='time_info.html', context={
         'settings': settings,
         'user': user,
         'form': form,
-        'status_locations': status_locations,
+        'page_obj': page_obj,
+        'paginator': paginator,
         'total_worked_time': formatted_time,
     })
 

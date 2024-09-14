@@ -266,7 +266,7 @@ class NewsAdmin(admin.ModelAdmin):
 @admin.register(Setting)
 class SettingAdmin(admin.ModelAdmin):
     """Настройки"""
-    fields = 'preview_logo', 'logo', 'name', 'news_page'
+    fields = 'preview_logo', 'logo', 'name', 'news_page', 'time_page',
     list_display = 'name', 'preview_logo', 'created', 'updated',
     readonly_fields = 'created', 'updated', 'preview_logo',
 

@@ -4,7 +4,6 @@
 
 {% block content %}
     <h1>Информация о рабочем времени</h1>
-    <h3>{{ user.fio }}</h3>
     <form method="get" class="form-inline mb-4">
         <div class="form-group">
             <label for="id_date_from">Дата с:</label>
@@ -26,8 +25,9 @@
         <a href="{% url 'time_info' user.slug %}" class="btn btn-secondary ml-2">Сбросить фильтры</a>
     </form>
     <div class="user-info">
-        {% if status_locations %}
+        {% if page_obj.object_list %}
             <table class="table table-striped">
+                <h3>{{ user.fio }} ({{ user.position }})</h3>
                 <thead>
                 <tr>
                     <th>Нахождение</th>
@@ -36,7 +36,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for status in status_locations %}
+                {% for status in page_obj.object_list %}
                     <tr>
                         <td>{{ status.camera.get_finding_display }}</td>
                         <td>{{ status.created|date:"d.m.Y H:i" }}</td>
@@ -46,6 +46,26 @@
                 </tbody>
             </table>
             <p><strong>Всего отработано времени:</strong> {{ total_worked_time }}</p>
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}">&laquo; Первая</a>
+                        <a href="?page=
+                                
+                                {{ page_obj.previous_page_number }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}">&lsaquo; Предыдущая</a>
+                    {% endif %}
+                    {% if page_obj.has_next %}
+                        <a href="?page=
+                                
+                                {{ page_obj.next_page_number }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}">Следующая &rsaquo;</a>
+                        <a href="?page=
+                                
+                                {{ page_obj.paginator.num_pages }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}">Последняя &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+            <p>Страница {{ page_obj.number }} из {{ paginator.num_pages }}</p> <!-- Отображать текущие и общие страницы-->
+
         {% else %}
             <p>Нет данных о нахождении пользователя.</p>
         {% endif %}

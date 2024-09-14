@@ -234,6 +234,7 @@ class Setting(DateStamp):
     logo = models.ImageField(verbose_name='Логотип организации', db_comment='Логотип организации', upload_to='logo/', default='logo/default/default_logo.png', blank=True, null=True)
     name = models.CharField(verbose_name='Название организации', db_comment='Название организации', max_length=250)
     news_page = models.IntegerField(verbose_name='Пагинация новостей', default=4)
+    time_page = models.IntegerField(verbose_name='Пагинация контроля времени', default=10)
 
     class Meta:
         verbose_name = 'Настройки сайта'
