@@ -139,7 +139,7 @@ class CustomUser(AbstractUser):
     def clean(self):
         # Если заполнен этаж или кабинет, проверяем наличие адреса
         if (self.floor or self.office) and not self.address:
-            raise ValidationError("Если указаны этаж или кабинет, укажите поле 'Адрес рабочего места',")
+            raise ValidationError("Если указаны этаж или кабинет, укажите поле адрес рабочего места")
 
 
 class StatusLocation(models.Model):
@@ -177,6 +177,20 @@ class Camera(models.Model):
 
     def __str__(self):
         return f'{self.get_finding_display()} - ({self.address})'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 class Files(DateStamp):

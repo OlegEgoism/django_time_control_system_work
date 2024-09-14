@@ -3,6 +3,7 @@
 {% block title %}Информация о пользователе{% endblock %}
 
 {% block content %}
+    <h1>Информация о пользователе</h1>
     <div class="user-info">
         <div class="photo-fio-edit">
             {% if user.photo %}
@@ -35,8 +36,9 @@
             <p>Отработанное время за текущий месяц: {{ monthly_time }}</p>
             <p>Отработанное время за текущий год: {{ yearly_time }}</p>
             <td>
-                <a href="{% url 'time_edit' user.slug %}" class="btn btn-warning btn-sm">Подробней</a>
+                <a href="{% url 'time_info' user.slug %}" class="btn btn-warning btn-sm">Подробней</a>
             </td>
         </div>
+        <a href="{% url 'user_list' %}" class="btn btn-primary btn-sm">Назад</a>
     </div>
 {% endblock %}

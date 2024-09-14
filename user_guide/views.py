@@ -9,7 +9,7 @@ from django.db.models import Q, Subquery, OuterRef
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 
-from user_guide.forms import CustomUserForm
+from user_guide.forms import CustomUserForm, StatusLocationFilterForm
 from user_guide.models import (
     CustomUser,
     StatusLocation,
@@ -119,15 +119,42 @@ def user_edit(request, slug):
     })
 
 
-def time_edit(request, slug):
-    """Отображение подробной информации о контроле времени для пользователя"""
+def time_info(request, slug):
+    """Отображение информации о рабочем времени с фильтрацией"""
     settings = Setting.objects.first()
     user = get_object_or_404(CustomUser, slug=slug)
+    form = StatusLocationFilterForm(request.GET or None)
     status_locations = StatusLocation.objects.filter(custom_user=user).order_by('-created')
-    return render(request, template_name='time_edit.html', context={
+    total_worked_time = timedelta()
+    if form.is_valid():
+        date_from = form.cleaned_data.get('date_from')
+        date_to = form.cleaned_data.get('date_to')
+        finding = form.cleaned_data.get('finding')
+        address = form.cleaned_data.get('address')
+        if date_from:
+            status_locations = status_locations.filter(created__gte=date_from)
+        if date_to:
+            date_to_inclusive = date_to + timedelta(days=1)
+            status_locations = status_locations.filter(created__lt=date_to_inclusive)
+        if finding:
+            status_locations = status_locations.filter(camera__finding=finding)
+        if address:
+            status_locations = status_locations.filter(camera__address=address)
+    enter_times = status_locations.filter(camera__finding=1).order_by('created')  # Вход
+    exit_times = status_locations.filter(camera__finding=2).order_by('created')  # Выход
+    for enter, exit in zip(enter_times, exit_times):
+        if exit.created > enter.created:  # Убедимся, что Выход позже Входа
+            total_worked_time += exit.created - enter.created
+    total_seconds = int(total_worked_time.total_seconds())
+    hours, remainder = divmod(total_seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    formatted_time = f'{hours:02d} часов {minutes:02d} минут {seconds:02d}секунд'
+    return render(request, template_name='time_info.html', context={
         'settings': settings,
         'user': user,
-        'status_locations': status_locations
+        'form': form,
+        'status_locations': status_locations,
+        'total_worked_time': formatted_time,
     })
 
 

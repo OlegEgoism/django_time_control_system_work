@@ -4,17 +4,20 @@
 
 {% block content %}
     <h1>Редактирование данных</h1>
-    {% if user.photo %}
-        <img src="{{ user.photo.url }}" alt="Фото {{ user.username }}">
-    {% else %}
-        Нет фото
-    {% endif %}
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Сохранить</button>
-    </form>
-    <a href="{% url 'user_info' user.slug %}" class="btn btn-secondary">Отмена</a>
+    <div class="user-info">
+        {% if user.photo %}
+            <img src="{{ user.photo.url }}" alt="Фото {{ user.username }}">
+        {% else %}
+            Нет фото
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </form>
+    <p></p>
+        <a href="{% url 'user_info' user.slug %}" class="btn btn-secondary">Отмена</a>
+    </div>
 {% endblock %}
 
 
