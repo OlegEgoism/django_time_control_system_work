@@ -1,5 +1,9 @@
 from django import forms
+from django.utils.safestring import mark_safe
+
+from .all_validator import phone_mobile_validator
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+
 from .models import CustomUser
 
 
@@ -21,6 +25,9 @@ class CustomUserChangeForm(UserChangeForm):
 
 class CustomUserForm(forms.ModelForm):
     """Редактирование данных пользователя"""
+    phone_mobile = forms.CharField(label='Телефон мобильный', help_text='Формат +375(00)000-00-00)', validators=[phone_mobile_validator], required=False)
+    photo = forms.ImageField(label='Фотография', required=False)
+
     class Meta:
         model = CustomUser
-        fields = 'phone_mobile', 'birthday', 'biography',
+        fields = 'photo', 'phone_mobile', 'birthday', 'biography',

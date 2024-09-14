@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from user_guide.views import user_list, user_info, user_edit, news_list, news_info, news_download_file, news_file_not_found
+from user_guide.views import user_list, user_info, user_edit, time_edit, news_list, news_info, news_download_file, news_file_not_found
 
 urlpatterns = [
     # Админка
@@ -19,6 +19,7 @@ urlpatterns = [
     path('', user_list, name='user_list'),
     path('<slug:slug>/', user_info, name='user_info'),
     path('edit/<slug:slug>/', user_edit, name='user_edit'),
+    path('time/<slug:slug>/', time_edit, name='time_edit'),
 
 ]
 if settings.DEBUG:

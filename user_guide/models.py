@@ -4,6 +4,8 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django_ulid.models import default, ULIDField
 
+from user_guide.all_validator import phone_mobile_validator
+
 
 class DateStamp(models.Model):
     """Отметка даты"""
@@ -108,11 +110,11 @@ class CustomUser(AbstractUser):
     birthday = models.DateField(verbose_name='Дата рождения', db_comment='Дата рождения', blank=True, null=True)
     biography = models.TextField(verbose_name='Биография', db_comment='Биография', blank=True, null=True)
     email = models.EmailField(verbose_name='Почта', db_comment='Почта', unique=True, blank=True, null=True)
-    phone_mobile = models.CharField(verbose_name='Телефон мобильный', db_comment='Телефон мобильный', help_text='Формат 375(00)000-00-00', max_length=100, unique=True, blank=True, null=True)
+    phone_mobile = models.CharField(verbose_name='Телефон мобильный', db_comment='Телефон мобильный', help_text='Формат +375(00)000-00-00', validators=[phone_mobile_validator], max_length=100, unique=True, blank=True, null=True)
     phone_working = models.CharField(verbose_name='Телефон рабочий', db_comment='Телефон рабочий', help_text='Формат 8(000)000-00-00', max_length=100, blank=True, null=True)
     address = models.ForeignKey(Address, verbose_name='Адрес рабочего места', db_comment='Адрес рабочего места', on_delete=models.PROTECT, related_name='custom_user_address', blank=True, null=True)
     floor = models.ForeignKey(Floor, verbose_name='Этаж рабочего места', db_comment='Этаж рабочего места', on_delete=models.PROTECT, related_name='custom_user_floor', blank=True, null=True)
-    office = models.ForeignKey(Office, verbose_name='Кабинет рабочего места', db_comment='Кабинет рабочего места', on_delete=models.PROTECT, related_name='custom_user_floor', blank=True, null=True)
+    office = models.ForeignKey(Office, verbose_name='Кабинет рабочего места', db_comment='Кабинет рабочего места', on_delete=models.PROTECT, related_name='custom_user_office', blank=True, null=True)
     subdivision = models.ForeignKey(Subdivision, verbose_name='Подразделение', db_comment='Подразделение', on_delete=models.PROTECT, related_name='custom_user_subdivision', blank=True, null=True)
     position = models.ForeignKey(Position, verbose_name='Должность', db_comment='Должность', on_delete=models.PROTECT, related_name='custom_user_position', blank=True, null=True)
     note = models.ForeignKey(Note, verbose_name='Заметка', db_comment='Заметка', on_delete=models.PROTECT, related_name='custom_user_note', blank=True, null=True)
@@ -126,10 +128,18 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.fio or self.username
 
+    def address_info(self):
+        if self.floor and self.office is not None:
+            return f'{self.address}, этаж {self.floor}, кабинет {self.office}'
+        else:
+            return f'{self.address}'
+
+    address_info.short_description = 'Адрес рабочего места'
+
     def clean(self):
         # Если заполнен этаж или кабинет, проверяем наличие адреса
         if (self.floor or self.office) and not self.address:
-            raise ValidationError("Если указаны 'Этаж' или 'Кабинет', укажите поле 'Адрес рабочего места',")
+            raise ValidationError("Если указаны этаж или кабинет, укажите поле 'Адрес рабочего места',")
 
 
 class StatusLocation(models.Model):

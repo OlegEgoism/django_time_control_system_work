@@ -106,7 +106,7 @@ def user_edit(request, slug):
     settings = Setting.objects.first()
     user = get_object_or_404(CustomUser, slug=slug)
     if request.method == 'POST':
-        form = CustomUserForm(request.POST, instance=user)
+        form = CustomUserForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
             return redirect('user_info', slug=user.slug)
@@ -116,6 +116,18 @@ def user_edit(request, slug):
         'settings': settings,
         'user': user,
         'form': form
+    })
+
+
+def time_edit(request, slug):
+    """Отображение подробной информации о контроле времени для пользователя"""
+    settings = Setting.objects.first()
+    user = get_object_or_404(CustomUser, slug=slug)
+    status_locations = StatusLocation.objects.filter(custom_user=user).order_by('-created')
+    return render(request, template_name='time_edit.html', context={
+        'settings': settings,
+        'user': user,
+        'status_locations': status_locations
     })
 
 

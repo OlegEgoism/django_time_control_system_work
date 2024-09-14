@@ -10,7 +10,7 @@ django.setup()
 from user_guide.models import CustomUser, StatusLocation, Camera
 
 last_scan_time = None  # Переменная для хранения времени последнего сканирования
-id_camera = '01J6Q61K7MK2W9STW9CC0AW1VQ'
+id_camera = '01J7QTM5045M40SRZ446R8T862'
 seconds = 3
 
 def video_reader():

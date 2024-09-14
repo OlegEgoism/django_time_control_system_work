@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Подробная информация о времени{% endblock %}
+
+{% block content %}
+    <div class="user-time-info">
+        <h2>Отработанное время для {{ user.fio }}</h2>
+        {% if status_locations %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Дата и время</th>
+                        <th>Камера</th>
+                        <th>Нахождение</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for status in status_locations %}
+                        <tr>
+                            <td>{{ status.camera.get_finding_display }}</td>
+                            <td>{{ status.created|date:"d.m.Y H:i" }}</td>
+                            <td>{{ status.camera.address.name }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Нет данных о нахождении пользователя.</p>
+        {% endif %}
+        <a href="{% url 'user_info' user.slug %}" class="btn btn-primary btn-sm">Назад к информации о пользователе</a>
+    </div>
+{% endblock %}

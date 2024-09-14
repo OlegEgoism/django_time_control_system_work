@@ -69,31 +69,47 @@ class FilesInline(admin.TabularInline):
 @admin.register(Floor)
 class FloorAdmin(admin.ModelAdmin):
     """Этаж рабочего места"""
-    list_display = 'name', 'created', 'updated',
+    list_display = 'name', 'created', 'updated', 'count_position',
     readonly_fields = 'created', 'updated',
     search_fields = 'name',
     search_help_text = 'Поиск по этажу рабочего места'
     list_per_page = 20
 
+    def count_position(self, obj):
+        return obj.custom_user_floor.count()
+
+    count_position.short_description = 'Количество сотрудников'
+
 
 @admin.register(Office)
 class OfficeAdmin(admin.ModelAdmin):
     """Кабинет рабочего места"""
-    list_display = 'name', 'created', 'updated',
+    list_display = 'name', 'created', 'updated', 'count_position',
     readonly_fields = 'created', 'updated',
     search_fields = 'name',
     search_help_text = 'Поиск по кабинету рабочего места'
     list_per_page = 20
 
+    def count_position(self, obj):
+        return obj.custom_user_office.count()
+
+    count_position.short_description = 'Количество сотрудников'
+
 
 @admin.register(Address)
 class AddressAdmin(admin.ModelAdmin):
     """Адрес рабочего места"""
-    list_display = 'name', 'created', 'updated',
+    list_display = 'name', 'created', 'updated', 'count_position',
     readonly_fields = 'created', 'updated',
     search_fields = 'name',
     search_help_text = 'Поиск по адресу'
+    ordering = 'name',
     list_per_page = 20
+
+    def count_position(self, obj):
+        return obj.custom_user_address.count()
+
+    count_position.short_description = 'Количество сотрудников'
 
 
 @admin.register(Position)
@@ -103,6 +119,7 @@ class PositionAdmin(admin.ModelAdmin):
     readonly_fields = 'created', 'updated',
     search_fields = 'name',
     search_help_text = 'Поиск по должности'
+    ordering = 'name',
     list_per_page = 20
 
     def count_position(self, obj):
@@ -118,6 +135,7 @@ class SubdivisionAdmin(admin.ModelAdmin):
     readonly_fields = 'created', 'updated',
     search_fields = 'name',
     search_help_text = 'Поиск по подразделению'
+    ordering = 'name',
     list_per_page = 20
 
     def count_subdivision(self, obj):
@@ -133,6 +151,7 @@ class NoteAdmin(admin.ModelAdmin):
     readonly_fields = 'created', 'updated',
     search_fields = 'name',
     search_help_text = 'Поиск по заметкам'
+    ordering = 'name',
     list_per_page = 20
 
     def count_note(self, obj):
@@ -155,9 +174,13 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('username', 'password',)}),
         ('РАЗРЕШЕНИЯ', {
             'classes': ('collapse',),
-            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions', 'last_login', 'date_joined',)}),
+            'fields': (
+                'is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions', 'last_login', 'date_joined',)}),
         ('ЛИЧНЫЕ ДАННЫЕ', {
-            'fields': ('preview_photo', 'photo', 'fio', 'slug', 'birthday', 'biography', 'email', 'phone_mobile', 'phone_working', 'address', 'floor', 'office', 'note', 'position', 'subdivision',)},),
+            'fields': (
+                'preview_photo', 'photo', 'fio', 'slug', 'birthday', 'biography', 'email', 'phone_mobile',
+                'phone_working',
+                'address', 'floor', 'office', 'note', 'position', 'subdivision',)},),
     )
     add_fieldsets = (
         (None, {
@@ -165,13 +188,14 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('username', 'email', 'fio', 'slug', 'password1', 'password2'),
         }),
     )
-    list_display = 'username', 'preview_photo', 'fio', 'phone_mobile', 'phone_working', 'note', 'subdivision', 'position', 'is_active',
-    list_filter = 'is_active', NoteFilter, SubdivisionFilter, PositionFilter,
+    list_display = 'username', 'preview_photo', 'fio', 'phone_mobile', 'phone_working', 'note', 'subdivision', 'position', 'address_info', 'is_active',
+    list_filter = 'is_active', NoteFilter, SubdivisionFilter, PositionFilter, AddressFilter,
     readonly_fields = 'last_login', 'date_joined', 'preview_photo',
     search_fields = 'username', 'fio', 'phone_mobile', 'phone_working', 'position', 'subdivision',
     search_help_text = 'Поиск по логину, имени пользователя и номеру телефона, должности, подразделению'
     prepopulated_fields = {'slug': ('fio',)}
     inlines = StatusLocationInline,
+    list_select_related = 'address', 'floor', 'office', 'note', 'position', 'subdivision',
     list_per_page = 20
 
     def preview_photo(self, obj):
@@ -201,6 +225,7 @@ class StatusLocationAdmin(admin.ModelAdmin):
     date_hierarchy = 'created'
     search_fields = 'custom_user__fio', 'camera__address__name'
     search_help_text = 'Поиск по ФИО и адресу местонажождения камеры'
+    ordering = '-created',
     list_per_page = 20
 
 
@@ -227,6 +252,7 @@ class NewsAdmin(admin.ModelAdmin):
     search_help_text = 'Поиск по названию новости и описанию'
     date_hierarchy = 'created'
     list_per_page = 20
+    ordering = 'created',
 
     def file_count(self, obj):
         if obj.files_news.count() == 0:

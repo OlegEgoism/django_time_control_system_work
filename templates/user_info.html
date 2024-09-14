@@ -27,13 +27,16 @@
         <p>{% if user.phone_working %}<strong>Рабочий телефон:</strong> {{ user.phone_working }}{% else %}{% endif %}</p>
         <p><strong>Дата рождения:</strong> {{ user.birthday|date:"d.m.Y" }} г.</p>
         <p>{% if user.biography %}<strong>Биография:</strong> {{ user.biography }}{% endif %}</p>
-        <td >
+        <td>
             <a href="{% url 'user_edit' user.slug %}" class="btn btn-warning btn-sm">Редактировать данные</a>
         </td>
         <div class="user-info">
             <p>Отработанное время за текущий день: {{ daily_time }}</p>
             <p>Отработанное время за текущий месяц: {{ monthly_time }}</p>
             <p>Отработанное время за текущий год: {{ yearly_time }}</p>
+            <td>
+                <a href="{% url 'time_edit' user.slug %}" class="btn btn-warning btn-sm">Подробней</a>
+            </td>
         </div>
     </div>
 {% endblock %}

@@ -2,7 +2,7 @@ import os
 import qrcode
 import transliterate  # Нужно установить пакет transliterate
 
-data = "Пустовалов Олег Юрьевич"
+data = "Пустовалов Олег Юрьевич222"
 print('Данные QRCode -->', data)
 
 filename = transliterate.translit(data, reversed=True)
