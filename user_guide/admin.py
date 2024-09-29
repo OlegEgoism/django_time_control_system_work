@@ -1,10 +1,8 @@
 from admin_auto_filters.filters import AutocompleteFilter
-
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.safestring import mark_safe
 from rangefilter.filters import DateRangeFilter
-
 from user_guide.forms import CustomUserChangeForm, CustomUserCreationForm
 from user_guide.models import (
     StatusLocation,

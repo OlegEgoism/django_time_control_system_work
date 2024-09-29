@@ -35,11 +35,13 @@
                                         <td>
                                             <div class="photo-fio">
                                                 {% if user.photo %}
-                                                    <img src="{{ user.photo.url }}" alt="Фото {{ user.username }}">
-                                                {% else %}
-                                                    Нет фото
+                                                    <a href="{% url 'user_info' user.slug %}">
+                                                        <img src="{{ user.photo.url }}" alt="Фото {{ user.username }}">
+                                                    </a>
                                                 {% endif %}
-                                                <span><a href="{% url 'user_info' user.slug %}">{{ user.fio }}</a></span>
+                                                <div class="fio-text">
+                                                    <a href="{% url 'user_info' user.slug %}">{{ user.fio }}</a>
+                                                </div>
                                             </div>
                                         </td>
                                         <td>{{ user.email }}</td>

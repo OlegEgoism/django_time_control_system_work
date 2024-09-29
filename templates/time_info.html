@@ -3,7 +3,7 @@
 {% block title %}Информация о рабочем времени{% endblock %}
 
 {% block content %}
-    <h1>Информация о рабочем времени</h1>
+    <h1>Информация о рабочем времени: {{ user.fio }} ({{ user.position }})</h1>
     <form method="get" class="form-inline mb-4">
         <div class="form-group">
             <label for="id_date_from">Дата с:</label>
@@ -24,10 +24,10 @@
         <button type="submit" class="btn btn-primary">Фильтровать</button>
         <a href="{% url 'time_info' user.slug %}" class="btn btn-secondary ml-2">Сбросить фильтры</a>
     </form>
+
     <div class="user-info">
         {% if page_obj.object_list %}
             <table class="table table-striped">
-                <h3>{{ user.fio }} ({{ user.position }})</h3>
                 <thead>
                 <tr>
                     <th>Нахождение</th>
@@ -53,14 +53,17 @@
                         <a href="?page=
                                 
                                 
+                                
                                 {{ page_obj.previous_page_number }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}">&lsaquo; Предыдущая</a>
                     {% endif %}
                     {% if page_obj.has_next %}
                         <a href="?page=
                                 
                                 
+                                
                                 {{ page_obj.next_page_number }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}">Следующая &rsaquo;</a>
                         <a href="?page=
+                                
                                 
                                 
                                 {{ page_obj.paginator.num_pages }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}">Последняя &raquo;</a>

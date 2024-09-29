@@ -1,19 +1,27 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 
-from user_guide.views import user_list, user_info, user_edit, time_info, news_list, news_info, news_download_file, news_file_not_found
+from user_guide.views import (
+    news_list,
+    news_info,
+    news_download_file,
+    user_list,
+    user_info,
+    user_edit,
+    time_info
+)
 
 urlpatterns = [
     # Админка
     path('admin/', admin.site.urls),
 
     # Новости
-    path('news/', news_list, name='news_all'),
+    path('news/', news_list, name='news_list'),
     path('news/<str:name>/', news_info, name='news_info'),
-    path('news/download/<str:name>', news_download_file, name='news_download_file'),
-    path('news/<str:name>/file-not-found/', news_file_not_found, name='news_file_not_found'),
+    path('news/download/<str:id_files>', news_download_file, name='news_download_file'),
+    # path('news/<str:id_files>/file-not-found/', news_file_not_found, name='news_file_not_found'),
 
     # Список пользователей
     path('', user_list, name='user_list'),

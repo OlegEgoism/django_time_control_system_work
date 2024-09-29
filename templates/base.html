@@ -13,15 +13,15 @@
 
 <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
     <a class="navbar-brand" href="{% url 'user_list' %}">
-        {% if settings.logo %}
-            <img class="logo_image" src="{{ settings.logo.url }}" alt="Логотип" style="height: 40px;">
+        {% if config.logo %}
+            <img class="logo_image" src="{{ config.logo.url }}" alt="Логотип" style="height: 40px;">
         {% endif %}
-        {{ settings.name }}
+        {{ config.name }}
     </a>
     <div class="collapse navbar-collapse">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'news_all' %}">Новости</a>
+                <a class="nav-link" href="{% url 'news_list' %}">Новости</a>
             </li>
         </ul>
     </div>

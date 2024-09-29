@@ -20,7 +20,7 @@ from user_guide.models import (
 
 def user_list(request):
     """Список пользователей"""
-    settings = Setting.objects.first()
+    config = Setting.objects.first()
     search_query = request.GET.get('q', '')
 
     # Запрос для поиска
@@ -44,7 +44,7 @@ def user_list(request):
             grouped_users[subdivision][position] = list(pos_group)
 
     return render(request, template_name='user_list.html', context={
-        'settings': settings,
+        'config': config,
         'grouped_users': grouped_users,
         'search_query': search_query
     })
@@ -52,7 +52,7 @@ def user_list(request):
 
 def user_info(request, slug):
     """Информация о пользователе"""
-    settings = Setting.objects.first()
+    config = Setting.objects.first()
     user = get_object_or_404(CustomUser, slug=slug)
 
     # Получаем записи времени входа и выхода
@@ -93,7 +93,7 @@ def user_info(request, slug):
 
     return render(request, template_name='user_info.html', context={
         'user': user,
-        'settings': settings,
+        'config': config,
         'daily_time': format_time(daily_time),
         'monthly_time': format_time(monthly_time),
         'yearly_time': format_time(yearly_time),
@@ -102,7 +102,7 @@ def user_info(request, slug):
 
 def user_edit(request, slug):
     """Редактирование биографии пользователя"""
-    settings = Setting.objects.first()
+    config = Setting.objects.first()
     user = get_object_or_404(CustomUser, slug=slug)
     if request.method == 'POST':
         form = CustomUserForm(request.POST, request.FILES, instance=user)
@@ -112,7 +112,7 @@ def user_edit(request, slug):
     else:
         form = CustomUserForm(instance=user)
     return render(request, template_name='user_edit.html', context={
-        'settings': settings,
+        'config': config,
         'user': user,
         'form': form
     })
@@ -120,7 +120,7 @@ def user_edit(request, slug):
 
 def time_info(request, slug):
     """Отображение информации о рабочем времени с фильтрацией"""
-    settings = Setting.objects.first()
+    config = Setting.objects.first()
     user = get_object_or_404(CustomUser, slug=slug)
     form = StatusLocationFilterForm(request.GET or None)
     status_locations = StatusLocation.objects.filter(custom_user=user).order_by('-created')
@@ -141,7 +141,7 @@ def time_info(request, slug):
         if address:
             status_locations = status_locations.filter(camera__address=address)
 
-    paginator = Paginator(status_locations, per_page=settings.time_page)  # Нумерация страниц
+    paginator = Paginator(status_locations, per_page=config.time_page)  # Нумерация страниц
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     enter_times = status_locations.filter(camera__finding=1).order_by('created')  # Вход
@@ -154,7 +154,7 @@ def time_info(request, slug):
     minutes, seconds = divmod(remainder, 60)
     formatted_time = f'{hours:02d} часов {minutes:02d} минут {seconds:02d} секунд'
     return render(request, template_name='time_info.html', context={
-        'settings': settings,
+        'config': config,
         'user': user,
         'form': form,
         'page_obj': page_obj,
@@ -164,15 +164,14 @@ def time_info(request, slug):
 
 
 # __________________-
-
-
 def news_list(request):
-    """Новости"""
-    settings = Setting.objects.first()
+    config = Setting.objects.first()
+    query = request.GET.get('q')
     news_list = News.objects.filter(is_active=True)
-    total_news_count = news_list.count()
-    page_size = Setting.objects.first()
-    paginator = Paginator(news_list, page_size.news_page)
+    if query:
+        news_list = news_list.filter(Q(name__icontains=query) | Q(description__icontains=query))
+    page_size = config.news_page if config else 10
+    paginator = Paginator(news_list, page_size)
     page = request.GET.get('page')
     try:
         news_all = paginator.page(page)
@@ -180,16 +179,17 @@ def news_list(request):
         news_all = paginator.page(1)
     except EmptyPage:
         news_all = paginator.page(paginator.num_pages)
-    return render(request, template_name='news_list.html', context={
-        'settings': settings,
-        'news_all': news_all,
-        'total_news_count': total_news_count
+    return render(request, 'news/news_list.html', {
+        'config': config,
+        'news_all': news_all
     })
 
 
 def news_info(request, name):
     """Новость"""
+    config = Setting.objects.first()
     news = get_object_or_404(News, name=name)
+    print('___________________', news.files_news.all())
     news.views_count += 1
     news.save()
     files_with_existence = []
@@ -197,15 +197,16 @@ def news_info(request, name):
         file_path = os.path.join(settings.MEDIA_ROOT, str(file.files))
         file_exists = os.path.exists(file_path)
         files_with_existence.append((file, file_exists))
-    return render(request, template_name='news_info.html', context={
+    return render(request, template_name='news/news_info.html', context={
+        'config': config,
         'news': news,
         'files_with_existence': files_with_existence,
     })
 
 
-def news_download_file(request, name):
+def news_download_file(request, id_files):
     """Скачивание файла"""
-    file_obj = get_object_or_404(Files, name=name)
+    file_obj = get_object_or_404(Files, id_files=id_files)
     file_path = os.path.join(settings.MEDIA_ROOT, str(file_obj.files))  # Путь к файлу
     if os.path.exists(file_path):
         with open(file_path, 'rb') as file_content:
@@ -213,13 +214,12 @@ def news_download_file(request, name):
             file_name = os.path.basename(file_path)
             response['Content-Disposition'] = f'attachment; filename="{quote(file_name)}"'
             return response
-    name = file_obj.name
-    return redirect('news_file_not_found', name=name)
+    id_files = file_obj.id_files
+    return redirect('news_file_not_found', id_files=id_files)
 
-
-def news_file_not_found(request, name):
-    """Если файл не найден"""
-    news = get_object_or_404(News, name=name)
-    return render(request, 'news_file_not_found.html', {
-        'news': news,
-    })
+# def news_file_not_found(request, name):
+#     """Если файл не найден"""
+#     news = get_object_or_404(News, name=name)
+#     return render(request, 'news/news_file_not_found.html', {
+#         'news': news,
+#     })

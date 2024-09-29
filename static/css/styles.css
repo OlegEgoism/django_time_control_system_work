@@ -118,3 +118,36 @@ strong {
     color: #000000; /* Оранжевый цвет текста */
     font-size: 18px;
 }
+
+.box_content {
+    width: fit-content;
+    min-width: 150px;
+    height: fit-content;
+    padding: 10px;
+    background-color: #c1e6f9;
+    border-radius: 10px;
+    box-shadow: 10px 10px 15px 0 rgba(34, 60, 80, 0.2);
+}
+
+.news-item {
+    /*background-color:  rgba(192, 204, 190, 0.84);*/
+    background-color: #c1e6f9;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.content-details {
+    display: flex;
+    justify-content: space-between;
+}
+
+.details {
+    display: flex;
+    justify-content: space-between;
+}
+
+.fio-text {
+    text-align: left; /* Выровнять текст ФИО по левому краю */
+}

@@ -3,7 +3,7 @@
 {% block title %}Информация о пользователе{% endblock %}
 
 {% block content %}
-    <h1>Информация о пользователе</h1>
+    <h1>Информация о пользователе: {{ user.fio }}</h1>
     <div class="user-info">
         <div class="photo-fio-edit">
             {% if user.photo %}
@@ -12,7 +12,7 @@
                 Нет фото
             {% endif %}
             <div class="user-details">
-                <h2>{{ user.fio }}</h2>
+
                 <p>{% if user.subdivision.name %}<strong>Подразделение:</strong> {{ user.subdivision.name }}{% endif %}</p>
                 <p>{% if user.position.name %}<strong>Должность:</strong> {{ user.position.name }}{% endif %}</p>
                 <p>
