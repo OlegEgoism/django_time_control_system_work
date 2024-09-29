@@ -21,9 +21,10 @@
                     {% if user.office.name %}кабинет {{ user.office.name }}{% else %}{% endif %}
                 </p>
                 <p>{% if user.note.name %}<strong>Заметка:</strong> {{ user.note.name }}{% endif %}</p>
+                <p>{% if user.email %}<strong>Почта:</strong> {{ user.email }}{% endif %}</p>
             </div>
         </div>
-        <p>{% if user.email %}<strong>Почта:</strong> {{ user.email }}{% endif %}</p>
+
         <p>{% if user.phone_mobile %}<strong>Мобильный телефон:</strong> {{ user.phone_mobile }}{% else %}{% endif %}</p>
         <p>{% if user.phone_working %}<strong>Рабочий телефон:</strong> {{ user.phone_working }}{% else %}{% endif %}</p>
         <p><strong>Дата рождения:</strong> {{ user.birthday|date:"d.m.Y" }} г.</p>
