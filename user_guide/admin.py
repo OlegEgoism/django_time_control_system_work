@@ -12,7 +12,7 @@ from user_guide.models import (
     CustomUser,
     Note,
     Camera,
-    Setting, Files, News, Floor, Office
+    Setting, Files, News, Office
 )
 
 
@@ -64,21 +64,6 @@ class FilesInline(admin.TabularInline):
 
 
 # ______________________________________________________
-@admin.register(Floor)
-class FloorAdmin(admin.ModelAdmin):
-    """Этаж рабочего места"""
-    list_display = 'name', 'created', 'updated', 'count_position',
-    readonly_fields = 'created', 'updated',
-    search_fields = 'name',
-    search_help_text = 'Поиск по этажу рабочего места'
-    list_per_page = 20
-
-    def count_position(self, obj):
-        return obj.custom_user_floor.count()
-
-    count_position.short_description = 'Количество сотрудников'
-
-
 @admin.register(Office)
 class OfficeAdmin(admin.ModelAdmin):
     """Кабинет рабочего места"""
@@ -178,7 +163,7 @@ class CustomUserAdmin(UserAdmin):
             'fields': (
                 'preview_photo', 'photo', 'fio', 'slug', 'birthday', 'biography', 'email', 'phone_mobile',
                 'phone_working',
-                'address', 'floor', 'office', 'note', 'position', 'subdivision',)},),
+                'address', 'office', 'note', 'position', 'subdivision',)},),
     )
     add_fieldsets = (
         (None, {
@@ -193,7 +178,7 @@ class CustomUserAdmin(UserAdmin):
     search_help_text = 'Поиск по логину, имени пользователя и номеру телефона, должности, подразделению'
     prepopulated_fields = {'slug': ('fio',)}
     inlines = StatusLocationInline,
-    list_select_related = 'address', 'floor', 'office', 'note', 'position', 'subdivision',
+    list_select_related = 'address', 'office', 'note', 'position', 'subdivision',
     list_per_page = 20
 
     def preview_photo(self, obj):

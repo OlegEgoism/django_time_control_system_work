@@ -1,7 +1,7 @@
 from django import forms
 from .all_validator import phone_mobile_validator
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import CustomUser, Camera, Address
+from .models import CustomUser, Camera, Address, Note
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -21,14 +21,15 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class CustomUserForm(forms.ModelForm):
-    """Редактирование данных пользователя"""
-    photo = forms.ImageField(label='Фотография', required=False)
-    phone_mobile = forms.CharField(label='Телефон мобильный', required=False, validators=[phone_mobile_validator], widget=forms.TextInput(attrs={'class': 'form-control col-sm-3', 'placeholder': '+375(00)000-00-00'}))
-    biography = forms.CharField(label='Биография', required=False, widget=forms.Textarea(attrs={'class': 'form-control col-sm-12', 'placeholder': 'Раскажите о себе'}))
+    """Редактирование данных сотрудника"""
+    email = forms.EmailField(label='Почта: ', required=False, widget=forms.EmailInput(attrs={'class': 'form-control col-sm-3'}))
+    phone_mobile = forms.CharField(label='Телефон мобильный: ', required=False, validators=[phone_mobile_validator], widget=forms.TextInput(attrs={'class': 'form-control col-sm-3', 'placeholder': '+375(__)___-__-__'}))
+    phone_working = forms.CharField(label='Телефон рабочий: ', required=False, widget=forms.TextInput(attrs={'class': 'form-control col-sm-3', 'placeholder': '8(___)___-__-__'}))
+    biography = forms.CharField(label='Биография: ', required=False, widget=forms.Textarea(attrs={'class': 'form-control col-sm-10', 'placeholder': 'Расскажите о себе'}))
 
     class Meta:
         model = CustomUser
-        fields = 'photo', 'phone_mobile', 'biography',
+        fields = 'email', 'phone_mobile', 'phone_working', 'biography'
 
 
 class StatusLocationFilterForm(forms.Form):

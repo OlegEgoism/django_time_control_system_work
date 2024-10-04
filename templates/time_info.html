@@ -24,7 +24,6 @@
         <button type="submit" class="btn btn-primary">Фильтровать</button>
         <a href="{% url 'time_info' user.slug %}" class="btn btn-secondary ml-2">Сбросить фильтры</a>
     </form>
-
     <div class="user-info">
         {% if page_obj.object_list %}
             <table class="table table-striped">
@@ -46,35 +45,128 @@
                 </tbody>
             </table>
             <p><strong>Всего отработано времени:</strong> {{ total_worked_time }}</p>
-            <div class="pagination">
-                <span class="step-links">
-                    {% if page_obj.has_previous %}
-                        <a href="?page=1{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}">&laquo; Первая</a>
-                        <a href="?page=
-                                
-                                
-                                
-                                {{ page_obj.previous_page_number }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}">&lsaquo; Предыдущая</a>
-                    {% endif %}
-                    {% if page_obj.has_next %}
-                        <a href="?page=
-                                
-                                
-                                
-                                {{ page_obj.next_page_number }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}">Следующая &rsaquo;</a>
-                        <a href="?page=
-                                
-                                
-                                
-                                {{ page_obj.paginator.num_pages }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}">Последняя &raquo;</a>
-                    {% endif %}
-                </span>
-            </div>
-            <p>Страница {{ page_obj.number }} из {{ paginator.num_pages }}</p> <!-- Отображать текущие и общие страницы-->
 
+            <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=
+                    {{ page_obj.previous_page_number }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}"
+               class="btn btn-outline-primary">&laquo; Предыдущая</a>
+        {% endif %}
+        {% for page_num in page_obj.paginator.page_range %}
+            {% if page_num == page_obj.number %}
+                <strong class="btn btn-primary">{{ page_num }}</strong>
+            {% else %}
+                <a href="?page=
+                        {{ page_num }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}"
+                   class="btn btn-outline-primary">{{ page_num }}</a>
+            {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <a href="?page=
+                    {{ page_obj.next_page_number }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}"
+               class="btn btn-outline-primary">Следующая &raquo;</a>
+        {% endif %}
+    </span>
+            </div>
+
+            <p>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</p>
         {% else %}
             <p>Нет данных о нахождении пользователя.</p>
         {% endif %}
         <a href="{% url 'user_info' user.slug %}" class="btn btn-primary btn-sm">Назад</a>
     </div>
+    
+
+    
+    
+    
+    <div id="container" style="width:100%; height:400px;"></div>
+<button id="zoomIn" class="btn btn-secondary">Увеличить масштаб</button>
+<button id="zoomOut" class="btn btn-secondary">Уменьшить масштаб</button>
+<button id="resetZoom" class="btn btn-secondary">Сбросить масштаб</button>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Преобразование дат в метки времени
+        const dates = {{ dates|safe }}.map(date => Date.parse(date));
+        const findings = {{ findings|safe }};
+        
+        // Создание нового массива данных с временными метками
+        const hourlyData = [];
+        for (let i = 0; i < dates.length; i++) {
+            hourlyData.push([dates[i], findings[i]]);
+        }
+
+        // Создание графика
+        const chart = Highcharts.chart('container', {
+            chart: {
+                type: 'line',
+                step: true,
+                zoomType: 'x' // Включаем зум по оси X
+            },
+            title: {
+                text: 'График рабочего времени для {{ user.fio }}'
+            },
+            xAxis: {
+                type: 'datetime',
+                tickInterval: 3600 * 1000, // Шаг 1 час
+                dateTimeLabelFormats: {
+                    hour: '%H:%M'
+                },
+                title: {
+                    text: 'Дата и Время'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Нахождение'
+                },
+                tickInterval: 1,
+                labels: {
+                    formatter: function() {
+                        return this.value === 1 ? 'Вход' : 'Выход';
+                    }
+                },
+                min: 0,
+                max: 2
+            },
+            series: [{
+                name: 'Нахождение',
+                data: hourlyData,
+                step: 'left'
+            }]
+        });
+
+        // Обработчик событий для кнопок
+        document.getElementById('zoomIn').addEventListener('click', function () {
+            const xAxis = chart.xAxis[0];
+            const currentMin = xAxis.min;
+            const currentMax = xAxis.max;
+            const range = (currentMax - currentMin) / 4; // Уменьшаем диапазон в 4 раза
+            
+            xAxis.setExtremes(currentMin + range, currentMax - range); // Устанавливаем новые границы
+        });
+
+        document.getElementById('zoomOut').addEventListener('click', function () {
+            const xAxis = chart.xAxis[0];
+            const currentMin = xAxis.min;
+            const currentMax = xAxis.max;
+            const range = (currentMax - currentMin) * 4; // Увеличиваем диапазон в 4 раза
+            
+            xAxis.setExtremes(currentMin - range / 2, currentMax + range / 2); // Устанавливаем новые границы
+        });
+
+        document.getElementById('resetZoom').addEventListener('click', function () {
+            chart.xAxis[0].setExtremes(null, null); // Сбросить масштаб до значений по умолчанию
+        });
+    });
+</script>
+
+
+
+
+
+
 {% endblock %}

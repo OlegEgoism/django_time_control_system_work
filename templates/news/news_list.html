@@ -3,6 +3,10 @@
 {% block title %}Список новостей{% endblock %}
 
 {% block content %}
+        <div class="container">
+        <div class="card">
+    
+    
     <div class="header-search">
         <div class="info">Новости</div>
         <form method="get" action="{% url 'news_list' %}" class="d-flex align-items-center">
@@ -40,4 +44,6 @@
             {% endif %}
         </span>
     </div>
+                </div>
+        </div>
 {% endblock %}

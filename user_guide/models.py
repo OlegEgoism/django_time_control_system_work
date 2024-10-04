@@ -30,20 +30,6 @@ class Address(DateStamp):
         return self.name
 
 
-class Floor(DateStamp):
-    """Этаж рабочего места"""
-    id_floor = ULIDField(verbose_name='id_floor', db_comment='id_floor', default=default, primary_key=True, editable=False)
-    name = models.CharField(verbose_name='Этаж', db_comment='Этаж', max_length=250, db_index=True, unique=True)
-
-    class Meta:
-        verbose_name = 'Этаж рабочего места'
-        verbose_name_plural = 'Этажи рабочего места'
-        ordering = 'name',
-
-    def __str__(self):
-        return self.name
-
-
 class Office(DateStamp):
     """Кабинет рабочего места"""
     id_office = ULIDField(verbose_name='id_office', db_comment='id_office', default=default, primary_key=True, editable=False)
@@ -113,7 +99,6 @@ class CustomUser(AbstractUser):
     phone_mobile = models.CharField(verbose_name='Телефон мобильный', db_comment='Телефон мобильный', help_text='Формат +375(00)000-00-00', validators=[phone_mobile_validator], max_length=100, unique=True, blank=True, null=True)
     phone_working = models.CharField(verbose_name='Телефон рабочий', db_comment='Телефон рабочий', help_text='Формат 8(000)000-00-00', max_length=100, blank=True, null=True)
     address = models.ForeignKey(Address, verbose_name='Адрес рабочего места', db_comment='Адрес рабочего места', on_delete=models.PROTECT, related_name='custom_user_address', blank=True, null=True)
-    floor = models.ForeignKey(Floor, verbose_name='Этаж рабочего места', db_comment='Этаж рабочего места', on_delete=models.PROTECT, related_name='custom_user_floor', blank=True, null=True)
     office = models.ForeignKey(Office, verbose_name='Кабинет рабочего места', db_comment='Кабинет рабочего места', on_delete=models.PROTECT, related_name='custom_user_office', blank=True, null=True)
     subdivision = models.ForeignKey(Subdivision, verbose_name='Подразделение', db_comment='Подразделение', on_delete=models.PROTECT, related_name='custom_user_subdivision', blank=True, null=True)
     position = models.ForeignKey(Position, verbose_name='Должность', db_comment='Должность', on_delete=models.PROTECT, related_name='custom_user_position', blank=True, null=True)
@@ -129,17 +114,16 @@ class CustomUser(AbstractUser):
         return self.fio or self.username
 
     def address_info(self):
-        if self.floor and self.office is not None:
-            return f'{self.address}, этаж {self.floor}, кабинет {self.office}'
+        if self.office is not None:
+            return f'{self.address}, кабинет {self.office}'
         else:
             return f'{self.address}'
 
     address_info.short_description = 'Адрес рабочего места'
 
     def clean(self):
-        # Если заполнен этаж или кабинет, проверяем наличие адреса
-        if (self.floor or self.office) and not self.address:
-            raise ValidationError("Если указаны этаж или кабинет, укажите поле адрес рабочего места")
+        if self.office and not self.address:
+            raise ValidationError("Если указан кабинет, укажите поле адрес рабочего места")
 
 
 class StatusLocation(models.Model):
@@ -177,20 +161,6 @@ class Camera(models.Model):
 
     def __str__(self):
         return f'{self.get_finding_display()} - ({self.address})'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 class Files(DateStamp):
@@ -232,7 +202,7 @@ class Setting(DateStamp):
     """Настройки сайта"""
     id_setting = ULIDField(verbose_name='id_setting', db_comment='id_setting', default=default, primary_key=True, editable=False)
     logo = models.ImageField(verbose_name='Логотип организации', db_comment='Логотип организации', upload_to='logo/', default='logo/default/default_logo.png', blank=True, null=True)
-    name = models.CharField(verbose_name='Название организации', db_comment='Название организации', max_length=250)
+    name = models.CharField(verbose_name='Название организации', help_text='Укажите краткое название', db_comment='Название организации', max_length=250)
     news_page = models.IntegerField(verbose_name='Пагинация новостей', default=4)
     time_page = models.IntegerField(verbose_name='Пагинация контроля времени', default=10)
 

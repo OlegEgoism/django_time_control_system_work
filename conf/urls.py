@@ -4,6 +4,8 @@ from django.contrib import admin
 from django.urls import path
 
 from user_guide.views import (
+    home,
+
     news_list,
     news_info,
     news_download_file,
@@ -17,6 +19,8 @@ urlpatterns = [
     # Админка
     path('admin/', admin.site.urls),
 
+    path('', home, name='home'),
+
     # Новости
     path('news/', news_list, name='news_list'),
     path('news/<str:name>/', news_info, name='news_info'),
@@ -24,7 +28,7 @@ urlpatterns = [
     # path('news/<str:id_files>/file-not-found/', news_file_not_found, name='news_file_not_found'),
 
     # Список пользователей
-    path('', user_list, name='user_list'),
+    path('user_list/', user_list, name='user_list'),
     path('<slug:slug>/', user_info, name='user_info'),
     path('edit/<slug:slug>/', user_edit, name='user_edit'),
     path('time/<slug:slug>/', time_info, name='time_info'),

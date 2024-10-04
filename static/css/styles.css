@@ -1,5 +1,54 @@
 body {
+    background-color: #f0f4f8;
+    display: flex;
+}
+
+nav {
+    background-color: #3a3f44;
+    height: 100vh; /* Полная высота для навигации */
     padding: 20px;
+}
+
+nav h2 {
+    color: white;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 15px 0;
+}
+
+nav ul li a {
+    color: white;
+    font-size: 18px;
+}
+
+.container {
+    padding: 20px;
+    width: 100%;
+}
+
+.card {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    width: 1660px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    table-layout: fixed; /* Фиксированная ширина таблицы */
+}
+
+th {
+    background-color: #f5f7fa;
 }
 
 th, td {
@@ -8,48 +57,17 @@ th, td {
     text-align: center;
 }
 
-th {
-    background-color: #96e8f8;
-}
-
-.subdivision-table th, .subdivision-table td {
-    width: 100%; /* Позволяет вложенной таблице иметь свою ширину */
-}
-
-table {
-    table-layout: fixed; /* Фиксированная ширина таблицы */
-    width: 100%; /* Ширина таблицы будет 100% */
-}
-
-.logo_image {
-    border-radius: 10%;
-    height: 40px; /* Подберите высоту в зависимости от ваших нужд */
-    margin-right: 20px; /* Отступ между логотипом и текстом */
-}
-
-summary {
-    padding: 10px;
-}
-
-summary:hover {
-    background-color: #aaeccb;
-}
-
-img {
-    max-width: 80px;
-    margin-right: 10px;
-    border-radius: 20%;
-    transition: transform 0.2s ease; /* Плавный переход для масштабирования */
-}
-
-.nav-link {
+.photo-fio {
     display: flex;
     align-items: center;
 }
 
-.photo-fio {
-    display: flex;
-    align-items: center; /* Центрирует текст и изображение по вертикали */
+.photo-fio img {
+    max-width: 80px;
+    border-radius: 20%;
+    margin-right: 10px;
+    border: 2px solid #fff; /* Добавление белой рамки вокруг изображения (по желанию) */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Добавление тени (по желанию) */
 }
 
 .photo-fio span {
@@ -57,97 +75,316 @@ img {
 }
 
 .photo-fio img:hover {
-    transform: scale(2); /* Увеличение изображения в 4 раза */
+    transform: scale(1.4); /* Увеличение изображения */
 }
 
-.header-search {
+.fio-text {
+    text-align: left; /* Выровнять текст ФИО по левому краю */
+}
+
+h1 {
+    width: 100%;
+    text-align: left;
+}
+
+.photo-user {
     display: flex;
-    justify-content: space-between; /* Отступ между заголовком и формой */
 }
 
-.search-input {
-    width: 420px; /* Ширина поля поиска */
-}
-
-.info {
-    font-size: 32px;
-}
-
-.navbar-custom {
-    background-color: #6fa881;
-}
-
-.logo_image {
-    margin-right: 10px; /* Отступ между логотипом и текстом */
-}
-
-.user-info {
-    border: 2px solid #6fa881; /* Цвет рамки */
-    border-radius: 10px; /* Скругление углов */
-    padding: 20px; /* Внутренние отступы */
-    margin: 20px auto; /* Отступы сверху и снизу, центрирование по горизонтали */
-    max-width: 1000px; /* Максимальная ширина блока */
-    background-color: #f9f9f9; /* Цвет фона блока */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень для создания эффекта поднятого блока */
-}
-
-.user-info img {
-    margin-bottom: 20px; /* Отступ снизу */
-    max-width: 150px; /* Максимальная ширина изображения */
-}
-
-.user-info p {
-    font-size: 16px; /* Размер шрифта для параграфов */
-    margin: 8px 0; /* Отступы сверху и снизу для параграфов */
+.photo-user img {
+    width: 260px;
+    height: 260px;
+    object-fit: cover; /* Чтобы изображение не деформировалось и вписывалось в рамки */
+    border-radius: 20%; /* Скругление изображения до круга */
+    border: 2px solid #fff; /* Добавление белой рамки вокруг изображения (по желанию) */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Добавление тени (по желанию) */
 }
 
 .user-details {
     margin-left: 20px; /* Отступ между изображением и текстом */
 }
 
-.photo-fio-edit {
+.user-details p {
+    margin: 5px 0; /* Уменьшить вертикальный отступ между элементами <p> */
+}
+
+.user-bio p {
+    margin: 5px 0; /* Уменьшить вертикальный отступ между элементами <p> */
+}
+
+.text-danger {
+    color: red;
+}
+
+
+
+
+
+.form-group {
     display: flex;
-    align-items: center; /* Центрирует текст и изображение по вертикали */
+    margin-bottom: 5px; /* Space between form groups */
 }
 
-.photo-fio-edit span {
-    margin-left: 20px; /* Отступ между изображением и текстом */
+.form-group label {
+    width: 200px; /* Fixed width for labels */
+    margin-right: 10px; /* Space between label and input */
+    text-align: left; /* Align text to the right */
 }
 
-strong {
-    color: #000000; /* Оранжевый цвет текста */
-    font-size: 18px;
-}
 
-.box_content {
-    width: fit-content;
-    min-width: 150px;
-    height: fit-content;
-    padding: 10px;
-    background-color: #c1e6f9;
-    border-radius: 10px;
-    box-shadow: 10px 10px 15px 0 rgba(34, 60, 80, 0.2);
-}
 
-.news-item {
-    /*background-color:  rgba(192, 204, 190, 0.84);*/
-    background-color: #c1e6f9;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-}
 
-.content-details {
-    display: flex;
-    justify-content: space-between;
-}
 
-.details {
-    display: flex;
-    justify-content: space-between;
-}
 
-.fio-text {
-    text-align: left; /* Выровнять текст ФИО по левому краю */
-}
+
+
+
+
+
+/*.user-info img {*/
+
+/*    margin-right: 20px;*/
+/*}*/
+
+
+/*.details p {*/
+/*    margin: 5px 0;*/
+/*}*/
+/*.additional-info {*/
+/*    margin-top: 10px;*/
+/*}*/
+/*.additional-info p {*/
+/*    font-size: 16px;*/
+/*    margin: 5px 0;*/
+/*}*/
+
+/*.summary {*/
+/*    text-align: right;*/
+/*    font-weight: bold;*/
+/*}*/
+/*.status {*/
+/*    padding: 5px 10px;*/
+/*    border-radius: 5px;*/
+/*    color: white;*/
+/*}*/
+/*.status.completed {*/
+/*    background-color: #28a745;*/
+/*}*/
+/*.status.in-progress {*/
+/*    background-color: #ffc107;*/
+/*}*/
+/*.status.not-started {*/
+/*    background-color: #dc3545;*/
+/*}*/
+/*.filter-container {*/
+/*    margin-bottom: 20px;*/
+/*}*/
+/*.filter-container label {*/
+/*    font-weight: bold;*/
+/*    margin-right: 10px;*/
+/*}*/
+/*input[type="date"] {*/
+/*    padding: 5px;*/
+/*    margin-right: 10px;*/
+/*}*/
+/*button {*/
+/*    padding: 10px 15px;*/
+/*    background-color: #007bff;*/
+/*    color: white;*/
+/*    border: none;*/
+/*    border-radius: 5px;*/
+/*    cursor: pointer;*/
+/*}*/
+/*button:hover {*/
+/*    background-color: #0056b3;*/
+/*}*/
+/*.btn-secondary {*/
+/*    background-color: #6c757d;*/
+/*}*/
+/*.btn-secondary:hover {*/
+/*    background-color: #5a6268;*/
+/*}*/
+/*.chart-container {*/
+/*    margin-top: 20px;*/
+/*}*/
+/*.modal {*/
+/*    display: none;*/
+/*    position: fixed;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    background: rgba(0, 0, 0, 0.5);*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*}*/
+/*.modal-content {*/
+/*    background-color: white;*/
+/*    padding: 20px;*/
+/*    border-radius: 10px;*/
+/*    width: 400px;*/
+/*    text-align: center;*/
+/*}*/
+/*.close {*/
+/*    float: right;*/
+/*    cursor: pointer;*/
+/*    font-size: 20px;*/
+/*}*/
+/*.form-group {*/
+/*    margin: 15px 0;*/
+/*}*/
+/*.form-group label {*/
+/*    display: block;*/
+/*    margin-bottom: 5px;*/
+/*}*/
+/*.form-group input {*/
+/*    width: 100%;*/
+/*    padding: 8px;*/
+/*    border-radius: 5px;*/
+/*    border: 1px solid #ccc;*/
+/*}*/
+
+
+/*th, td {*/
+/*    border: 2px solid rgba(85, 71, 71, 0.88);*/
+/*    padding: 4px;*/
+/*    text-align: center;*/
+/*}*/
+
+/*th {*/
+/*    background-color: #96e8f8;*/
+/*}*/
+
+/*.subdivision-table th, .subdivision-table td {*/
+/*    width: 100%; !* Позволяет вложенной таблице иметь свою ширину *!*/
+/*}*/
+
+/*table {*/
+/*    table-layout: fixed; !* Фиксированная ширина таблицы *!*/
+/*    width: 100%; !* Ширина таблицы будет 100% *!*/
+/*}*/
+
+
+/*img {*/
+/*    max-width: 80px;*/
+/*    margin-right: 10px;*/
+/*    border-radius: 20%;*/
+/*    transition: transform 0.2s ease; !* Плавный переход для масштабирования *!*/
+/*}*/
+
+/*.photo-fio {*/
+/*    display: flex;*/
+/*    align-items: center; !* Центрирует текст и изображение по вертикали *!*/
+/*}*/
+
+/*.photo-fio span {*/
+/*    margin-left: 20px; !* Отступ между изображением и текстом *!*/
+/*}*/
+
+/*.photo-fio img:hover {*/
+/*    transform: scale(2); !* Увеличение изображения в 4 раза *!*/
+/*}*/
+
+
+/*.header-search {*/
+/*    display: flex;*/
+/*    justify-content: space-between; !* Отступ между заголовком и формой *!*/
+/*}*/
+
+/*.search-input {*/
+/*    width: 420px; !* Ширина поля поиска *!*/
+/*}*/
+
+/*.info {*/
+/*    font-size: 32px;*/
+/*}*/
+
+/*.navbar-custom {*/
+/*    background-color: #6fa881;*/
+/*}*/
+
+/*.logo_image {*/
+/*    margin-right: 10px; !* Отступ между логотипом и текстом *!*/
+/*}*/
+
+/*.user-info {*/
+/*    border: 2px solid #6fa881; !* Цвет рамки *!*/
+/*    border-radius: 10px; !* Скругление углов *!*/
+/*    padding: 20px; !* Внутренние отступы *!*/
+/*    margin: 20px auto; !* Отступы сверху и снизу, центрирование по горизонтали *!*/
+/*    max-width: 1000px; !* Максимальная ширина блока *!*/
+/*    background-color: #f9f9f9; !* Цвет фона блока *!*/
+/*    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); !* Тень для создания эффекта поднятого блока *!*/
+/*}*/
+
+/*.user-info img {*/
+/*    margin-bottom: 20px; !* Отступ снизу *!*/
+/*    max-width: 150px; !* Максимальная ширина изображения *!*/
+/*}*/
+
+/*.user-info p {*/
+/*    font-size: 16px; !* Размер шрифта для параграфов *!*/
+/*    margin: 8px 0; !* Отступы сверху и снизу для параграфов *!*/
+/*}*/
+
+
+
+/*.photo-fio-edit {*/
+/*    display: flex;*/
+/*    align-items: center; !* Центрирует текст и изображение по вертикали *!*/
+/*}*/
+
+/*.photo-fio-edit span {*/
+/*    margin-left: 20px; !* Отступ между изображением и текстом *!*/
+/*}*/
+
+/*strong {*/
+/*    color: #000000; !* Оранжевый цвет текста *!*/
+/*    font-size: 18px;*/
+/*}*/
+
+/*.box_content {*/
+/*    width: fit-content;*/
+/*    min-width: 150px;*/
+/*    height: fit-content;*/
+/*    padding: 10px;*/
+/*    background-color: #c1e6f9;*/
+/*    border-radius: 10px;*/
+/*    box-shadow: 10px 10px 15px 0 rgba(34, 60, 80, 0.2);*/
+/*}*/
+
+/*.news-item {*/
+/*    !*background-color:  rgba(192, 204, 190, 0.84);*!*/
+/*    background-color: #c1e6f9;*/
+/*    padding: 20px;*/
+/*    margin-bottom: 20px;*/
+/*    border-radius: 5px;*/
+/*    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);*/
+/*}*/
+
+/*.content-details {*/
+/*    display: flex;*/
+/*    justify-content: space-between;*/
+/*}*/
+
+/*.details {*/
+/*    display: flex;*/
+/*    justify-content: space-between;*/
+/*}*/
+
+
+
+/*-----*/
+/*.logo_image {*/
+/*    border-radius: 10%;*/
+/*    height: 40px; !* Подберите высоту в зависимости от ваших нужд *!*/
+/*    margin-right: 20px; !* Отступ между логотипом и текстом *!*/
+/*}*/
+
+/*summary {*/
+/*    padding: 10px;*/
+/*}*/
+
+/*summary:hover {*/
+/*    background-color: #aaeccb;*/
+/*}*/

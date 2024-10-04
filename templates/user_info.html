@@ -1,45 +1,110 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Информация о пользователе{% endblock %}
+{% block title %}Информация о сотруднике{% endblock %}
 
 {% block content %}
-    <h1>Информация о пользователе: {{ user.fio }}</h1>
-    <div class="user-info">
-        <div class="photo-fio-edit">
-            {% if user.photo %}
-                <img src="{{ user.photo.url }}" alt="Фото {{ user.username }}">
-            {% else %}
-                Нет фото
-            {% endif %}
-            <div class="user-details">
-
-                <p>{% if user.subdivision.name %}<strong>Подразделение:</strong> {{ user.subdivision.name }}{% endif %}</p>
-                <p>{% if user.position.name %}<strong>Должность:</strong> {{ user.position.name }}{% endif %}</p>
-                <p>
-                    {% if user.address.name %}<strong>Адрес рабочего места:</strong> {{ user.address.name }},{% else %}{% endif %}
-                    {% if user.floor.name %}этаж {{ user.floor.name }},{% else %}{% endif %}
-                    {% if user.office.name %}кабинет {{ user.office.name }}{% else %}{% endif %}
+    <div class="container">
+        <div class="card">
+            <h1>Информация о сотруднике</h1>
+            <div class="photo-user">
+                {% if user.photo %}
+                    <img src="{{ user.photo.url }}">
+                {% else %}
+                    Нет фото
+                {% endif %}
+                <div class="user-details">
+                    <p><strong>ФИО: </strong>
+                        {% if user.fio %}
+                            {{ user.fio }}
+                        {% else %}
+                            <span class="text-danger">Информация не заполнена</span>
+                        {% endif %}
+                    </p>
+                    <p><strong>Подразделение: </strong>
+                        {% if user.subdivision.name %}
+                            {{ user.subdivision.name }}
+                        {% else %}
+                            <span class="text-danger">Информация не заполнена</span>
+                        {% endif %}
+                    </p>
+                    <p><strong>Должность: </strong>
+                        {% if user.position.name %}
+                            {{ user.position.name }}
+                        {% else %}
+                            <span class="text-danger">Информация не заполнена</span>
+                        {% endif %}
+                    </p>
+                    <p><strong>Почта: </strong>
+                        {% if user.email %}
+                            {{ user.email }}
+                        {% else %}
+                            <span class="text-danger">Информация не заполнена</span>
+                        {% endif %}
+                    </p>
+                    <p><strong>Мобильный телефон: </strong>
+                        {% if user.phone_mobile %}
+                            {{ user.phone_mobile }}
+                        {% else %}
+                            <span class="text-danger">Информация не заполнена</span>
+                        {% endif %}
+                    </p>
+                    <p><strong>Рабочий телефон: </strong>
+                        {% if user.phone_working %}
+                            {{ user.phone_working }}
+                        {% else %}
+                            <span class="text-danger">Информация не заполнена</span>
+                        {% endif %}
+                    </p>
+                    <p><strong>Адрес рабочего места: </strong>
+                        {% if user.address.name %}
+                            {{ user.address.name }}
+                        {% else %}
+                            <span class="text-danger">Информация не заполнена</span>
+                        {% endif %}
+                        {% if user.office.name %}(Кабинет {{ user.office.name }}){% endif %}
+                    </p>
+                    <p><strong>Заметка: </strong>
+                        {% if user.note.name %}
+                            {{ user.note.name }}
+                        {% else %}
+                            <span class="text-danger">Информация не заполнена</span>
+                        {% endif %}
+                    </p>
+                    <p><strong>Дата рождения: </strong>
+                        {% if user.birthday %}
+                            {{ user.birthday|date:"d.m.Y" }} г.
+                        {% else %}
+                            <span class="text-danger">Информация не заполнена</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="user-bio">
+                <p><strong>Биография: </strong>
+                    {% if user.biography %}
+                        <span id="bio-short">{{ user.biography|slice:":500" }}{% if user.biography|length > 500 %}...{% endif %}</span>
+                        <span id="bio-full" style="display: none;">{{ user.biography }}</span>
+                        {% if user.biography|length > 500 %}
+                            <a href="javascript:void(0)" id="toggle-bio" onclick="toggleBio()">Развернуть</a>
+                        {% endif %}
+                    {% else %}
+                        <span class="text-danger">Информация не заполнена</span>
+                    {% endif %}
                 </p>
-                <p>{% if user.note.name %}<strong>Заметка:</strong> {{ user.note.name }}{% endif %}</p>
-                <p>{% if user.email %}<strong>Почта:</strong> {{ user.email }}{% endif %}</p>
+                <a href="{% url 'user_edit' user.slug %}" class="btn btn-warning btn-sm">Редактировать данные</a>
             </div>
         </div>
-
-        <p>{% if user.phone_mobile %}<strong>Мобильный телефон:</strong> {{ user.phone_mobile }}{% else %}{% endif %}</p>
-        <p>{% if user.phone_working %}<strong>Рабочий телефон:</strong> {{ user.phone_working }}{% else %}{% endif %}</p>
-        <p><strong>Дата рождения:</strong> {{ user.birthday|date:"d.m.Y" }} г.</p>
-        <p>{% if user.biography %}<strong>Биография:</strong> {{ user.biography }}{% endif %}</p>
-        <td>
-            <a href="{% url 'user_edit' user.slug %}" class="btn btn-warning btn-sm">Редактировать данные</a>
-        </td>
-        <div class="user-info">
-            <p>Отработанное время за текущий день: {{ daily_time }}</p>
-            <p>Отработанное время за текущий месяц: {{ monthly_time }}</p>
-            <p>Отработанное время за текущий год: {{ yearly_time }}</p>
-            <td>
+        <div class="card">
+            <div class="user-bio">
+                <h1>Контроль рабочего времи</h1>
+                <p><strong>Отработанное время за текущий день: </strong>{{ daily_time }}</p>
+                <p><strong>Отработанное время за текущий месяц: </strong>{{ monthly_time }}</p>
+                <p><strong>Отработанное время за текущий год: </strong>{{ yearly_time }}</p>
                 <a href="{% url 'time_info' user.slug %}" class="btn btn-warning btn-sm">Подробней</a>
-            </td>
+            </div>
         </div>
-        <a href="{% url 'user_list' %}" class="btn btn-primary btn-sm">Назад</a>
+        <a href="{% url 'user_list' %}" class="btn btn-secondary">Назад</a>
     </div>
+    <script src="{% static 'js/bio.js' %}"></script>
 {% endblock %}

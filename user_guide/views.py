@@ -4,10 +4,13 @@ from itertools import groupby
 from operator import attrgetter
 from urllib.parse import quote
 from django.conf import settings
+from django.contrib import messages
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q, Subquery, OuterRef
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.utils.dateformat import DateFormat
+
 from user_guide.forms import CustomUserForm, StatusLocationFilterForm
 from user_guide.models import (
     CustomUser,
@@ -18,31 +21,32 @@ from user_guide.models import (
 )
 
 
+def home(request):
+    """Главная"""
+    config = Setting.objects.first()
+    return render(request, template_name='home.html', context={
+        'config': config,
+    })
+
+
 def user_list(request):
-    """Список пользователей"""
+    """Список сотрудников"""
     config = Setting.objects.first()
     search_query = request.GET.get('q', '')
-
-    # Запрос для поиска
     query = Q(fio__icontains=search_query) | \
-            Q(phone_mobile__icontains=search_query) | \
-            Q(phone_working__icontains=search_query) | \
-            Q(email__icontains=search_query) | \
             Q(position__name__icontains=search_query) | \
+            Q(email__icontains=search_query) | \
             Q(address__name__icontains=search_query) | \
-            Q(floor__name__icontains=search_query) | \
-            Q(office__name__icontains=search_query)
-
+            Q(phone_mobile__icontains=search_query) | \
+            Q(phone_working__icontains=search_query)
     latest_status_subquery = StatusLocation.objects.filter(custom_user=OuterRef('pk')).order_by('-created').values('camera__finding')[:1]
     latest_created_subquery = StatusLocation.objects.filter(custom_user=OuterRef('pk')).order_by('-created').values('created')[:1]
     users = CustomUser.objects.filter(query).annotate(latest_status=Subquery(latest_status_subquery), latest_created=Subquery(latest_created_subquery)).order_by('subdivision', 'position', 'fio')
-
     grouped_users = {}
     for subdivision, sub_group in groupby(users, key=attrgetter('subdivision')):
         grouped_users[subdivision] = {}
         for position, pos_group in groupby(sub_group, key=attrgetter('position')):
             grouped_users[subdivision][position] = list(pos_group)
-
     return render(request, template_name='user_list.html', context={
         'config': config,
         'grouped_users': grouped_users,
@@ -51,11 +55,9 @@ def user_list(request):
 
 
 def user_info(request, slug):
-    """Информация о пользователе"""
+    """Информация о сотруднике"""
     config = Setting.objects.first()
     user = get_object_or_404(CustomUser, slug=slug)
-
-    # Получаем записи времени входа и выхода
     status_locations = StatusLocation.objects.filter(custom_user=user)
     entries = status_locations.filter(camera__finding=1).order_by('created')
     exits = status_locations.filter(camera__finding=2).order_by('created')
@@ -66,25 +68,20 @@ def user_info(request, slug):
             total_time += exit.created - entry.created
         return total_time
 
-    # Рассчитываем время за текущий день, месяц и год
     now = datetime.now()
     start_of_day = now.replace(hour=0, minute=0, second=0, microsecond=0)
     start_of_month = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
     start_of_year = now.replace(month=1, day=1, hour=0, minute=0, second=0, microsecond=0)
-
     daily_entries = entries.filter(created__gte=start_of_day)
     daily_exits = exits.filter(created__gte=start_of_day)
     daily_time = calculate_total_time(daily_entries, daily_exits)
-
     monthly_entries = entries.filter(created__gte=start_of_month)
     monthly_exits = exits.filter(created__gte=start_of_month)
     monthly_time = calculate_total_time(monthly_entries, monthly_exits)
-
     yearly_entries = entries.filter(created__gte=start_of_year)
     yearly_exits = exits.filter(created__gte=start_of_year)
     yearly_time = calculate_total_time(yearly_entries, yearly_exits)
 
-    # Форматируем время в часы и минуты
     def format_time(total_time):
         total_seconds = int(total_time.total_seconds())
         hours, remainder = divmod(total_seconds, 3600)
@@ -101,21 +98,37 @@ def user_info(request, slug):
 
 
 def user_edit(request, slug):
-    """Редактирование биографии пользователя"""
+    """Редактирование данных сотрудника"""
     config = Setting.objects.first()
     user = get_object_or_404(CustomUser, slug=slug)
+
     if request.method == 'POST':
         form = CustomUserForm(request.POST, request.FILES, instance=user)
+
+        # Отладка: Проверьте, что POST-запрос и данные формы отправлены
+        print('POST запрос получен:', request.POST)
+
         if form.is_valid():
-            form.save()
-            return redirect('user_info', slug=user.slug)
+            try:
+                form.save()  # Сохраняем данные
+                messages.success(request, 'Данные сотрудника успешно обновлены')
+                return redirect('user_info', slug=user.slug)
+            except Exception as e:
+                messages.error(request, f'Ошибка сохранения данных: {str(e)}')
+        else:
+            # Выводим ошибки формы для диагностики
+            print('Ошибки формы:', form.errors)
+            messages.error(request, f'Ошибки в форме: {form.errors}')
     else:
         form = CustomUserForm(instance=user)
-    return render(request, template_name='user_edit.html', context={
-        'config': config,
+
+    context = {
+        'form': form,
         'user': user,
-        'form': form
-    })
+        'config': config
+    }
+
+    return render(request, 'user_edit.html', context)
 
 
 def time_info(request, slug):
@@ -153,6 +166,10 @@ def time_info(request, slug):
     hours, remainder = divmod(total_seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
     formatted_time = f'{hours:02d} часов {minutes:02d} минут {seconds:02d} секунд'
+
+    dates = [DateFormat(status.created).format('Y-m-d H:i') for status in status_locations]
+    findings = [status.camera.finding for status in status_locations]
+
     return render(request, template_name='time_info.html', context={
         'config': config,
         'user': user,
@@ -160,6 +177,8 @@ def time_info(request, slug):
         'page_obj': page_obj,
         'paginator': paginator,
         'total_worked_time': formatted_time,
+        'dates': dates,
+        'findings': findings,
     })
 
 

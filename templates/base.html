@@ -11,29 +11,26 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light navbar-custom">
-    <a class="navbar-brand" href="{% url 'user_list' %}">
-        {% if config.logo %}
-            <img class="logo_image" src="{{ config.logo.url }}" alt="Логотип" style="height: 40px;">
-        {% endif %}
-        {{ config.name }}
-    </a>
-    <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'news_list' %}">Новости</a>
-            </li>
-        </ul>
-    </div>
+<nav>
+    <h2>{{ config.name }}</h2>
+    <ul>
+        <li><a href="{% url 'home' %}">Главная</a></li>
+        <li><a href="{% url 'user_list' %}">Список сотрудников</a></li>
+        <li><a href="#">Проекты</a></li>
+        <li><a href="#">Отделы</a></li>
+        <li><a href="{% url 'news_list' %}">Новости</a></li>
+        <li><a href="#">Проверка знаний</a></li>
+        <li><a href="#">Личный кабинет</a></li>
+        <li><a href="#">Чат</a></li>
+        <li><a href="#">Органайзер</a></li>
+        <li><a href="#">Войти</a></li>
+    </ul>
 </nav>
 
-
-<div class="content">
+<div>
     {% block content %}
     {% endblock %}
 </div>
 
 </body>
 </html>
-
-
