@@ -135,6 +135,11 @@ STATICFILES_DIRS = [BASE_DIR, "static", ]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_URL = 'login'  # Перенаправляет на страницу входа, если требуется аутентификация
+LOGIN_REDIRECT_URL = '/'  # Перенаправление после успешного входа в систему
+LOGOUT_REDIRECT_URL = '/'  # Перенаправление после успешного выхода из системы
+
+
 # Для абстрактной модели пользователя
 AUTH_USER_MODEL = 'user_guide.CustomUser'
 
