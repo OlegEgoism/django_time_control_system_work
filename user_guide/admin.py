@@ -3,7 +3,10 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.safestring import mark_safe
 from rangefilter.filters import DateRangeFilter
-from user_guide.forms import CustomUserChangeForm, CustomUserCreationForm
+from user_guide.forms import (
+    CustomUserChangeForm,
+    CustomUserCreationForm
+)
 from user_guide.models import (
     StatusLocation,
     Address,
@@ -12,7 +15,11 @@ from user_guide.models import (
     CustomUser,
     Note,
     Camera,
-    Setting, Files, News, Office
+    Setting,
+    Files,
+    News,
+    Office,
+    Project
 )
 
 
@@ -24,6 +31,11 @@ class AddressFilter(AutocompleteFilter):
 class SubdivisionFilter(AutocompleteFilter):
     title = 'Подразделение'
     field_name = 'subdivision'
+
+
+class ProjectFilter(AutocompleteFilter):
+    title = 'Проект'
+    field_name = 'project'
 
 
 class PositionFilter(AutocompleteFilter):
@@ -143,6 +155,23 @@ class NoteAdmin(admin.ModelAdmin):
     count_note.short_description = 'Количество сотрудников'
 
 
+@admin.register(Project)
+class ProjectAdmin(admin.ModelAdmin):
+    """Заметка"""
+    list_display = 'name', 'owner', 'percentage_completion', 'count_project'
+    readonly_fields = 'created', 'updated',
+    search_fields = 'name', 'owner',
+    list_filter = 'owner',
+    search_help_text = 'Поиск по названию и владельцу проекта'
+    ordering = 'name',
+    list_per_page = 20
+
+    def count_project(self, obj):
+        return obj.custom_user_project.count()
+
+    count_project.short_description = 'Количество сотрудников'
+
+
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
     """Сотрудник"""
@@ -163,7 +192,7 @@ class CustomUserAdmin(UserAdmin):
             'fields': (
                 'preview_photo', 'photo', 'fio', 'slug', 'birthday', 'biography', 'email', 'phone_mobile',
                 'phone_working',
-                'address', 'office', 'note', 'position', 'subdivision',)},),
+                'address', 'office', 'note', 'position', 'subdivision', 'project',)},),
     )
     add_fieldsets = (
         (None, {
@@ -172,7 +201,7 @@ class CustomUserAdmin(UserAdmin):
         }),
     )
     list_display = 'username', 'preview_photo', 'fio', 'phone_mobile', 'phone_working', 'note', 'subdivision', 'position', 'address_info', 'is_active',
-    list_filter = 'is_active', NoteFilter, SubdivisionFilter, PositionFilter, AddressFilter,
+    list_filter = 'is_active', NoteFilter, SubdivisionFilter, PositionFilter, AddressFilter, ProjectFilter
     readonly_fields = 'last_login', 'date_joined', 'preview_photo',
     search_fields = 'username', 'fio', 'phone_mobile', 'phone_working', 'position', 'subdivision',
     search_help_text = 'Поиск по логину, имени пользователя и номеру телефона, должности, подразделению'
@@ -207,7 +236,7 @@ class StatusLocationAdmin(admin.ModelAdmin):
     readonly_fields = 'created',
     date_hierarchy = 'created'
     search_fields = 'custom_user__fio', 'camera__address__name'
-    search_help_text = 'Поиск по ФИО и адресу местонажождения камеры'
+    search_help_text = 'Поиск по ФИО и адресу местонахождения камеры'
     ordering = '-created',
     list_per_page = 20
 
@@ -219,7 +248,7 @@ class CameraAdmin(admin.ModelAdmin):
     list_display = '__str__', 'id_camera', 'is_active',
     list_filter = 'is_active', 'finding', AddressFilter,
     search_fields = 'address__name',
-    search_help_text = 'Поиск по адресу местонажождения камеры'
+    search_help_text = 'Поиск по адресу местонахождения камеры'
     list_per_page = 20
 
 

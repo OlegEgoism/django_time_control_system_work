@@ -83,9 +83,9 @@
             <div class="user-bio">
                 <p><strong>Биография: </strong>
                     {% if user.biography %}
-                        <span id="bio-short">{{ user.biography|slice:":500" }}{% if user.biography|length > 500 %}...{% endif %}</span>
+                        <span id="bio-short">{{ user.biography|slice:":1000" }}{% if user.biography|length > 1000 %}...{% endif %}</span>
                         <span id="bio-full" style="display: none;">{{ user.biography }}</span>
-                        {% if user.biography|length > 500 %}
+                        {% if user.biography|length > 1000 %}
                             <a href="javascript:void(0)" id="toggle-bio" onclick="toggleBio()">Развернуть</a>
                         {% endif %}
                     {% else %}
@@ -97,14 +97,41 @@
         </div>
         <div class="card">
             <div class="user-bio">
-                <h1>Контроль рабочего времи</h1>
+                <h1>Контроль рабочего времени</h1>
                 <p><strong>Отработанное время за текущий день: </strong>{{ daily_time }}</p>
                 <p><strong>Отработанное время за текущий месяц: </strong>{{ monthly_time }}</p>
                 <p><strong>Отработанное время за текущий год: </strong>{{ yearly_time }}</p>
-                <a href="{% url 'time_info' user.slug %}" class="btn btn-warning btn-sm">Подробней</a>
+                <a href="{% url 'user_time' user.slug %}" class="btn btn-warning btn-sm">Подробней</a>
             </div>
         </div>
+
+
+        <div class="card">
+            <div class="user-bio">
+                <h1>Участие в проектах</h1>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th class="project-name">Название проекта</th>
+                        <th class="project-owner">Владелец проекта</th>
+                        <th class="project-description">Описание проекта</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for project in projects %}
+                        <tr>
+                            <td class="project-name">{{ project.name }}</td>
+                            <td class="project-name">{{ project.owner }}</td>
+                            <td class="project-name text-left">{{ project.description }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
         <a href="{% url 'user_list' %}" class="btn btn-secondary">Назад</a>
     </div>
-    <script src="{% static 'js/bio.js' %}"></script>
+    <script src="{% static 'js/roll.js' %}"></script>
 {% endblock %}

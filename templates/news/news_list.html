@@ -3,47 +3,61 @@
 {% block title %}Список новостей{% endblock %}
 
 {% block content %}
-        <div class="container">
+    <div class="container">
         <div class="card">
-    
-    
-    <div class="header-search">
-        <div class="info">Новости</div>
-        <form method="get" action="{% url 'news_list' %}" class="d-flex align-items-center">
-            <input type="text" class="form-control mr-2 search-input" name="q" value="{{ search_query }}" placeholder="Поиск новостей">
-            <button type="submit" class="btn btn-primary mr-2">Поиск</button>
-            <a href="{% url 'news_list' %}" class="btn btn-secondary">Очистить</a>
-        </form>
-    </div>
+            <form method="get" action="{% url 'news_list' %}" class="d-flex align-items-center">
+                <h1>Список новостей</h1>
+                <input type="text" class="form-control mr-1 search-input" name="q" value="{{ search_query }}" placeholder="Поиск по названию новости и содержимому">
+                <button type="submit" class="btn btn-primary mr-1">Поиск</button>
+                <a href="{% url 'news_list' %}" class="btn btn-secondary">Очистить</a>
+            </form>
+            <table class="table table-bordered">
+                {% if news_all.object_list.exists %}
+                    {% for new in news_all.object_list %}
+                        <div>
+                            <div class="news-item">
+                                <h2><a href="{% url 'news_info' new.name %}">{{ new.name }}</a></h2>
+                                <p>
+                                    {{ new.description|safe|slice:":500" }}...
+                                    <a href="{% url 'news_info' new.name %}">Читать дальше</a>
+                                </p>
+                                <p class="details">
+                                <div class="details-content">
+                                    <span>Дата публикации: {{ new.created|date:"d.m.Y г. H:i" }}</span>
+                                    <span>Просмотров: {{ new.views_count }}</span>
+                                </div>
+                                </p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <h2 class="no-results">По вашему запросу новостей не найдено</h2>
+                {% endif %}
+            </table>
 
 
-    {% if news_all.object_list.exists %}
-        {% for new in news_all.object_list %}
-            <div class="news-item">
-                <h2><a href="{% url 'news_info' new.name %}">{{ new.name }}</a></h2>
-                <p>{{ new.description|safe|slice:":50" }}... </p>
-                <p class="details">
-                    <span class="created">Дата публикации: {{ new.created|date:"d.m.Y г. H:i" }}</span>
-                    <span class="views">Просмотров: {{ new.views_count }}</span>
-                </p>
-            </div>
+<div class="pagination">
+    <span class="step-links">
+        {% if news_all.has_previous %}
+            <a href="?page={{ news_all.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-outline-primary"><<</a>
+        {% endif %}
+
+        {% for page_num in news_all.paginator.page_range %}
+            {% if page_num == news_all.number %}
+                <strong class="btn btn-primary">{{ page_num }}</strong>
+            {% else %}
+                <a href="?page={{ page_num }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-outline-primary">{{ page_num }}</a>
+            {% endif %}
         {% endfor %}
-    {% else %}
-        <h3>По вашему запросу новостей не найдено</h3>
-    {% endif %}
-    <div class="box_paginator">
-        <span class="step-links">
-            {% if news_all.has_previous %}
-                <a class="button_def" href="?page=1">&laquo; первая</a>
-                <a class="button_def" href="?page={{ news_all.previous_page_number }}">предыдущая</a>
-            {% endif %}
-            <span class="current"> Страница {{ news_all.number }} из {{ news_all.paginator.num_pages }}</span>
-            {% if news_all.has_next %}
-                <a class="button_def" href="?page={{ news_all.next_page_number }}">следующая</a>
-                <a class="button_def" href="?page={{ news_all.paginator.num_pages }}">последняя &raquo;</a>
-            {% endif %}
-        </span>
-    </div>
-                </div>
+
+        {% if news_all.has_next %}
+            <a href="?page={{ news_all.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-outline-primary">>></a>
+        {% endif %}
+    </span>
+</div>
+<p>Страница {{ news_all.number }} из {{ news_all.paginator.num_pages }}</p>
+
+
         </div>
+    </div>
 {% endblock %}

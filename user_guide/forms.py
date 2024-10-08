@@ -25,7 +25,7 @@ class CustomUserForm(forms.ModelForm):
     email = forms.EmailField(label='Почта: ', required=False, widget=forms.EmailInput(attrs={'class': 'form-control col-sm-3'}))
     phone_mobile = forms.CharField(label='Телефон мобильный: ', required=False, validators=[phone_mobile_validator], widget=forms.TextInput(attrs={'class': 'form-control col-sm-3', 'placeholder': '+375(__)___-__-__'}))
     phone_working = forms.CharField(label='Телефон рабочий: ', required=False, widget=forms.TextInput(attrs={'class': 'form-control col-sm-3', 'placeholder': '8(___)___-__-__'}))
-    biography = forms.CharField(label='Биография: ', required=False, widget=forms.Textarea(attrs={'class': 'form-control col-sm-10', 'placeholder': 'Расскажите о себе'}))
+    biography = forms.CharField(label='Биография: ', required=False, widget=forms.Textarea(attrs={'class': 'form-control col-sm-10', 'placeholder': 'Расскажите о себе', 'style': 'width: 800px; height: 600px;'}))
 
     class Meta:
         model = CustomUser

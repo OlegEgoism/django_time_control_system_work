@@ -1,4 +1,5 @@
 import os
+from collections import defaultdict
 from datetime import timedelta, datetime
 from itertools import groupby
 from operator import attrgetter
@@ -6,7 +7,7 @@ from urllib.parse import quote
 from django.conf import settings
 from django.contrib import messages
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db.models import Q, Subquery, OuterRef
+from django.db.models import Q, Subquery, OuterRef, Count
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.dateformat import DateFormat
@@ -17,7 +18,7 @@ from user_guide.models import (
     StatusLocation,
     Setting,
     News,
-    Files
+    Files, Subdivision, Project
 )
 
 
@@ -26,6 +27,28 @@ def home(request):
     config = Setting.objects.first()
     return render(request, template_name='home.html', context={
         'config': config,
+    })
+
+
+def news_list(request):
+    """Список новостей"""
+    config = Setting.objects.first()
+    query = request.GET.get('q')
+    news_list = News.objects.filter(is_active=True)
+    if query:
+        news_list = news_list.filter(Q(name__icontains=query) | Q(description__icontains=query))
+    page_size = config.news_page if config else 10
+    paginator = Paginator(news_list, page_size)
+    page = request.GET.get('page')
+    try:
+        news_all = paginator.page(page)
+    except PageNotAnInteger:
+        news_all = paginator.page(1)
+    except EmptyPage:
+        news_all = paginator.page(paginator.num_pages)
+    return render(request, 'news/news_list.html', {
+        'config': config,
+        'news_all': news_all
     })
 
 
@@ -47,18 +70,50 @@ def user_list(request):
         grouped_users[subdivision] = {}
         for position, pos_group in groupby(sub_group, key=attrgetter('position')):
             grouped_users[subdivision][position] = list(pos_group)
-    return render(request, template_name='user_list.html', context={
+    return render(request, template_name='users/user_list.html', context={
         'config': config,
         'grouped_users': grouped_users,
         'search_query': search_query
     })
 
 
+def subdivision_list(request):
+    """Список подразделений с фильтром по названию отдела"""
+    config = Setting.objects.first()
+    search_query = request.GET.get('q', '')
+    query = Q(name__icontains=search_query) | \
+            Q(description__icontains=search_query)
+    subdivisions = Subdivision.objects.filter(query).annotate(employee_count=Count('custom_user_subdivision')).order_by('name')
+    return render(request, 'subdivision_list.html', context={
+        'config': config,
+        'subdivisions': subdivisions,
+        'search_query': search_query
+    })
+
+
+def project_list(request):
+    """Список проектов"""
+    config = Setting.objects.first()
+    search_query = request.GET.get('q', '')
+    query = Q(name__icontains=search_query) | \
+            Q(owner__icontains=search_query) | \
+            Q(description__icontains=search_query)
+    projects = Project.objects.filter(query).annotate(employee_count=Count('custom_user_project')).order_by('name')
+    return render(request, 'project_list.html', context={
+        'config': config,
+        'projects': projects,
+        'search_query': search_query
+    })
+
+
+
+# __________________
 def user_info(request, slug):
     """Информация о сотруднике"""
     config = Setting.objects.first()
     user = get_object_or_404(CustomUser, slug=slug)
     status_locations = StatusLocation.objects.filter(custom_user=user)
+    projects = Project.objects.all()
     entries = status_locations.filter(camera__finding=1).order_by('created')
     exits = status_locations.filter(camera__finding=2).order_by('created')
 
@@ -88,9 +143,10 @@ def user_info(request, slug):
         minutes, _ = divmod(remainder, 60)
         return f"{hours}ч {minutes}м"
 
-    return render(request, template_name='user_info.html', context={
-        'user': user,
+    return render(request, template_name='users/user_info.html', context={
         'config': config,
+        'user': user,
+        'projects': projects,
         'daily_time': format_time(daily_time),
         'monthly_time': format_time(monthly_time),
         'yearly_time': format_time(yearly_time),
@@ -123,22 +179,27 @@ def user_edit(request, slug):
         form = CustomUserForm(instance=user)
 
     context = {
+        'config': config,
         'form': form,
-        'user': user,
-        'config': config
+        'user': user
     }
 
-    return render(request, 'user_edit.html', context)
+    return render(request, 'users/user_edit.html', context)
 
 
-def time_info(request, slug):
-    """Отображение информации о рабочем времени с фильтрацией"""
+
+
+def user_time(request, slug):
+    """Контроль рабочего времени"""
     config = Setting.objects.first()
     user = get_object_or_404(CustomUser, slug=slug)
     form = StatusLocationFilterForm(request.GET or None)
     status_locations = StatusLocation.objects.filter(custom_user=user).order_by('-created')
     total_worked_time = timedelta()
+    daily_worked_time = defaultdict(timedelta)
 
+    date_from = None
+    date_to = None
     if form.is_valid():
         date_from = form.cleaned_data.get('date_from')
         date_to = form.cleaned_data.get('date_to')
@@ -154,54 +215,34 @@ def time_info(request, slug):
         if address:
             status_locations = status_locations.filter(camera__address=address)
 
-    paginator = Paginator(status_locations, per_page=config.time_page)  # Нумерация страниц
+    paginator = Paginator(status_locations, per_page=config.time_page)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    enter_times = status_locations.filter(camera__finding=1).order_by('created')  # Вход
-    exit_times = status_locations.filter(camera__finding=2).order_by('created')  # Выход
+    enter_times = status_locations.filter(camera__finding=1).order_by('created')
+    exit_times = status_locations.filter(camera__finding=2).order_by('created')
+
     for enter, exit in zip(enter_times, exit_times):
         if exit.created > enter.created:
-            total_worked_time += exit.created - enter.created
+            worked_duration = exit.created - enter.created
+            total_worked_time += worked_duration
+            date_key = enter.created.date()
+            daily_worked_time[date_key] += worked_duration
+
     total_seconds = int(total_worked_time.total_seconds())
     hours, remainder = divmod(total_seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
     formatted_time = f'{hours:02d} часов {minutes:02d} минут {seconds:02d} секунд'
 
-    dates = [DateFormat(status.created).format('Y-m-d H:i') for status in status_locations]
-    findings = [status.camera.finding for status in status_locations]
-
-    return render(request, template_name='time_info.html', context={
+    return render(request, template_name='users/user_time.html', context={
         'config': config,
         'user': user,
         'form': form,
         'page_obj': page_obj,
-        'paginator': paginator,
         'total_worked_time': formatted_time,
-        'dates': dates,
-        'findings': findings,
     })
 
 
-# __________________-
-def news_list(request):
-    config = Setting.objects.first()
-    query = request.GET.get('q')
-    news_list = News.objects.filter(is_active=True)
-    if query:
-        news_list = news_list.filter(Q(name__icontains=query) | Q(description__icontains=query))
-    page_size = config.news_page if config else 10
-    paginator = Paginator(news_list, page_size)
-    page = request.GET.get('page')
-    try:
-        news_all = paginator.page(page)
-    except PageNotAnInteger:
-        news_all = paginator.page(1)
-    except EmptyPage:
-        news_all = paginator.page(paginator.num_pages)
-    return render(request, 'news/news_list.html', {
-        'config': config,
-        'news_all': news_all
-    })
+
 
 
 def news_info(request, name):

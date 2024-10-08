@@ -3,7 +3,6 @@ from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.db import models
 from django_ulid.models import default, ULIDField
-
 from user_guide.all_validator import phone_mobile_validator
 
 
@@ -62,10 +61,28 @@ class Subdivision(DateStamp):
     """Подразделение"""
     id_subdivision = ULIDField(verbose_name='id_subdivision', db_comment='id_subdivision', default=default, primary_key=True, editable=False)
     name = models.CharField(verbose_name='Подразделение', db_comment='Подразделение', max_length=250, db_index=True, unique=True)
+    description = models.TextField(verbose_name='Описание деятельности отдела', db_comment='Описание деятельности отдела', blank=True, null=True)
 
     class Meta:
         verbose_name = 'Подразделение'
         verbose_name_plural = 'Подразделения'
+        ordering = 'name',
+
+    def __str__(self):
+        return self.name
+
+
+class Project(DateStamp):
+    """Проект"""
+    id_project = ULIDField(verbose_name='id_project', db_comment='id_project', default=default, primary_key=True, editable=False)
+    name = models.CharField(verbose_name='Проект', db_comment='Проект', max_length=250, db_index=True, unique=True)
+    owner = models.CharField(verbose_name='Владелец проекта', db_comment='Владелец проекта', max_length=250)
+    description = models.TextField(verbose_name='Описание проекта', db_comment='Описание проекта', blank=True, null=True)
+    percentage_completion = models.IntegerField(verbose_name='Процент готовности проекта', db_comment='Процент готовности проекта')
+
+    class Meta:
+        verbose_name = 'Проект'
+        verbose_name_plural = 'Проекты'
         ordering = 'name',
 
     def __str__(self):
@@ -103,6 +120,7 @@ class CustomUser(AbstractUser):
     subdivision = models.ForeignKey(Subdivision, verbose_name='Подразделение', db_comment='Подразделение', on_delete=models.PROTECT, related_name='custom_user_subdivision', blank=True, null=True)
     position = models.ForeignKey(Position, verbose_name='Должность', db_comment='Должность', on_delete=models.PROTECT, related_name='custom_user_position', blank=True, null=True)
     note = models.ForeignKey(Note, verbose_name='Заметка', db_comment='Заметка', on_delete=models.PROTECT, related_name='custom_user_note', blank=True, null=True)
+    project = models.ManyToManyField(Project, verbose_name='Проект', db_comment='Проект', related_name='custom_user_project', blank=True, null=True)
 
     class Meta:
         verbose_name = 'Сотрудник'
@@ -116,6 +134,8 @@ class CustomUser(AbstractUser):
     def address_info(self):
         if self.office is not None:
             return f'{self.address}, кабинет {self.office}'
+        elif self.address is None:
+            return 'Нет информации'
         else:
             return f'{self.address}'
 
@@ -124,6 +144,7 @@ class CustomUser(AbstractUser):
     def clean(self):
         if self.office and not self.address:
             raise ValidationError("Если указан кабинет, укажите поле адрес рабочего места")
+
 
 
 class StatusLocation(models.Model):
@@ -185,7 +206,8 @@ class News(DateStamp):
     """Новость"""
     id_news = ULIDField(verbose_name='id_news', db_comment='id_news', default=default, primary_key=True, editable=False)
     name = models.CharField(verbose_name='Название', max_length=100)
-    description = RichTextField(verbose_name='Описание', config_name='news')
+    # description = RichTextField(verbose_name='Описание', config_name='news')
+    description = models.TextField(verbose_name='Описание')
     is_active = models.BooleanField(verbose_name='Опубликована', default=True)
     views_count = models.PositiveIntegerField(verbose_name='Просмотров', default=0)
 

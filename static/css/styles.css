@@ -37,7 +37,7 @@ nav ul li a {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 10px;
-    width: 1660px;
+    width: 150%;
 }
 
 table {
@@ -57,9 +57,38 @@ th, td {
     text-align: center;
 }
 
+th.subdivision-number {
+    width: 140px;
+}
+
+th.subdivision-name {
+    width: 400px;
+}
+
+th.subdivision-description {
+    width: 800px;
+}
+
+th.project-name {
+    width: 200px;
+}
+
+th.project-owner {
+    width: 150px;
+}
+
+th.project-description {
+    width: 600px;
+}
+
+th.project-number {
+    width: 100px;
+}
+
+
 .photo-fio {
     display: flex;
-    align-items: center;
+    align-items: initial;
 }
 
 .photo-fio img {
@@ -116,19 +145,58 @@ h1 {
     color: red;
 }
 
-
-
-
-
 .form-group {
     display: flex;
-    margin-bottom: 5px; /* Space between form groups */
+    margin-bottom: 5px; /* Пространство между группами форм */
 }
 
 .form-group label {
-    width: 200px; /* Fixed width for labels */
-    margin-right: 10px; /* Space between label and input */
-    text-align: left; /* Align text to the right */
+    min-width: 180px; /* Фиксированная ширина этикеток*/
+}
+
+.details {
+    justify-content: space-between;
+}
+
+.news-item {
+    border: 2px solid rgba(154, 185, 204, 0.88); /* Цвет и толщина рамки */
+    border-radius: 10px; /* Скругление углов */
+    padding: 15px; /* Внутренний отступ */
+    margin-bottom: 15px; /* Отступ между новостями */
+    background-color: #f5f7fa; /* Цвет фона, если нужно */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень для глубины */
+}
+
+.no-results {
+    text-align: center; /* Центрирование текста */
+    margin: 80px; /* Добавление отступа */
+    font-size: 44px; /* Опционально: изменение размера шрифта */
+}
+
+.span-error {
+    color: red;
+}
+
+form input, form select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    box-sizing: border-box;
+}
+
+.form-group-time {
+    display: flex;
+    margin-bottom: 1px; /* Пространство между группами форм */
+    max-height: 36px; /* Фиксированная высота этикеток*/
+}
+
+.d-inline-block {
+    margin-right: 2px; /* Можно изменить значение для большего или меньшего отступа */
+}
+
+.worked-time {
+    margin-top: 20px;
 }
 
 
@@ -139,6 +207,24 @@ h1 {
 
 
 
+
+
+
+
+
+
+/*.form-group-time label {*/
+/*    max-height: 210px; !* Фиксированная высота этикеток*!*/
+/*}*/
+
+
+/*.form-control {*/
+/*    width: 100%;*/
+/*}*/
+
+/*.date-input, .camera-input, .address-input {*/
+/*    max-width: 300px; !* Задайте одинаковую ширину *!*/
+/*}*/
 
 
 /*.user-info img {*/
@@ -328,7 +414,6 @@ h1 {
 /*}*/
 
 
-
 /*.photo-fio-edit {*/
 /*    display: flex;*/
 /*    align-items: center; !* Центрирует текст и изображение по вертикали *!*/
@@ -355,23 +440,12 @@ h1 {
 
 /*.news-item {*/
 /*    !*background-color:  rgba(192, 204, 190, 0.84);*!*/
-/*    background-color: #c1e6f9;*/
+/*    background-color: #f5f7fa;*/
 /*    padding: 20px;*/
 /*    margin-bottom: 20px;*/
 /*    border-radius: 5px;*/
 /*    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);*/
 /*}*/
-
-/*.content-details {*/
-/*    display: flex;*/
-/*    justify-content: space-between;*/
-/*}*/
-
-/*.details {*/
-/*    display: flex;*/
-/*    justify-content: space-between;*/
-/*}*/
-
 
 
 /*-----*/

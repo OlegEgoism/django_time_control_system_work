@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Информация о рабочем времени{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="card">
+            <h1>Контроль рабочего времени сотрудника: {{ user.fio }}</h1>
+            <form method="get" class="d-inline-block ">
+                <label for="id_date_from"><strong>Дата с:</strong></label>
+                <div class="d-inline-block">
+                    {{ form.date_from }}
+                </div>
+                <label for="id_date_from"><strong>Дата по:</strong></label>
+                <div class="d-inline-block">
+                    {{ form.date_to }}
+                </div>
+                <label for="id_date_from"><strong>Нахождение камеры:</strong></label>
+                <div class="d-inline-block">
+                    {{ form.finding }}
+                </div>
+                <label for="id_date_from"><strong>Адрес камеры:</strong></label>
+                <div class="d-inline-block">
+                    {{ form.address }}
+                </div>
+                <button type="submit" class="btn btn-primary">Поиск</button>
+                <a href="{% url 'user_time' user.slug %}" class="btn btn-secondary">Очистить</a>
+            </form>
+            <p class="worked-time"><strong>Всего отработано времени: </strong>{{ total_worked_time }}</p>
+
+            <div class="user-info">
+                {% if page_obj.object_list %}
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th class="order-number">Порядковый номер</th>
+                            <th>Нахождение</th>
+                            <th>Дата и время</th>
+                            <th>Камера</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for status in page_obj.object_list %}
+                            <tr>
+                                <th class="order-number">{{ forloop.counter }}</th>
+                                <td>{{ status.camera.get_finding_display }}</td>
+                                <td>{{ status.created|date:"d.m.Y H:i" }}</td>
+                                <td>{{ status.camera.address.name }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>Нет данных о нахождении пользователя.</p>
+                {% endif %}
+            </div>
+        
+            <div class="pagination">
+            <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}"
+                   class="btn btn-outline-primary"><<</a>
+            {% endif %}
+
+            {% for page_num in page_obj.paginator.page_range %}
+                {% if page_num == page_obj.number %}
+                    <strong class="btn btn-primary">{{ page_num }}</strong>
+                {% else %}
+                    <a href="?page={{ page_num }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}"
+                       class="btn btn-outline-primary">{{ page_num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}"
+                   class="btn btn-outline-primary">>></a>
+            {% endif %}
+            </span>
+            </div>
+            <p>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</p>
+        
+        </div>
+        <a href="{% url 'user_info' user.slug %}" class="btn btn-secondary">Назад</a>
+    </div>
+{% endblock %}
+
