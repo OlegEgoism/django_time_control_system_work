@@ -18,7 +18,6 @@
                     <th class="project-name">Название проекта</th>
                     <th class="project-owner">Владелец проекта</th>
                     <th class="project-description">Описание проекта</th>
-
                     <th class="project-number">Процент готовности</th>
                     <th class="project-number">Количество сотрудников</th>
                 </tr>
@@ -29,10 +28,10 @@
                         <td class="project-name">{{ project.name }}</td>
                         <td class="project-owner">{{ project.owner }}</td>
                         <td class="project-description text-left">
-                            <span id="bio-short">{{ project.description|slice:":500" }}{% if project.description|length > 500 %}...{% endif %}</span>
-                            <span id="bio-full" style="display: none;">{{ project.description }}</span>
+                            <span id="short">{{ project.description|slice:":500" }}{% if project.description|length > 500 %}...{% endif %}</span>
+                            <span id="full" style="display: none;">{{ project.description }}</span>
                             {% if project.description|length > 500 %}
-                                <a href="javascript:void(0)" id="toggle-bio" onclick="toggleBio()">Развернуть</a>
+                                <a href="javascript:void(0)" id="toggle" onclick="toggleInfo()">Развернуть</a>
                             {% endif %}
                         </td>
                         <td class="project-number">{{ project.percentage_completion }} %</td>
@@ -43,6 +42,5 @@
             </table>
         </div>
     </div>
-
     <script src="{% static 'js/roll.js' %}"></script>
 {% endblock %}

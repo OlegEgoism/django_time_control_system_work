@@ -13,3 +13,20 @@ function toggleBio() {
         toggleLink.innerText = "Развернуть";
     }
 }
+
+
+function toggleInfo() {
+    const short = document.getElementById("short");
+    const full = document.getElementById("full");
+    const toggle = document.getElementById("bio");
+
+    if (full.style.display === "none") {
+        full.style.display = "inline";
+        short.style.display = "none";
+        toggle.innerText = "Свернуть";
+    } else {
+        full.style.display = "none";
+        short.style.display = "inline";
+        toggle.innerText = "Развернуть";
+    }
+}

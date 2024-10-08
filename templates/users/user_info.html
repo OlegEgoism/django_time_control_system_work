@@ -122,7 +122,16 @@
                         <tr>
                             <td class="project-name">{{ project.name }}</td>
                             <td class="project-name">{{ project.owner }}</td>
-                            <td class="project-name text-left">{{ project.description }}</td>
+                                                <td class="project-description text-left">
+                            <span id="short">{{ project.description|slice:":500" }}{% if project.description|length > 500 %}...{% endif %}</span>
+                            <span id="full" style="display: none;">{{ project.description }}</span>
+                            {% if project.description|length > 500 %}
+                                <a href="javascript:void(0)" id="toggle" onclick="toggleInfo()">Развернуть</a>
+                            {% endif %}
+                        </td>
+                        
+                        
+                        
                         </tr>
                     {% endfor %}
                     </tbody>
