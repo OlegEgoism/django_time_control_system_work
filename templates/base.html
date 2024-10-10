@@ -23,7 +23,9 @@
         {% if user.is_authenticated %}
             <li><a href="#">Проверка знаний</a></li>
             <li><a href="#">Органайзер</a></li>
-            <li><a href="#">Чат</a></li>
+<li><a href="{% url 'chat_view' recipient_id=user.id_custom_user %}">Чат</a></li>
+
+
             <li><a href="#">Личный кабинет</a></li>
             <li><a href="{% url 'logout' %}">Выйти</a></li>
         {% else %}

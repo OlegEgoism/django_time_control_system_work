@@ -113,7 +113,7 @@ def user_info(request, slug):
     config = Setting.objects.first()
     user = get_object_or_404(CustomUser, slug=slug)
     status_locations = StatusLocation.objects.filter(custom_user=user)
-    projects = Project.objects.all()
+    projects = Project.objects.filter(custom_user_project=user)
     entries = status_locations.filter(camera__finding=1).order_by('created')
     exits = status_locations.filter(camera__finding=2).order_by('created')
 
@@ -283,3 +283,44 @@ def news_download_file(request, id_files):
 #     return render(request, 'news/news_file_not_found.html', {
 #         'news': news,
 #     })
+
+
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import CustomUser, Message
+from .forms import MessageForm
+from django.db.models import Q  # Убедитесь, что Q импортирован
+
+@login_required
+def chat_view(request, recipient_id=None):
+    config = Setting.objects.first()
+    if recipient_id:
+        recipient = get_object_or_404(CustomUser, id_custom_user=recipient_id)
+    else:
+        recipient = None
+
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.sender = request.user
+            message.save()
+            return redirect('chat_view', recipient_id=message.recipient.id_custom_user)
+    else:
+        form = MessageForm()
+
+    messages = Message.objects.filter(
+        (Q(sender=request.user) & Q(recipient=recipient)) |
+        (Q(sender=recipient) & Q(recipient=request.user))
+    ).order_by('created') if recipient else []
+
+    context = {
+        'config': config,
+        'recipient': recipient,
+        'messages': messages,
+        'form': form,
+    }
+
+    return render(request, 'chat/chat.html', context)
+
+

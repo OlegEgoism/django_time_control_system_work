@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Чат{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="card">
+            <h2>{% if recipient %}Чат с {{ recipient.fio|default:recipient.username }}{% else %}Новый чат{% endif %}</h2>
+
+            <div class="chat-messages">
+                {% for message in messages %}
+                    <div class="message {% if message.sender == request.user %}sent{% else %}received{% endif %}">
+                        <p>{{ message.text }}</p>
+                        <small>{{ message.created }}</small>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+                <label for="recipient-select">Выберите получателя:</label>
+                <select id="recipient-select" name="recipient">
+                    <option value="">-- Выберите получателя --</option>
+                    {% for user in form.recipient.field.queryset %}
+                        <option value="{{ user.id_custom_user }}"{% if user.id_custom_user == recipient.id_custom_user %} selected{% endif %}>
+                            {{ user.fio|default:user.username }}
+                        </option>
+                    {% endfor %}
+                </select>
+                
+                {{ form.text.label }} {{ form.text }}  <!-- Показать поле для ввода текста -->
+                <button type="submit">Отправить</button>
+            </form>
+
+        </div>
+    </div>
+
+    <script>
+        // Перенаправление при выборе получателя
+        document.getElementById('recipient-select').addEventListener('change', function() {
+            var recipientId = this.value;
+            if (recipientId) {
+                // Перенаправление на страницу чата с выбранным получателем
+                window.location.href = "{% url 'chat_view' 'recipient_id' %}".replace('recipient_id', recipientId);
+            }
+        });
+    </script>
+{% endblock %}

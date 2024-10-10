@@ -104,7 +104,6 @@
                 <a href="{% url 'user_time' user.slug %}" class="btn btn-warning btn-sm">Подробней</a>
             </div>
         </div>
-
         <div class="card">
             <div class="user-bio">
                 <h1>Участие в проектах</h1>
@@ -114,6 +113,7 @@
                         <th class="project-name">Название проекта</th>
                         <th class="project-owner">Владелец проекта</th>
                         <th class="project-description">Описание проекта</th>
+                        <th class="project-number">Процент готовности</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -122,20 +122,23 @@
                             <td class="project-name">{{ project.name }}</td>
                             <td class="project-name">{{ project.owner }}</td>
                             <td class="project-description text-left">
-                                <span id="short">{{ project.description|slice:":500" }}{% if project.description|length > 500 %}...{% endif %}</span>
-                                <span id="full" style="display: none;">{{ project.description }}</span>
-                                {% if project.description|length > 500 %}
-                                    <a href="javascript:void(0)" id="toggle" onclick="toggleInfo()">Развернуть</a>
+                                {% if project.description %}
+                                    <span id="short">{{ project.description|slice:":500" }}{% if project.description|length > 500 %}...{% endif %}</span>
+                                    <span id="full" style="display: none;">{{ project.description }}</span>
+                                    {% if project.description|length > 500 %}
+                                        <a href="javascript:void(0)" id="toggle" onclick="toggleInfo()">Развернуть</a>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="text-danger">Информация не заполнена</span>
                                 {% endif %}
                             </td>
+                            <td class="project-number">{{ project.percentage_completion }} %</td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
-                <a href="{% url 'project_list' %}" class="btn btn-warning btn-sm">Подробней</a>
             </div>
         </div>
-
         <a href="{% url 'user_list' %}" class="btn btn-secondary">Назад</a>
     </div>
     <script src="{% static 'js/roll.js' %}"></script>

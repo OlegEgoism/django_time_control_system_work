@@ -18,7 +18,7 @@ function toggleBio() {
 function toggleInfo() {
     const short = document.getElementById("short");
     const full = document.getElementById("full");
-    const toggle = document.getElementById("bio");
+    const toggle = document.getElementById("toggle");
 
     if (full.style.display === "none") {
         full.style.display = "inline";
@@ -28,5 +28,21 @@ function toggleInfo() {
         full.style.display = "none";
         short.style.display = "inline";
         toggle.innerText = "Развернуть";
+    }
+}
+
+function toggleDescription(counter) {
+    const shortDesc = document.getElementById(`sub-desc-short-${counter}`);
+    const fullDesc = document.getElementById(`sub-desc-full-${counter}`);
+    const toggleLink = document.getElementById(`toggle-desc-${counter}`);
+
+    if (fullDesc.style.display === "none") {
+        fullDesc.style.display = "inline";
+        shortDesc.style.display = "none";
+        toggleLink.innerText = "Свернуть";
+    } else {
+        fullDesc.style.display = "none";
+        shortDesc.style.display = "inline";
+        toggleLink.innerText = "Развернуть";
     }
 }

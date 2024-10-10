@@ -1,34 +1,45 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}Информация о подразделениях{% endblock %}
 
 {% block content %}
     <div class="container">
         <div class="card">
-                <form method="get" action="{% url 'subdivision_list' %}" class="d-flex align-items-center">
-                    <h1>Список подразделений</h1>
-                    <input type="text" class="form-control mr-1 search-input" name="q" value="{{ search_query }}" placeholder="Поиск по названию подразделения и описанию">
-                    <button type="submit" class="btn btn-primary mr-1">Поиск</button>
-                    <a href="{% url 'subdivision_list' %}" class="btn btn-secondary">Очистить</a>
-                </form>
+            <form method="get" action="{% url 'subdivision_list' %}" class="d-flex align-items-center">
+                <h1>Список подразделений</h1>
+                <input type="text" class="form-control mr-1 search-input" name="q" value="{{ search_query }}" placeholder="Поиск по названию подразделения и описанию">
+                <button type="submit" class="btn btn-primary mr-1">Поиск</button>
+                <a href="{% url 'subdivision_list' %}" class="btn btn-secondary">Очистить</a>
+            </form>
             <table class="table table-bordered">
                 <thead>
-                    <tr>
-                        <th class="subdivision-name">Название подразделения</th>
-                        <th class="subdivision-description">Описание подразделения</th>
-                        <th class="subdivision-number">Количество сотрудников</th>
-                    </tr>
+                <tr>
+                    <th class="subdivision-name">Название подразделения</th>
+                    <th class="subdivision-description">Описание подразделения</th>
+                    <th class="subdivision-number">Количество сотрудников</th>
+                </tr>
                 </thead>
                 <tbody>
-                    {% for subdivision in subdivisions %}
-                        <tr>
-                            <td class="subdivision-name">{{ subdivision.name }}</td>
-                            <td class="subdivision-description text-left">{{ subdivision.description }}</td>
-                            <td class="subdivision-number">{{ subdivision.employee_count }}</td>
-                        </tr>
-                    {% endfor %}
+                {% for subdivision in subdivisions %}
+                    <tr>
+                        <td class="subdivision-name">{{ subdivision.name }}</td>
+                        <td class="subdivision-description text-left">
+                            {% if subdivision.description %}
+                                <span id="sub-desc-short-{{ forloop.counter }}">{{ subdivision.description|slice:":100" }}{% if subdivision.description|length > 100 %}...{% endif %}</span>
+                                <span id="sub-desc-full-{{ forloop.counter }}" style="display: none;">{{ subdivision.description }}</span>
+                                {% if subdivision.description|length > 100 %}
+                                    <a href="javascript:void(0)" id="toggle-desc-{{ forloop.counter }}" onclick="toggleDescription({{ forloop.counter }})">Развернуть</a>
+                                {% endif %}
+                            {% else %}
+                                <span class="text-danger">Информация не заполнена</span>
+                            {% endif %}
+                        </td>
+                        <td class="subdivision-number">{{ subdivision.employee_count }}</td>
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
+    <script src="{% static 'js/roll.js' %}"></script>
 {% endblock %}

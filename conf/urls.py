@@ -15,7 +15,7 @@ from user_guide.views import (
 
     user_info,
     user_edit,
-    user_time, project_list
+    user_time, project_list, chat_view
 
 )
 
@@ -46,6 +46,8 @@ urlpatterns = [
     path('edit/<slug:slug>/', user_edit, name='user_edit'),
     path('time/<slug:slug>/', user_time, name='user_time'),
 
+    path('chat/', chat_view, name='new_chat'),  # Для нового чата
+    path('chat/<str:recipient_id>/', chat_view, name='chat_view'),  # Для чата с выбранным получателем
     # path('news/<str:id_files>/file-not-found/', news_file_not_found, name='news_file_not_found'),
 
 ]

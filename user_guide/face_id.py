@@ -54,6 +54,9 @@ while True:
                     filename = known_face_names[first_match_index]
                     try:
                         custom_user = CustomUser.objects.get(photo=f'photo_user/{filename}')
+                        if not custom_user.is_active:
+                            print(f"Пользователь {custom_user.username} не активен.")
+                            continue
                         slug = custom_user.slug.split('-')[0]  # Получаем поле slug пользователя
                         current_time = time.time()
                         if custom_user.id_custom_user in last_record_times:
@@ -72,7 +75,7 @@ while True:
                                 created=timezone.now()
                             )
                             last_record_times[custom_user.id_custom_user] = current_time  # Сохраняем время первой записи
-                            print(f"Записан новый пользователь: {custom_user.fio or custom_user.username}")
+                            print(f"Сотрудник: {custom_user.fio or custom_user.username}")
                     except CustomUser.DoesNotExist:
                         print(f"Пользователь с фото {filename} не найден.")
                 cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)

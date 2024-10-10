@@ -1,7 +1,7 @@
 from django import forms
 from .all_validator import phone_mobile_validator
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import CustomUser, Camera, Address, Note
+from .models import CustomUser, Camera, Address, Message
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -39,3 +39,20 @@ class StatusLocationFilterForm(forms.Form):
     date_to = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}), label="Дата по")
     finding = forms.ChoiceField(choices=FINDING_CHOICES_WITH_ALL, required=False, label="Нахождение")
     address = forms.ModelChoiceField(queryset=Address.objects.all(), required=False, label="Адрес камеры")
+
+
+
+from django import forms
+from .models import Message, CustomUser
+
+class MessageForm(forms.ModelForm):
+    recipient = forms.ModelChoiceField(
+        queryset=CustomUser.objects.all(),
+        empty_label="Выберите получателя",
+        required=True
+    )
+
+    class Meta:
+        model = Message
+        fields = ['recipient', 'text']  # Добавьте 'recipient' в поля формы
+
