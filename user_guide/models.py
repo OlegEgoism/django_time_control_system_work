@@ -62,7 +62,7 @@ class Subdivision(DateStamp):
     """Подразделение"""
     id_subdivision = ULIDField(verbose_name='id_subdivision', db_comment='id_subdivision', default=default, primary_key=True, editable=False)
     name = models.CharField(verbose_name='Подразделение', db_comment='Подразделение', max_length=250, db_index=True, unique=True)
-    description = models.TextField(verbose_name='Описание деятельности отдела', db_comment='Описание деятельности отдела', blank=True, null=True)
+    description = models.TextField(verbose_name='Описание деятельности', db_comment='Описание деятельности', blank=True, null=True)
 
     class Meta:
         verbose_name = 'Подразделение'

@@ -126,10 +126,10 @@ class PositionAdmin(admin.ModelAdmin):
 @admin.register(Subdivision)
 class SubdivisionAdmin(admin.ModelAdmin):
     """Подразделение"""
-    list_display = 'name', 'created', 'updated', 'count_subdivision',
+    list_display = 'name', 'short_question', 'count_subdivision', 'created', 'updated',
     readonly_fields = 'created', 'updated',
-    search_fields = 'name',
-    search_help_text = 'Поиск по подразделению'
+    search_fields = 'name', 'short_question',
+    search_help_text = 'Поиск по подразделению и описании деятельности'
     ordering = 'name',
     list_per_page = 20
 
@@ -137,6 +137,35 @@ class SubdivisionAdmin(admin.ModelAdmin):
         return obj.custom_user_subdivision.count()
 
     count_subdivision.short_description = 'Количество сотрудников'
+
+    def short_question(self, obj):
+        len_str = 200
+        return obj.description[:len_str] + "..." if len(obj.description) > len_str else obj.description
+
+    short_question.short_description = 'Описание деятельности'
+
+
+@admin.register(Project)
+class ProjectAdmin(admin.ModelAdmin):
+    """Проекты"""
+    list_display = 'name', 'short_question', 'owner', 'percentage_completion', 'count_project', 'created', 'updated',
+    readonly_fields = 'created', 'updated',
+    search_fields = 'name', 'owner',
+    list_filter = 'owner',
+    search_help_text = 'Поиск по названию и владельцу проекта'
+    ordering = 'name',
+    list_per_page = 20
+
+    def count_project(self, obj):
+        return obj.custom_user_project.count()
+
+    count_project.short_description = 'Количество сотрудников'
+
+    def short_question(self, obj):
+        len_str = 200
+        return obj.description[:len_str] + "..." if len(obj.description) > len_str else obj.description
+
+    short_question.short_description = 'Описание деятельности'
 
 
 @admin.register(Note)
@@ -153,23 +182,6 @@ class NoteAdmin(admin.ModelAdmin):
         return obj.custom_user_note.count()
 
     count_note.short_description = 'Количество сотрудников'
-
-
-@admin.register(Project)
-class ProjectAdmin(admin.ModelAdmin):
-    """Заметка"""
-    list_display = 'name', 'owner', 'percentage_completion', 'count_project'
-    readonly_fields = 'created', 'updated',
-    search_fields = 'name', 'owner',
-    list_filter = 'owner',
-    search_help_text = 'Поиск по названию и владельцу проекта'
-    ordering = 'name',
-    list_per_page = 20
-
-    def count_project(self, obj):
-        return obj.custom_user_project.count()
-
-    count_project.short_description = 'Количество сотрудников'
 
 
 @admin.register(CustomUser)
