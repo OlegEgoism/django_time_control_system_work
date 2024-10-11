@@ -8,11 +8,11 @@ from django.conf import settings
 from django.contrib import messages
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q, Subquery, OuterRef, Count
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.dateformat import DateFormat
 
-from user_guide.forms import CustomUserForm, StatusLocationFilterForm
+from user_guide.forms import CustomUserForm, StatusLocationFilterForm, ChatForm
 from user_guide.models import (
     CustomUser,
     StatusLocation,
@@ -20,6 +20,7 @@ from user_guide.models import (
     News,
     Files, Subdivision, Project
 )
+from . import models
 
 
 def home(request):
@@ -283,3 +284,57 @@ def news_download_file(request, id_files):
 #     return render(request, 'news/news_file_not_found.html', {
 #         'news': news,
 #     })
+
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Chat, Message
+from .forms import MessageForm
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q  # Импортируем Q здесь
+
+@login_required
+def chat_list(request):
+    """Список чатов для пользователя"""
+    chats = Chat.objects.filter(Q(user_from=request.user) | Q(user_to=request.user))
+    return render(request, 'chat_list.html', {'chats': chats})
+
+
+@login_required
+def create_chat(request):
+    """Создание нового чата"""
+    if request.method == 'POST':
+        form = ChatForm(request.POST)  # Передаем request.user
+        if form.is_valid():
+            chat = form.save(commit=False)
+            chat.user_from = request.user  # Устанавливаем текущего пользователя как инициатора чата
+            chat.save()
+            return redirect('chat_detail', chat_id=chat.id)  # Используем id_custom_user
+    else:
+        form = ChatForm(instance=request.user)
+
+    return render(request, 'create_chat.html', {'form': form})
+
+from django.shortcuts import get_object_or_404
+
+@login_required
+def chat_detail(request, chat_id):
+    try:
+        chat = Chat.objects.get(id=chat_id)  # Используем id для поиска
+    except Chat.DoesNotExist:
+        raise Http404("Чат не найден.")
+
+    messages = chat.messages.all()  # Получаем все сообщения в чате
+    form = MessageForm(request.POST or None)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.chat = chat  # Связываем сообщение с чатом
+            message.sender = request.user  # Устанавливаем отправителя
+            message.save()
+            return redirect('chat_detail', chat_id=chat_id)
+
+    return render(request, 'chat_detail.html', {'chat': chat, 'messages': messages, 'form': form})
+
+

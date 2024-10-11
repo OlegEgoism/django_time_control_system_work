@@ -1,7 +1,7 @@
 from django import forms
 from .all_validator import phone_mobile_validator
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import CustomUser, Camera, Address
+from .models import CustomUser, Camera, Address, Message, Chat, User
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -41,3 +41,21 @@ class StatusLocationFilterForm(forms.Form):
     address = forms.ModelChoiceField(queryset=Address.objects.all(), required=False, label="Адрес камеры")
 
 
+
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ['content']
+
+
+class ChatForm(forms.ModelForm):
+    class Meta:
+        model = Chat
+        fields = ['user_to']  # Поле для выбора пользователя для создания чата
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Убедитесь, что вы передаете текущего пользователя
+        current_user = kwargs.get('instance', None)
+        if current_user is not None:
+            self.fields['user_to'].queryset = User.objects.exclude(id_custom_user=current_user.id_custom_user)  # Исключаем текущего пользователя

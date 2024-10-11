@@ -16,7 +16,7 @@ from user_guide.views import (
 
     user_info,
     user_edit,
-    user_time,
+    user_time, chat_list, chat_detail, create_chat,
 
 )
 
@@ -37,6 +37,10 @@ urlpatterns = [
     # Авторизация(Вход/Выход)
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
+
+    path('chats/', chat_list, name='chat_list'),
+    path('create_chat/', create_chat, name='create_chat'),
+    path('chats/<str:chat_id>/', chat_detail, name='chat_detail'),  # Используем str для chat_id
 
 
     # Новости

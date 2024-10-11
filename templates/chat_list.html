@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Список чатов</h2>
+    <a href="{% url 'create_chat' %}" class="btn btn-primary">Создать новый чат</a>
+<ul>
+    {% if chats %}
+        {% for chat in chats %}
+            <li>
+               <a href="{% url 'chat_detail' chat.id %}">{{ chat.user_from }} - {{ chat.user_to }}</a>
+            </li>
+        {% endfor %}
+    {% else %}
+        <li>Нет чатов</li>
+    {% endif %}
+</ul>
+{% endblock %}

@@ -235,3 +235,29 @@ class Setting(DateStamp):
 
     def __str__(self):
         return self.name
+
+
+from django.db import models
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+
+class Chat(models.Model):
+    user_from = models.ForeignKey(User, on_delete=models.CASCADE, related_name='chats_initiated')
+    user_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='chats_participated')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Chat between {self.user_from} and {self.user_to}"
+
+
+class Message(models.Model):
+    """Сообщение в чате"""
+    chat = models.ForeignKey(Chat, related_name='messages', on_delete=models.CASCADE)
+    sender = models.ForeignKey(User, related_name='messages_sent', on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Message from {self.sender} in chat {self.chat.id}"

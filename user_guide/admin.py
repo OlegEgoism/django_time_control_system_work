@@ -19,7 +19,7 @@ from user_guide.models import (
     Files,
     News,
     Office,
-    Project
+    Project, Chat, Message
 )
 
 
@@ -306,3 +306,13 @@ class SettingAdmin(admin.ModelAdmin):
         if self.model.objects.count() >= 1:
             return False
         return True
+
+
+@admin.register(Chat)
+class ChatAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Message)
+class MessageAdmin(admin.ModelAdmin):
+    pass
