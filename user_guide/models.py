@@ -235,20 +235,3 @@ class Setting(DateStamp):
 
     def __str__(self):
         return self.name
-
-
-User = get_user_model()
-class Message(models.Model):
-    sender = models.ForeignKey(User, related_name='sent_messages', on_delete=models.CASCADE)
-    recipient = models.ForeignKey(User, related_name='received_messages', on_delete=models.CASCADE)
-    text = models.TextField(verbose_name='Текст сообщения')
-    created = models.DateTimeField(default=timezone.now, verbose_name='Дата создания')
-    is_read = models.BooleanField(default=False, verbose_name='Прочитано')
-
-    class Meta:
-        verbose_name = 'Сообщение'
-        verbose_name_plural = 'Сообщения'
-        ordering = ['created']
-
-    def __str__(self):
-        return f'Сообщение от {self.sender} к {self.recipient}'

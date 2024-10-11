@@ -19,7 +19,7 @@ from user_guide.models import (
     Files,
     News,
     Office,
-    Project, Message
+    Project
 )
 
 
@@ -306,9 +306,3 @@ class SettingAdmin(admin.ModelAdmin):
         if self.model.objects.count() >= 1:
             return False
         return True
-
-
-@admin.register(Message)
-class MessageAdmin(admin.ModelAdmin):
-    """Настройки"""
-    list_display = 'sender', 'recipient', 'is_read',

@@ -9,13 +9,14 @@ from user_guide.views import (
     news_list,
     user_list,
     subdivision_list,
+    project_list,
 
     news_info,
     news_download_file,
 
     user_info,
     user_edit,
-    user_time, project_list, chat_view
+    user_time,
 
 )
 
@@ -33,7 +34,7 @@ urlpatterns = [
     path('subdivision_list/', subdivision_list, name='subdivision_list'),
     # Список проектов
     path('project_list/', project_list, name='project_list'),
-    # Авторизация
+    # Авторизация(Вход/Выход)
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
 
@@ -45,10 +46,6 @@ urlpatterns = [
     path('<slug:slug>/', user_info, name='user_info'),
     path('edit/<slug:slug>/', user_edit, name='user_edit'),
     path('time/<slug:slug>/', user_time, name='user_time'),
-
-    path('chat/', chat_view, name='new_chat'),  # Для нового чата
-    path('chat/<str:recipient_id>/', chat_view, name='chat_view'),  # Для чата с выбранным получателем
-    # path('news/<str:id_files>/file-not-found/', news_file_not_found, name='news_file_not_found'),
 
 ]
 if settings.DEBUG:
