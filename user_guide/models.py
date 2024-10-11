@@ -121,7 +121,7 @@ class CustomUser(AbstractUser):
     subdivision = models.ForeignKey(Subdivision, verbose_name='Подразделение', db_comment='Подразделение', on_delete=models.PROTECT, related_name='custom_user_subdivision', blank=True, null=True)
     position = models.ForeignKey(Position, verbose_name='Должность', db_comment='Должность', on_delete=models.PROTECT, related_name='custom_user_position', blank=True, null=True)
     note = models.ForeignKey(Note, verbose_name='Заметка', db_comment='Заметка', on_delete=models.PROTECT, related_name='custom_user_note', blank=True, null=True)
-    project = models.ManyToManyField(Project, verbose_name='Проект', db_comment='Проект', related_name='custom_user_project', blank=True, null=True)
+    project = models.ManyToManyField(Project, verbose_name='Проект', related_name='custom_user_project', blank=True)
 
     class Meta:
         verbose_name = 'Сотрудник'

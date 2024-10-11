@@ -42,7 +42,7 @@ INSTALLED_APPS = [
 
 
     # 'widget_tweaks',
-    'ckeditor',  # Работа с текстом
+    # 'ckeditor',  # Работа с текстом
     'admin_auto_filters',  # Фильтрация по полям и поиску по названию
     'rangefilter',  # Фильтрация для времени
 ]
