@@ -10,8 +10,6 @@ def phone_mobile_validator(phone_number):
         raise ValidationError('Некорректный формат номера телефона (формат +375(00)000-00-00)')
 
 
-
-
 def percentage_completion_validator(value):
     if value < 0 or value > 100:
         raise ValidationError('Процент готовности проекта должен быть в диапазоне от 0 до 100.')
