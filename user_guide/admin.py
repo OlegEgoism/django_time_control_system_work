@@ -196,19 +196,20 @@ class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (None, {
             'fields': ('username', 'password',)}),
-        ('РАЗРЕШЕНИЯ', {
-            'classes': ('collapse',),
-            'fields': (
-                'is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions', 'last_login', 'date_joined',)}),
+
         ('ЛИЧНЫЕ ДАННЫЕ', {
             'fields': (
                 'preview_photo', 'photo', 'fio', 'slug', 'birthday', 'biography', 'email', 'phone_mobile',
                 'phone_working',
                 'address', 'office', 'note', 'position', 'subdivision', 'project',)},),
+        ('РАЗРЕШЕНИЯ', {
+            # 'classes': ('collapse',),
+            'fields': (
+                'is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions', 'last_login', 'date_joined',)}),
     )
     add_fieldsets = (
         (None, {
-            'classes': ('wide',),
+            # 'classes': ('wide',),
             'fields': ('username', 'email', 'fio', 'slug', 'password1', 'password2'),
         }),
     )

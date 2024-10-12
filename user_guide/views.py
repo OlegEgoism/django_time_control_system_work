@@ -33,12 +33,12 @@ def home(request):
 def news_list(request):
     """Список новостей"""
     config = Setting.objects.first()
-    query = request.GET.get('q')
-    news_list = News.objects.filter(is_active=True)
-    if query:
-        news_list = news_list.filter(Q(name__icontains=query) | Q(description__icontains=query))
-    page_size = config.news_page if config else 10
-    paginator = Paginator(news_list, page_size)
+    page_size = config.news_page
+    search_query = request.GET.get('q', '')
+    query = Q(name__icontains=search_query) | \
+            Q(description__icontains=search_query)
+    news = News.objects.filter(is_active=True).filter(query)
+    paginator = Paginator(news, page_size)
     page = request.GET.get('page')
     try:
         news_all = paginator.page(page)
@@ -46,9 +46,10 @@ def news_list(request):
         news_all = paginator.page(1)
     except EmptyPage:
         news_all = paginator.page(paginator.num_pages)
-    return render(request, 'news/news_list.html', {
+    return render(request, 'news/news_list.html', context={
         'config': config,
-        'news_all': news_all
+        'news_all': news_all,
+        'search_query': search_query
     })
 
 
@@ -80,13 +81,22 @@ def user_list(request):
 def subdivision_list(request):
     """Список подразделений с фильтром по названию отдела"""
     config = Setting.objects.first()
+    page_size = config.subdivision_page
     search_query = request.GET.get('q', '')
-    query = Q(name__icontains=search_query) | \
+    query = Q(name__icontains=search_query) |\
             Q(description__icontains=search_query)
     subdivisions = Subdivision.objects.filter(query).annotate(employee_count=Count('custom_user_subdivision')).order_by('name')
+    paginator = Paginator(subdivisions, page_size)
+    page = request.GET.get('page')
+    try:
+        subdivisions_page = paginator.page(page)
+    except PageNotAnInteger:
+        subdivisions_page = paginator.page(1)
+    except EmptyPage:
+        subdivisions_page = paginator.page(paginator.num_pages)
     return render(request, 'subdivision_list.html', context={
         'config': config,
-        'subdivisions': subdivisions,
+        'subdivisions': subdivisions_page,
         'search_query': search_query
     })
 
@@ -94,17 +104,25 @@ def subdivision_list(request):
 def project_list(request):
     """Список проектов"""
     config = Setting.objects.first()
+    page_size = config.project_page
     search_query = request.GET.get('q', '')
     query = Q(name__icontains=search_query) | \
             Q(owner__icontains=search_query) | \
             Q(description__icontains=search_query)
     projects = Project.objects.filter(query).annotate(employee_count=Count('custom_user_project')).order_by('name')
+    paginator = Paginator(projects, page_size)
+    page = request.GET.get('page')
+    try:
+        projects_page = paginator.page(page)
+    except PageNotAnInteger:
+        projects_page = paginator.page(1)
+    except EmptyPage:
+        projects_page = paginator.page(paginator.num_pages)
     return render(request, 'project_list.html', context={
         'config': config,
-        'projects': projects,
+        'projects': projects_page,
         'search_query': search_query
     })
-
 
 
 # __________________
@@ -187,8 +205,6 @@ def user_edit(request, slug):
     return render(request, 'users/user_edit.html', context)
 
 
-
-
 def user_time(request, slug):
     """Контроль рабочего времени"""
     config = Setting.objects.first()
@@ -240,9 +256,6 @@ def user_time(request, slug):
         'page_obj': page_obj,
         'total_worked_time': formatted_time,
     })
-
-
-
 
 
 def news_info(request, name):

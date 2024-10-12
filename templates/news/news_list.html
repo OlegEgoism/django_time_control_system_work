@@ -31,17 +31,14 @@
                         </div>
                     {% endfor %}
                 {% else %}
-                    <h2 class="no-results">По вашему запросу новостей не найдено</h2>
+                    <h2 class="no-results">В настоящий момент нет информации</h2>
                 {% endif %}
             </table>
-
-
-<div class="pagination">
+            <div class="pagination">
     <span class="step-links">
         {% if news_all.has_previous %}
             <a href="?page={{ news_all.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-outline-primary"><<</a>
         {% endif %}
-
         {% for page_num in news_all.paginator.page_range %}
             {% if page_num == news_all.number %}
                 <strong class="btn btn-primary">{{ page_num }}</strong>
@@ -49,15 +46,12 @@
                 <a href="?page={{ page_num }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-outline-primary">{{ page_num }}</a>
             {% endif %}
         {% endfor %}
-
         {% if news_all.has_next %}
             <a href="?page={{ news_all.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-outline-primary">>></a>
         {% endif %}
     </span>
-</div>
-<p>Страница {{ news_all.number }} из {{ news_all.paginator.num_pages }}</p>
-
-
+            </div>
+            <p>Страница {{ news_all.number }} из {{ news_all.paginator.num_pages }}</p>
         </div>
     </div>
 {% endblock %}

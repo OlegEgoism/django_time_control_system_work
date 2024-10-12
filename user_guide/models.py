@@ -1,10 +1,8 @@
-from django.utils import timezone
-from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.db import models
 from django_ulid.models import default, ULIDField
-from user_guide.all_validator import phone_mobile_validator
+from user_guide.all_validator import phone_mobile_validator, percentage_completion_validator
 
 
 class DateStamp(models.Model):
@@ -79,7 +77,7 @@ class Project(DateStamp):
     name = models.CharField(verbose_name='Проект', db_comment='Проект', max_length=250, db_index=True, unique=True)
     owner = models.CharField(verbose_name='Владелец проекта', db_comment='Владелец проекта', max_length=250)
     description = models.TextField(verbose_name='Описание проекта', db_comment='Описание проекта', blank=True, null=True)
-    percentage_completion = models.IntegerField(verbose_name='Процент готовности проекта', db_comment='Процент готовности проекта')
+    percentage_completion = models.IntegerField(verbose_name='Процент готовности проекта', db_comment='Процент готовности проекта', validators=[percentage_completion_validator])
 
     class Meta:
         verbose_name = 'Проект'
@@ -147,7 +145,6 @@ class CustomUser(AbstractUser):
             raise ValidationError("Если указан кабинет, укажите поле адрес рабочего места")
 
 
-
 class StatusLocation(models.Model):
     """Контроль времени"""
     id_status_location = ULIDField(verbose_name='id_status_location', db_comment='id_status_location', default=default, primary_key=True, editable=False)
@@ -207,7 +204,6 @@ class News(DateStamp):
     """Новость"""
     id_news = ULIDField(verbose_name='id_news', db_comment='id_news', default=default, primary_key=True, editable=False)
     name = models.CharField(verbose_name='Название', max_length=100)
-    # description = RichTextField(verbose_name='Описание', config_name='news')
     description = models.TextField(verbose_name='Описание')
     is_active = models.BooleanField(verbose_name='Опубликована', default=True)
     views_count = models.PositiveIntegerField(verbose_name='Просмотров', default=0)
@@ -226,8 +222,10 @@ class Setting(DateStamp):
     id_setting = ULIDField(verbose_name='id_setting', db_comment='id_setting', default=default, primary_key=True, editable=False)
     logo = models.ImageField(verbose_name='Логотип организации', db_comment='Логотип организации', upload_to='logo/', default='logo/default/default_logo.png', blank=True, null=True)
     name = models.CharField(verbose_name='Название организации', help_text='Укажите краткое название', db_comment='Название организации', max_length=250)
-    news_page = models.IntegerField(verbose_name='Пагинация новостей', default=4)
-    time_page = models.IntegerField(verbose_name='Пагинация контроля времени', default=10)
+    news_page = models.IntegerField(verbose_name='Пагинация новостей', default=5)
+    subdivision_page = models.IntegerField(verbose_name='Пагинация подразделений', default=5)
+    project_page = models.IntegerField(verbose_name='Пагинация проектов', default=5)
+    time_page = models.IntegerField(verbose_name='Пагинация контроля времени', default=5)
 
     class Meta:
         verbose_name = 'Настройки сайта'
