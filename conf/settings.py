@@ -38,11 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'user_guide',
 
-
-    # 'widget_tweaks',
-    # 'ckeditor',  # Работа с текстом
+    'user_guide',  # Проект корпоративный портал
     'admin_auto_filters',  # Фильтрация по полям и поиску по названию
     'rangefilter',  # Фильтрация для времени
 ]
@@ -139,27 +136,5 @@ LOGIN_URL = 'login'  # Перенаправляет на страницу вхо
 LOGIN_REDIRECT_URL = '/'  # Перенаправление после успешного входа в систему
 LOGOUT_REDIRECT_URL = '/'  # Перенаправление после успешного выхода из системы
 
-
 # Для абстрактной модели пользователя
 AUTH_USER_MODEL = 'user_guide.CustomUser'
-
-"""Ckeditor"""
-CKEDITOR_UPLOAD_PATH = ''
-CKEDITOR_CONFIGS = {
-    'news': {
-        'allowedContent': True,
-        'toolbar': 'Custom',
-        'height': 360,
-        'width': 900,
-        'toolbar_Custom': [
-            ['Preview', 'Maximize', 'RemoveFormat', '-'],
-            ['Undo', 'Redo', '-', ],
-            ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', 'SpecialChar', '-'],
-            ['TextColor', 'BGColor'],
-            '/',
-            ['NumberedList', 'BulletedList', 'Outdent', 'Indent', '-'],
-            ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-'],
-            ['Styles', 'Format', 'Font', 'FontSize'],
-        ]
-    }
-}
