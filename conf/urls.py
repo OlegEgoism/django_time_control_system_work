@@ -23,7 +23,6 @@ from user_guide.views import (
 urlpatterns = [
     # Админка
     path('admin/', admin.site.urls),
-
     # Главная
     path('', home, name='home'),
     # Новости
@@ -34,11 +33,6 @@ urlpatterns = [
     path('subdivision_list/', subdivision_list, name='subdivision_list'),
     # Проекты
     path('project_list/', project_list, name='project_list'),
-    # Авторизация(Вход/Выход)
-    path('login/', LoginView.as_view(template_name='login.html'), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
-
-
     # Новости
     path('news/<str:name>/', news_info, name='news_info'),
     path('news/download/<str:id_files>', news_download_file, name='news_download_file'),
@@ -46,7 +40,6 @@ urlpatterns = [
     path('<slug:slug>/', user_info, name='user_info'),
     path('edit/<slug:slug>/', user_edit, name='user_edit'),
     path('time/<slug:slug>/', user_time, name='user_time'),
-
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
