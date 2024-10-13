@@ -330,3 +330,17 @@ def chat_detail(request, id_chat):
         'messages': messages,
         'form': form
     })
+
+
+
+
+@login_required
+def delete_chat(request, id_chat):
+    """Удаление чата"""
+    chat = get_object_or_404(Chat, id_chat=id_chat)
+
+    if request.method == 'POST':
+        chat.delete()
+        return redirect('chat_list')  # Перенаправляем на список чатов после удаления
+
+    return render(request, 'chats/delete_chat_confirm.html', {'chat': chat})

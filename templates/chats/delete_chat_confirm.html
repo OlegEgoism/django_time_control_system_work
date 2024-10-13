@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Подтвердите удаление чата</h2>
+    <p>Вы уверены, что хотите удалить чат между {{ chat.sender }} и {{ chat.recipient }}?</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit">Удалить чат</button>
+        <a href="{% url 'chat_list' %}">Отмена</a>
+    </form>
+{% endblock %}

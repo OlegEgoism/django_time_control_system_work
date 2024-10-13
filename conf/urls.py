@@ -16,7 +16,7 @@ from user_guide.views import (
 
     user_info,
     user_edit,
-    user_time, chat_list, chat_detail, create_chat,
+    user_time, chat_list, chat_detail, create_chat, delete_chat,
 
 )
 
@@ -40,8 +40,8 @@ urlpatterns = [
 
     path('chats/', chat_list, name='chat_list'),
     path('create_chat/', create_chat, name='create_chat'),
-    path('chats/<str:id_chat>/', chat_detail, name='chat_detail'),  # Используем str для chat_id
-
+    path('chats/<str:id_chat>/', chat_detail, name='chat_detail'),
+    path('chats/<str:id_chat>/delete/', delete_chat, name='delete_chat'),  # Новый URL для удаления чата
 
     # Новости
     path('news/<str:name>/', news_info, name='news_info'),

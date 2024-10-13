@@ -3,15 +3,16 @@
 {% block content %}
     <h2>Список чатов</h2>
     <a href="{% url 'create_chat' %}" class="btn btn-primary">Создать новый чат</a>
-<ul>
-    {% if chats %}
-        {% for chat in chats %}
-            <li>
-              <a href="{% url 'chat_detail' chat.id_chat %}">{{ chat.sender }} - {{ chat.recipient }}</a>
-            </li>
-        {% endfor %}
-    {% else %}
-        <li>Нет чатов</li>
-    {% endif %}
-</ul>
+    <ul>
+        {% if chats %}
+            {% for chat in chats %}
+                <li>
+                    <a href="{% url 'chat_detail' chat.id_chat %}">{{ chat.sender }} - {{ chat.recipient }}</a>
+                    <a href="{% url 'delete_chat' chat.id_chat %}" class="btn btn-danger btn-sm">Удалить</a>
+                </li>
+            {% endfor %}
+        {% else %}
+            <li>Нет чатов</li>
+        {% endif %}
+    </ul>
 {% endblock %}
