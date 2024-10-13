@@ -210,7 +210,14 @@ form input, form select {
     margin-top: 20px;
 }
 
-
+/*.logout-button {*/
+/*    color: white; !* Цвет текста *!*/
+/*    text-decoration: none; !* Убрать подчеркивание *!*/
+/*    background: none; !* Убрать фон *!*/
+/*    border: none; !* Убрать границу *!*/
+/*    padding: 0; !* Убрать отступы *!*/
+/*    cursor: pointer; !* Курсор в виде указателя *!*/
+/*}*/
 
 
 

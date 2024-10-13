@@ -6,12 +6,29 @@ from operator import attrgetter
 from pyexpat.errors import messages
 from urllib.parse import quote
 from django.conf import settings
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db.models import Q, Subquery, OuterRef, Count
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+from django.core.paginator import (
+    Paginator,
+    PageNotAnInteger,
+    EmptyPage
+)
+from django.db.models import (
+    Q,
+    Subquery,
+    OuterRef,
+    Count
+)
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404, redirect
-
-from user_guide.forms import CustomUserForm, StatusLocationFilterForm
+from django.shortcuts import (
+    render,
+    get_object_or_404,
+    redirect
+)
+from user_guide.forms import (
+    CustomUserForm,
+    StatusLocationFilterForm
+)
 from user_guide.models import (
     CustomUser,
     StatusLocation,
@@ -84,7 +101,7 @@ def subdivision_list(request):
     config = Setting.objects.first()
     page_size = config.subdivision_page
     search_query = request.GET.get('q', '')
-    query = Q(name__icontains=search_query) |\
+    query = Q(name__icontains=search_query) | \
             Q(description__icontains=search_query)
     subdivisions = Subdivision.objects.filter(query).annotate(employee_count=Count('custom_user_subdivision')).order_by('name')
     paginator = Paginator(subdivisions, page_size)
@@ -125,8 +142,44 @@ def project_list(request):
         'search_query': search_query
     })
 
+# from django.contrib.auth import views as auth_views
+# from .models import Setting
+#
+# class CustomLoginView(auth_views.LoginView):
+#     template_name = 'login.html'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['config'] = Setting.objects.first()  # Получите первую запись конфигурации
+#         return context
 
 
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from .models import Setting
+
+def user_login(request):
+    config = Setting.objects.first()
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('/')  # Перенаправление после успешного входа
+        else:
+            error_message = 'Неверный логин или пароль'
+            return render(request, 'login.html', {'config': config, 'error_message': error_message})
+
+    return render(request, 'login.html', {'config': config})
+
+
+def user_logout(request):
+    """Выход"""
+    logout(request)
+    return redirect('/')
 
 
 # __________________

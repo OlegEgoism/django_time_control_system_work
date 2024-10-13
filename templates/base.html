@@ -23,18 +23,20 @@
         <li><a href="{% url 'user_list' %}">Сотрудники</a></li>
         <li><a href="{% url 'subdivision_list' %}">Подразделения</a></li>
         <li><a href="{% url 'project_list' %}">Проекты</a></li>
-
         {% if user.is_authenticated %}
-            <li><a href="#">Проверка знаний</a></li>
-            <li><a href="#">Органайзер</a></li>
-            <li><a href="#">Чат</a></li>
-            <li><a href="#">Личный кабинет</a></li>
-
-            <li><a href="{% url 'logout' %}">Выйти</a></li>
+            <li><a href="#"># Проверка знаний</a></li>
+            <li><a href="#"># Органайзер</a></li>
+            <li><a href="#"># Чат</a></li>
+            <li><a href="#"># Личный кабинет</a></li>
+            <li>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger mr-1">Выйти</button>
+                </form>
+            </li>
         {% else %}
-            <li><a href="{% url 'login' %}">Войти</a></li>
+            <li><a class="btn btn-primary mr-1" href="{% url 'login' %}">Войти</a></li>
         {% endif %}
-
     </ul>
 </nav>
 

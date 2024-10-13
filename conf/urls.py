@@ -1,9 +1,8 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
-
+from django.contrib.auth import views as auth_views
 from user_guide.views import (
     home,
     news_list,
@@ -17,12 +16,18 @@ from user_guide.views import (
     user_info,
     user_edit,
     user_time,
+    user_login,
+    user_logout,
 
 )
 
 urlpatterns = [
     # Админка
     path('admin/', admin.site.urls),
+    # Вход
+    path('login/', user_login, name='login'),
+    # Выход
+    path('logout/', user_logout, name='logout'),
     # Главная
     path('', home, name='home'),
     # Новости
@@ -40,6 +45,8 @@ urlpatterns = [
     path('<slug:slug>/', user_info, name='user_info'),
     path('edit/<slug:slug>/', user_edit, name='user_edit'),
     path('time/<slug:slug>/', user_time, name='user_time'),
+
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
