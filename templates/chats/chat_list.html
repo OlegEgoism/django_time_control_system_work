@@ -7,7 +7,7 @@
     {% if chats %}
         {% for chat in chats %}
             <li>
-               <a href="{% url 'chat_detail' chat.id %}">{{ chat.user_from }} - {{ chat.user_to }}</a>
+              <a href="{% url 'chat_detail' chat.id_chat %}">{{ chat.sender }} - {{ chat.recipient }}</a>
             </li>
         {% endfor %}
     {% else %}

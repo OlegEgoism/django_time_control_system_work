@@ -40,7 +40,7 @@ urlpatterns = [
 
     path('chats/', chat_list, name='chat_list'),
     path('create_chat/', create_chat, name='create_chat'),
-    path('chats/<str:chat_id>/', chat_detail, name='chat_detail'),  # Используем str для chat_id
+    path('chats/<str:id_chat>/', chat_detail, name='chat_detail'),  # Используем str для chat_id
 
 
     # Новости

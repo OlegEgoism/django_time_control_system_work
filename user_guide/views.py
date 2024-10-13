@@ -10,17 +10,20 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q, Subquery, OuterRef, Count
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
-from django.utils.dateformat import DateFormat
-
-from user_guide.forms import CustomUserForm, StatusLocationFilterForm, ChatForm
+from django.contrib.auth.decorators import login_required
+from user_guide.forms import (
+    CustomUserForm,
+    StatusLocationFilterForm,
+    ChatForm,
+    MessageForm
+)
 from user_guide.models import (
     CustomUser,
     StatusLocation,
     Setting,
     News,
-    Files, Subdivision, Project
+    Files, Subdivision, Project, Chat
 )
-from . import models
 
 
 def home(request):
@@ -107,7 +110,6 @@ def project_list(request):
     })
 
 
-
 # __________________
 def user_info(request, slug):
     """Информация о сотруднике"""
@@ -188,8 +190,6 @@ def user_edit(request, slug):
     return render(request, 'users/user_edit.html', context)
 
 
-
-
 def user_time(request, slug):
     """Контроль рабочего времени"""
     config = Setting.objects.first()
@@ -243,9 +243,6 @@ def user_time(request, slug):
     })
 
 
-
-
-
 def news_info(request, name):
     """Новость"""
     config = Setting.objects.first()
@@ -278,6 +275,7 @@ def news_download_file(request, id_files):
     id_files = file_obj.id_files
     return redirect('news_file_not_found', id_files=id_files)
 
+
 # def news_file_not_found(request, name):
 #     """Если файл не найден"""
 #     news = get_object_or_404(News, name=name)
@@ -286,55 +284,49 @@ def news_download_file(request, id_files):
 #     })
 
 
-
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Chat, Message
-from .forms import MessageForm
-from django.contrib.auth.decorators import login_required
-from django.db.models import Q  # Импортируем Q здесь
-
 @login_required
 def chat_list(request):
     """Список чатов для пользователя"""
-    chats = Chat.objects.filter(Q(user_from=request.user) | Q(user_to=request.user))
-    return render(request, 'chat_list.html', {'chats': chats})
+    chats = Chat.objects.filter(Q(sender=request.user) | Q(recipient=request.user))
+    return render(request, template_name='chats/chat_list.html', context={
+        'chats': chats
+    })
 
 
 @login_required
 def create_chat(request):
     """Создание нового чата"""
     if request.method == 'POST':
-        form = ChatForm(request.POST)  # Передаем request.user
+        form = ChatForm(request.POST)
         if form.is_valid():
             chat = form.save(commit=False)
-            chat.user_from = request.user  # Устанавливаем текущего пользователя как инициатора чата
+            chat.sender = request.user
             chat.save()
-            return redirect('chat_detail', chat_id=chat.id)  # Используем id_custom_user
+            return redirect('chat_detail', id_chat=chat.id_chat)
     else:
         form = ChatForm(instance=request.user)
+    return render(request, template_name='chats/create_chat.html', context={
+        'form': form
+    })
 
-    return render(request, 'create_chat.html', {'form': form})
-
-from django.shortcuts import get_object_or_404
 
 @login_required
-def chat_detail(request, chat_id):
+def chat_detail(request, id_chat):
     try:
-        chat = Chat.objects.get(id=chat_id)  # Используем id для поиска
+        chat = Chat.objects.get(id_chat=id_chat)
     except Chat.DoesNotExist:
         raise Http404("Чат не найден.")
-
-    messages = chat.messages.all()  # Получаем все сообщения в чате
+    messages = chat.message_chat.all()
     form = MessageForm(request.POST or None)
-
     if request.method == 'POST':
         if form.is_valid():
             message = form.save(commit=False)
-            message.chat = chat  # Связываем сообщение с чатом
-            message.sender = request.user  # Устанавливаем отправителя
+            message.chat = chat
+            message.sender = request.user
             message.save()
-            return redirect('chat_detail', chat_id=chat_id)
-
-    return render(request, 'chat_detail.html', {'chat': chat, 'messages': messages, 'form': form})
-
-
+            return redirect('chat_detail', id_chat=id_chat)
+    return render(request, template_name='chats/chat_detail.html', context={
+        'chat': chat,
+        'messages': messages,
+        'form': form
+    })

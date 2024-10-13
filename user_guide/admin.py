@@ -4,8 +4,8 @@ from django.contrib.auth.admin import UserAdmin
 from django.utils.safestring import mark_safe
 from rangefilter.filters import DateRangeFilter
 from user_guide.forms import (
-    CustomUserChangeForm,
-    CustomUserCreationForm
+    CustomUserCreationForm,
+    CustomUserChangeForm
 )
 from user_guide.models import (
     StatusLocation,
@@ -19,7 +19,9 @@ from user_guide.models import (
     Files,
     News,
     Office,
-    Project, Chat, Message
+    Project,
+    Chat,
+    Message
 )
 
 
@@ -310,7 +312,7 @@ class SettingAdmin(admin.ModelAdmin):
 
 @admin.register(Chat)
 class ChatAdmin(admin.ModelAdmin):
-    pass
+    list_display = '__str__', 'id_chat', 'created',
 
 
 @admin.register(Message)

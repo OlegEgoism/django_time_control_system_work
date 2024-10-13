@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="card">
+            <h2>Чат с
+                {% if chat.recipient == request.user %}
+                    {{ chat.sender.fio }}
+                {% else %}
+                    {{ chat.recipient.fio }}
+                {% endif %}
+            </h2>
+            <div id="chat-messages">
+                <h3>Сообщения:</h3>
+                <ul>
+                    {% for message in messages %}
+                        <li><strong>{{ message.sender }}</strong>: {{ message.content }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <form id="chat-form" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Отправить сообщение</button>
+            </form>
+
+{#            <script>#}
+{#                const chatId = "{{ chat.id }}";#}
+{#                const user = "{{ request.user.username }}";#}
+{#                const chatSocket = new WebSocket(#}
+{#                    'ws://' + window.location.host + '/ws/chat/' + chatId + '/'#}
+{#                );#}
+{##}
+{#                chatSocket.onmessage = function (e) {#}
+{#                    const data = JSON.parse(e.data);#}
+{#                    const messageList = document.querySelector('#chat-messages ul');#}
+{#                    const newMessage = document.createElement('li');#}
+{#                    newMessage.innerHTML = '<strong>' + data.sender + '</strong>: ' + data.message;#}
+{#                    messageList.appendChild(newMessage);#}
+{#                };#}
+{##}
+{#                document.querySelector('#chat-form').onsubmit = function (e) {#}
+{#                    e.preventDefault();#}
+{#                    const messageInput = document.querySelector('#id_content');#}
+{#                    const message = messageInput.value;#}
+{##}
+{#                    chatSocket.send(JSON.stringify({#}
+{#                        'message': message#}
+{#                    }));#}
+{##}
+{#                    messageInput.value = '';#}
+{#                };#}
+{#            </script>#}
+        </div>
+    </div>
+{% endblock %}

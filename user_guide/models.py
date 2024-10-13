@@ -147,7 +147,6 @@ class CustomUser(AbstractUser):
             raise ValidationError("Если указан кабинет, укажите поле адрес рабочего места")
 
 
-
 class StatusLocation(models.Model):
     """Контроль времени"""
     id_status_location = ULIDField(verbose_name='id_status_location', db_comment='id_status_location', default=default, primary_key=True, editable=False)
@@ -207,7 +206,6 @@ class News(DateStamp):
     """Новость"""
     id_news = ULIDField(verbose_name='id_news', db_comment='id_news', default=default, primary_key=True, editable=False)
     name = models.CharField(verbose_name='Название', max_length=100)
-    # description = RichTextField(verbose_name='Описание', config_name='news')
     description = models.TextField(verbose_name='Описание')
     is_active = models.BooleanField(verbose_name='Опубликована', default=True)
     views_count = models.PositiveIntegerField(verbose_name='Просмотров', default=0)
@@ -237,27 +235,34 @@ class Setting(DateStamp):
         return self.name
 
 
-from django.db import models
-from django.contrib.auth import get_user_model
+class Chat(DateStamp):
+    """Чат"""
+    id_chat = ULIDField(verbose_name='id_chat', db_comment='id_chat', default=default, primary_key=True, editable=False)
+    sender = models.ForeignKey('CustomUser', verbose_name='Отправитель', db_comment='Отправитель', on_delete=models.CASCADE, related_name='chat_sender')  # user_from
+    recipient = models.ForeignKey('CustomUser', verbose_name='Получатель', db_comment='Получатель', on_delete=models.CASCADE, related_name='chat_recipient')  # user_to
 
-User = get_user_model()
-
-
-class Chat(models.Model):
-    user_from = models.ForeignKey(User, on_delete=models.CASCADE, related_name='chats_initiated')
-    user_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='chats_participated')
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Chat between {self.user_from} and {self.user_to}"
-
-
-class Message(models.Model):
-    """Сообщение в чате"""
-    chat = models.ForeignKey(Chat, related_name='messages', on_delete=models.CASCADE)
-    sender = models.ForeignKey(User, related_name='messages_sent', on_delete=models.CASCADE)
-    content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        verbose_name = 'Чат'
+        verbose_name_plural = 'Чаты'
 
     def __str__(self):
-        return f"Message from {self.sender} in chat {self.chat.id}"
+        return f"Чат между {self.sender} и {self.recipient}"
+
+
+class Message(DateStamp):
+    """Сообщения"""
+    id_messages = ULIDField(verbose_name='id_messages', db_comment='id_messages', default=default, primary_key=True, editable=False)
+    chat = models.ForeignKey('Chat', verbose_name='Чат', db_comment='Чат', on_delete=models.CASCADE, related_name='message_chat')
+    sender = models.ForeignKey('CustomUser', verbose_name='Отправитель сообщения', db_comment='Отправитель сообщения', on_delete=models.CASCADE, related_name='messages_sender')
+    content = models.TextField(verbose_name='Сообщение', db_comment='Сообщение')
+
+    class Meta:
+        verbose_name = 'Сообщение'
+        verbose_name_plural = 'Сообщения'
+
+    def __str__(self):
+        return f"Сообщение от {self.sender} в чате {self.chat.id_chat}"
+
+
+
+

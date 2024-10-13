@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,7 +43,6 @@ INSTALLED_APPS = [
 
 
     # 'widget_tweaks',
-    # 'ckeditor',  # Работа с текстом
     'admin_auto_filters',  # Фильтрация по полям и поиску по названию
     'rangefilter',  # Фильтрация для времени
 ]
@@ -143,23 +143,30 @@ LOGOUT_REDIRECT_URL = '/'  # Перенаправление после успе�
 # Для абстрактной модели пользователя
 AUTH_USER_MODEL = 'user_guide.CustomUser'
 
-"""Ckeditor"""
-CKEDITOR_UPLOAD_PATH = ''
-CKEDITOR_CONFIGS = {
-    'news': {
-        'allowedContent': True,
-        'toolbar': 'Custom',
-        'height': 360,
-        'width': 900,
-        'toolbar_Custom': [
-            ['Preview', 'Maximize', 'RemoveFormat', '-'],
-            ['Undo', 'Redo', '-', ],
-            ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', 'SpecialChar', '-'],
-            ['TextColor', 'BGColor'],
-            '/',
-            ['NumberedList', 'BulletedList', 'Outdent', 'Indent', '-'],
-            ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-'],
-            ['Styles', 'Format', 'Font', 'FontSize'],
-        ]
-    }
+
+ASGI_APPLICATION = 'conf.asgi.application'
+
+# CHANNEL_LAYERS = {
+#     'default': {
+#         # Redis config (for prod)
+#         # 'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         # 'CONFIG': {
+#         #     'hosts': [
+#         #         ('localhost', 6379)
+#         #     ]
+#         # }
+#         # InMemoryChannelLayer config (for dev)
+#         'BACKEND': 'conf.layers.InMemoryChannelLayer'
+#     }
+# }
+
+
+# Настройки для Channels
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
 }
