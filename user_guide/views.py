@@ -5,9 +5,11 @@ from itertools import groupby
 from operator import attrgetter
 from pyexpat.errors import messages
 from urllib.parse import quote
+from django.contrib.auth import authenticate, login
 from django.conf import settings
 from django.contrib.auth import logout
-from django.shortcuts import redirect
+from django.contrib import messages
+from django.http import HttpResponse
 from django.core.paginator import (
     Paginator,
     PageNotAnInteger,
@@ -19,7 +21,6 @@ from django.db.models import (
     OuterRef,
     Count
 )
-from django.http import HttpResponse
 from django.shortcuts import (
     render,
     get_object_or_404,
@@ -34,10 +35,13 @@ from user_guide.models import (
     StatusLocation,
     Setting,
     News,
-    Files, Subdivision, Project
+    Files,
+    Subdivision,
+    Project
 )
 
 
+# TODO Главная
 def home(request):
     """Главная"""
     config = Setting.objects.first()
@@ -48,6 +52,7 @@ def home(request):
     })
 
 
+# TODO Новости
 def news_list(request):
     """Новости"""
     config = Setting.objects.first()
@@ -71,6 +76,40 @@ def news_list(request):
     })
 
 
+def news_info(request, name):
+    """Новость"""
+    config = Setting.objects.first()
+    news = get_object_or_404(News, name=name)
+    print('___________________', news.files_news.all())
+    news.views_count += 1
+    news.save()
+    files_with_existence = []
+    for file in news.files_news.all():
+        file_path = os.path.join(settings.MEDIA_ROOT, str(file.files))
+        file_exists = os.path.exists(file_path)
+        files_with_existence.append((file, file_exists))
+    return render(request, template_name='news/news_info.html', context={
+        'config': config,
+        'news': news,
+        'files_with_existence': files_with_existence,
+    })
+
+
+def news_download_file(request, id_files):
+    """Скачивание файла"""
+    file_obj = get_object_or_404(Files, id_files=id_files)
+    file_path = os.path.join(settings.MEDIA_ROOT, str(file_obj.files))  # Путь к файлу
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as file_content:
+            response = HttpResponse(file_content.read(), content_type='application/octet-stream')
+            file_name = os.path.basename(file_path)
+            response['Content-Disposition'] = f'attachment; filename="{quote(file_name)}"'
+            return response
+    id_files = file_obj.id_files
+    return redirect('news_file_not_found', id_files=id_files)
+
+
+# TODO Сотрудники
 def user_list(request):
     """Сотрудники"""
     config = Setting.objects.first()
@@ -96,93 +135,6 @@ def user_list(request):
     })
 
 
-def subdivision_list(request):
-    """Подразделения"""
-    config = Setting.objects.first()
-    page_size = config.subdivision_page
-    search_query = request.GET.get('q', '')
-    query = Q(name__icontains=search_query) | \
-            Q(description__icontains=search_query)
-    subdivisions = Subdivision.objects.filter(query).annotate(employee_count=Count('custom_user_subdivision')).order_by('name')
-    paginator = Paginator(subdivisions, page_size)
-    page = request.GET.get('page')
-    try:
-        subdivisions_page = paginator.page(page)
-    except PageNotAnInteger:
-        subdivisions_page = paginator.page(1)
-    except EmptyPage:
-        subdivisions_page = paginator.page(paginator.num_pages)
-    return render(request, 'subdivision_list.html', context={
-        'config': config,
-        'subdivisions': subdivisions_page,
-        'search_query': search_query
-    })
-
-
-def project_list(request):
-    """Проекты"""
-    config = Setting.objects.first()
-    page_size = config.project_page
-    search_query = request.GET.get('q', '')
-    query = Q(name__icontains=search_query) | \
-            Q(owner__icontains=search_query) | \
-            Q(description__icontains=search_query)
-    projects = Project.objects.filter(query).annotate(employee_count=Count('custom_user_project')).order_by('name')
-    paginator = Paginator(projects, page_size)
-    page = request.GET.get('page')
-    try:
-        projects_page = paginator.page(page)
-    except PageNotAnInteger:
-        projects_page = paginator.page(1)
-    except EmptyPage:
-        projects_page = paginator.page(paginator.num_pages)
-    return render(request, 'project_list.html', context={
-        'config': config,
-        'projects': projects_page,
-        'search_query': search_query
-    })
-
-# from django.contrib.auth import views as auth_views
-# from .models import Setting
-#
-# class CustomLoginView(auth_views.LoginView):
-#     template_name = 'login.html'
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['config'] = Setting.objects.first()  # Получите первую запись конфигурации
-#         return context
-
-
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from .models import Setting
-
-def user_login(request):
-    config = Setting.objects.first()
-
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None:
-            login(request, user)
-            return redirect('/')  # Перенаправление после успешного входа
-        else:
-            error_message = 'Неверный логин или пароль'
-            return render(request, 'login.html', {'config': config, 'error_message': error_message})
-
-    return render(request, 'login.html', {'config': config})
-
-
-def user_logout(request):
-    """Выход"""
-    logout(request)
-    return redirect('/')
-
-
-# __________________
 def user_info(request, slug):
     """Информация о сотруднике"""
     config = Setting.objects.first()
@@ -234,32 +186,18 @@ def user_edit(request, slug):
     user = get_object_or_404(CustomUser, slug=slug)
 
     if request.method == 'POST':
-        form = CustomUserForm(request.POST, request.FILES, instance=user)
-
-        # Отладка: Проверьте, что POST-запрос и данные формы отправлены
-        print('POST запрос получен:', request.POST)
-
+        form = CustomUserForm(request.POST, instance=user)
         if form.is_valid():
-            try:
-                form.save()  # Сохраняем данные
-                messages.success(request, 'Данные сотрудника успешно обновлены')
-                return redirect('user_info', slug=user.slug)
-            except Exception as e:
-                messages.error(request, f'Ошибка сохранения данных: {str(e)}')
-        else:
-            # Выводим ошибки формы для диагностики
-            print('Ошибки формы:', form.errors)
-            messages.error(request, f'Ошибки в форме: {form.errors}')
+            form.save()
+            messages.success(request, 'Данные успешно обновлены!')
+            return redirect('user_info', slug=user.slug)
     else:
         form = CustomUserForm(instance=user)
-
-    context = {
+    return render(request, template_name='users/user_edit.html', context={
         'config': config,
         'form': form,
         'user': user
-    }
-
-    return render(request, 'users/user_edit.html', context)
+    })
 
 
 def user_time(request, slug):
@@ -315,41 +253,75 @@ def user_time(request, slug):
     })
 
 
-def news_info(request, name):
-    """Новость"""
+# TODO Подразделения
+def subdivision_list(request):
+    """Подразделения"""
     config = Setting.objects.first()
-    news = get_object_or_404(News, name=name)
-    print('___________________', news.files_news.all())
-    news.views_count += 1
-    news.save()
-    files_with_existence = []
-    for file in news.files_news.all():
-        file_path = os.path.join(settings.MEDIA_ROOT, str(file.files))
-        file_exists = os.path.exists(file_path)
-        files_with_existence.append((file, file_exists))
-    return render(request, template_name='news/news_info.html', context={
+    page_size = config.subdivision_page
+    search_query = request.GET.get('q', '')
+    query = Q(name__icontains=search_query) | \
+            Q(description__icontains=search_query)
+    subdivisions = Subdivision.objects.filter(query).annotate(employee_count=Count('custom_user_subdivision')).order_by('name')
+    paginator = Paginator(subdivisions, page_size)
+    page = request.GET.get('page')
+    try:
+        subdivisions_page = paginator.page(page)
+    except PageNotAnInteger:
+        subdivisions_page = paginator.page(1)
+    except EmptyPage:
+        subdivisions_page = paginator.page(paginator.num_pages)
+    return render(request, 'subdivision_list.html', context={
         'config': config,
-        'news': news,
-        'files_with_existence': files_with_existence,
+        'subdivisions': subdivisions_page,
+        'search_query': search_query
     })
 
 
-def news_download_file(request, id_files):
-    """Скачивание файла"""
-    file_obj = get_object_or_404(Files, id_files=id_files)
-    file_path = os.path.join(settings.MEDIA_ROOT, str(file_obj.files))  # Путь к файлу
-    if os.path.exists(file_path):
-        with open(file_path, 'rb') as file_content:
-            response = HttpResponse(file_content.read(), content_type='application/octet-stream')
-            file_name = os.path.basename(file_path)
-            response['Content-Disposition'] = f'attachment; filename="{quote(file_name)}"'
-            return response
-    id_files = file_obj.id_files
-    return redirect('news_file_not_found', id_files=id_files)
+# TODO Проекты
+def project_list(request):
+    """Проекты"""
+    config = Setting.objects.first()
+    page_size = config.project_page
+    search_query = request.GET.get('q', '')
+    query = Q(name__icontains=search_query) | \
+            Q(owner__icontains=search_query) | \
+            Q(description__icontains=search_query)
+    projects = Project.objects.filter(query).annotate(employee_count=Count('custom_user_project')).order_by('name')
+    paginator = Paginator(projects, page_size)
+    page = request.GET.get('page')
+    try:
+        projects_page = paginator.page(page)
+    except PageNotAnInteger:
+        projects_page = paginator.page(1)
+    except EmptyPage:
+        projects_page = paginator.page(paginator.num_pages)
+    return render(request, 'project_list.html', context={
+        'config': config,
+        'projects': projects_page,
+        'search_query': search_query
+    })
 
-# def news_file_not_found(request, name):
-#     """Если файл не найден"""
-#     news = get_object_or_404(News, name=name)
-#     return render(request, 'news/news_file_not_found.html', {
-#         'news': news,
-#     })
+
+# TODO Авторизация(Вход/Выход)
+def user_login(request):
+    config = Setting.objects.first()
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('/')  # Перенаправление после успешного входа
+        else:
+            error_message = 'Неверный логин или пароль'
+            return render(request, 'login.html', {'config': config, 'error_message': error_message})
+
+    return render(request, 'login.html', {'config': config})
+
+
+def user_logout(request):
+    """Выход"""
+    logout(request)
+    return redirect('/')

@@ -24,29 +24,24 @@ from user_guide.views import (
 urlpatterns = [
     # Админка
     path('admin/', admin.site.urls),
-    # Вход
-    path('login/', user_login, name='login'),
-    # Выход
-    path('logout/', user_logout, name='logout'),
     # Главная
     path('', home, name='home'),
     # Новости
     path('news_list/', news_list, name='news_list'),
+    path('news_info/<str:name>/', news_info, name='news_info'),
+    path('news_download_file/<str:id_files>', news_download_file, name='news_download_file'),
     # Сотрудники
     path('user_list/', user_list, name='user_list'),
+    path('user_info/<slug:slug>/', user_info, name='user_info'),
+    path('user_edit/<slug:slug>/', user_edit, name='user_edit'),
+    path('user_time/<slug:slug>/', user_time, name='user_time'),
     # Подразделения
     path('subdivision_list/', subdivision_list, name='subdivision_list'),
     # Проекты
     path('project_list/', project_list, name='project_list'),
-    # Новости
-    path('news/<str:name>/', news_info, name='news_info'),
-    path('news/download/<str:id_files>', news_download_file, name='news_download_file'),
-    # Сотрудников
-    path('<slug:slug>/', user_info, name='user_info'),
-    path('edit/<slug:slug>/', user_edit, name='user_edit'),
-    path('time/<slug:slug>/', user_time, name='user_time'),
-
-
+    # Авторизация(Вход/Выход)
+    path('login/', user_login, name='login'),
+    path('logout/', user_logout, name='logout'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
