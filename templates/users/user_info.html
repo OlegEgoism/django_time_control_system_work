@@ -80,20 +80,22 @@
                     </p>
                 </div>
             </div>
-            <div class="user-bio">
-                <p><strong>Биография: </strong>
-                    {% if user.biography %}
-                        <span id="bio-short">{{ user.biography|slice:":1000" }}{% if user.biography|length > 1000 %}...{% endif %}</span>
-                        <span id="bio-full" style="display: none;">{{ user.biography }}</span>
-                        {% if user.biography|length > 1000 %}
-                            <a href="javascript:void(0)" id="toggle-bio" onclick="toggleBio()">Развернуть</a>
-                        {% endif %}
-                    {% else %}
-                        <span class="text-danger">Информация не заполнена</span>
-                    {% endif %}
-                </p>
-                <a href="{% url 'user_edit' user.slug %}" class="btn btn-warning btn-sm">Редактировать данные</a>
-            </div>
+<div class="user-bio">
+    <p><strong>Биография: </strong>
+        {% if user.biography %}
+            <span id="bio-short">{{ user.biography|slice:":1000" }}{% if user.biography|length > 1000 %}...{% endif %}</span>
+            <span id="bio-full" style="display: none;">{{ user.biography }}</span>
+            {% if user.biography|length > 1000 %}
+                <a href="javascript:void(0)" id="toggle-bio" onclick="toggleBio()">Развернуть</a>
+            {% endif %}
+        {% else %}
+            <span class="text-danger">Информация не заполнена</span>
+        {% endif %}
+    </p>
+    {% if is_owner %}
+        <a href="{% url 'user_edit' user.slug %}" class="btn btn-warning btn-sm">Редактировать данные</a>
+    {% endif %}
+</div>
         </div>
         <div class="card">
             <div class="user-bio">

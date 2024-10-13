@@ -143,7 +143,7 @@ def user_info(request, slug):
     projects = Project.objects.filter(custom_user_project=user)
     entries = status_locations.filter(camera__finding=1).order_by('created')
     exits = status_locations.filter(camera__finding=2).order_by('created')
-
+    is_owner = request.user == user
     def calculate_total_time(entries, exits):
         total_time = timedelta()
         for entry, exit in zip(entries, exits):
@@ -177,6 +177,7 @@ def user_info(request, slug):
         'daily_time': format_time(daily_time),
         'monthly_time': format_time(monthly_time),
         'yearly_time': format_time(yearly_time),
+        'is_owner': is_owner,
     })
 
 
