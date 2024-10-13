@@ -24,7 +24,7 @@ from user_guide.models import (
 def home(request):
     """Главная"""
     config = Setting.objects.first()
-    users = CustomUser.objects.get(is_active=True)
+    users = CustomUser.objects.filter(is_active=True)
     return render(request, template_name='home.html', context={
         'config': config,
         'users': users,
