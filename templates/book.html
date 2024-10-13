@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Книги{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="card">
+            <form method="get" action="{% url 'book_list' %}" class="d-flex align-items-center mb-3">
+                <h1>Книги</h1>
+                <input type="text" class="form-control mr-1 search-input" name="q" value="{{ search_query }}" placeholder="Поиск по названию и автору">
+                <button type="submit" class="btn btn-primary mr-1">Поиск</button>
+                <a href="{% url 'book_list' %}" class="btn btn-secondary">Очистить</a>
+            </form>
+            {% if books %}
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th class="book-logo">Обложка</th>
+                        <th class="book-name">Название</th>
+                        <th class="book-author">Автор(ы)</th>
+                        <th class="book-file">Информация</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for book in books %}
+                        <tr>
+                            <td class="book-logo">
+                                {% if book.logo %}
+                                    <img src="{{ book.logo.url }}" alt="{{ book.name }} обложка" style="max-width: 100px; max-height: 150px;">
+                                {% endif %}
+                            </td>
+                            <td class="book-name">{{ book.name }}</td>
+                            <td class="book-author">{{ book.author }}</td>
+                            <td class="book-file">
+                                <div><a href="{% url 'download_book' book.id_book %}" class="btn btn-primary">Скачать</a></div>
+                                <div>{{ book.file_size }}</div>
+                                <div>Скачал(и): {{ book.download_count }}</div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if books.has_previous %}
+                            <a href="?page={{ books.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-outline-primary"><<</a>
+                        {% endif %}
+                        {% for page_num in books.paginator.page_range %}
+                            {% if page_num == books.number %}
+                                <strong class="btn btn-primary">{{ page_num }}</strong>
+                            {% else %}
+                                <a href="?page={{ page_num }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-outline-primary">{{ page_num }}</a>
+                            {% endif %}
+                        {% endfor %}
+                        {% if books.has_next %}
+                            <a href="?page={{ books.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-outline-primary">>></a>
+                        {% endif %}
+                    </span>
+                </div>
+                <p>Страница {{ books.number }} из {{ books.paginator.num_pages }}</p>
+            {% else %}
+                <h2 class="no-results">В настоящий момент нет информации</h2>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

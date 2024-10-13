@@ -97,6 +97,35 @@ th.project-number {
 }
 
 
+
+
+th.book-logo {
+    width: 100px;
+}
+
+td.book-logo {
+    width: 100px;
+    height: 150px;
+}
+
+th.book-name {
+    width: 500px;
+}
+
+th.book-author {
+    width: 300px;
+}
+
+
+th.book-file {
+    width: 100px;
+}
+
+th.book-downloads {
+    width: 160px;
+}
+
+
 .photo-fio {
     display: flex;
     align-items: initial;
@@ -218,17 +247,6 @@ form input, form select {
 /*    padding: 0; !* Убрать отступы *!*/
 /*    cursor: pointer; !* Курсор в виде указателя *!*/
 /*}*/
-
-
-
-
-
-
-
-
-
-
-
 
 
 /*.form-group-time label {*/

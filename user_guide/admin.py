@@ -19,7 +19,7 @@ from user_guide.models import (
     Files,
     News,
     Office,
-    Project
+    Project, Book
 )
 
 
@@ -291,7 +291,7 @@ class NewsAdmin(admin.ModelAdmin):
 @admin.register(Setting)
 class SettingAdmin(admin.ModelAdmin):
     """Настройки"""
-    fields = 'preview_logo', 'logo', 'name', 'news_page', 'subdivision_page', 'project_page', 'time_page',
+    fields = 'preview_logo', 'logo', 'name', 'news_page', 'subdivision_page', 'project_page', 'book_page', 'time_page',
     list_display = 'name', 'preview_logo', 'created', 'updated',
     readonly_fields = 'created', 'updated', 'preview_logo',
 
@@ -307,3 +307,9 @@ class SettingAdmin(admin.ModelAdmin):
         if self.model.objects.count() >= 1:
             return False
         return True
+
+
+@admin.register(Book)
+class BookAdmin(admin.ModelAdmin):
+    """Книги"""
+    list_display = 'author', 'name', 'created', 'updated',

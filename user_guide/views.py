@@ -1,3 +1,4 @@
+import math
 import os
 from collections import defaultdict
 from datetime import timedelta, datetime
@@ -37,7 +38,7 @@ from user_guide.models import (
     News,
     Files,
     Subdivision,
-    Project
+    Project, Book
 )
 
 
@@ -143,7 +144,8 @@ def user_info(request, slug):
     projects = Project.objects.filter(custom_user_project=user)
     entries = status_locations.filter(camera__finding=1).order_by('created')
     exits = status_locations.filter(camera__finding=2).order_by('created')
-    is_owner = request.user == user
+    is_owner_or_admin = request.user == user or request.user.is_staff
+
     def calculate_total_time(entries, exits):
         total_time = timedelta()
         for entry, exit in zip(entries, exits):
@@ -177,7 +179,7 @@ def user_info(request, slug):
         'daily_time': format_time(daily_time),
         'monthly_time': format_time(monthly_time),
         'yearly_time': format_time(yearly_time),
-        'is_owner': is_owner,
+        'is_owner_or_admin': is_owner_or_admin,
     })
 
 
@@ -301,6 +303,60 @@ def project_list(request):
         'projects': projects_page,
         'search_query': search_query
     })
+
+
+# TODO Книги
+def book_list(request):
+    """Книги"""
+    config = Setting.objects.first()
+    page_size = config.book_page
+    search_query = request.GET.get('q', '')
+    query = Q(author__icontains=search_query) | Q(name__icontains=search_query)
+
+    books = Book.objects.filter(query).order_by('name')
+    paginator = Paginator(books, page_size)
+    page = request.GET.get('page')
+
+    try:
+        books_page = paginator.page(page)
+    except PageNotAnInteger:
+        books_page = paginator.page(1)
+    except EmptyPage:
+        books_page = paginator.page(paginator.num_pages)
+
+    # Преобразуем размер файла для каждой книги
+    for book in books_page:
+        if book.files:
+            book.file_size = convert_size(book.files.size)
+        else:
+            book.file_size = "Не указан"
+
+    return render(request, 'book.html', context={
+        'config': config,
+        'books': books_page,
+        'search_query': search_query
+    })
+
+
+def convert_size(size_bytes):
+    """Преобразует размер в читаемый формат"""
+    if size_bytes == 0:
+        return "0 Bytes"
+    size_name = ("Bytes", "KB", "MB", "GB", "TB")
+    i = int(math.floor(math.log(size_bytes, 1024)))
+    p = math.pow(1024, i)
+    s = round(size_bytes / p, 2)
+    return f"{s} {size_name[i]}"
+
+
+def book_download_file(request, id_book):
+    book = get_object_or_404(Book, id_book=id_book)
+    book.download_count += 1  # Увеличиваем счетчик скачиваний
+    book.save()  # Сохраняем изменения
+    response = HttpResponse(book.files, content_type='application/pdf')  # Укажите правильный тип содержимого
+    response['Content-Disposition'] = f'attachment; filename="{book.name}.pdf"'  # Устанавливаем имя файла
+    return response
+
 
 
 # TODO Авторизация(Вход/Выход)

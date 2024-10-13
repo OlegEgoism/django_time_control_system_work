@@ -206,7 +206,7 @@ class News(DateStamp):
     name = models.CharField(verbose_name='Название', db_comment='Название', max_length=100)
     description = models.TextField(verbose_name='Описание', db_comment='Описание')
     is_active = models.BooleanField(verbose_name='Опубликована', db_comment='Опубликована', default=True)
-    views_count = models.PositiveIntegerField(verbose_name='Просмотров', db_comment='Просмотров', help_text='Количество просмотров)',  default=0)
+    views_count = models.PositiveIntegerField(verbose_name='Просмотров', db_comment='Просмотров', help_text='Количество просмотров)', default=0)
 
     class Meta:
         verbose_name = 'Новость'
@@ -225,11 +225,30 @@ class Setting(DateStamp):
     news_page = models.IntegerField(verbose_name='Пагинация новостей', db_comment='Пагинация новостей', default=5)
     subdivision_page = models.IntegerField(verbose_name='Пагинация подразделений', db_comment='Пагинация подразделений', default=5)
     project_page = models.IntegerField(verbose_name='Пагинация проектов', db_comment='Пагинация проектов', default=5)
+    book_page = models.IntegerField(verbose_name='Пагинация книг', db_comment='Пагинация книг', default=5)
     time_page = models.IntegerField(verbose_name='Пагинация контроля времени', db_comment='Пагинация контроля времени', default=5)
 
     class Meta:
         verbose_name = 'Настройки'
         verbose_name_plural = 'Настройки'
+
+    def __str__(self):
+        return self.name
+
+
+class Book(DateStamp):
+    """Книга"""
+    id_book = ULIDField(verbose_name='id_book', db_comment='id_book', default=default, primary_key=True, editable=False)
+    logo = models.ImageField(verbose_name='Обложка', db_comment='Обложка', upload_to='book/', default='book/default/default_book.png', blank=True, null=True)
+    name = models.CharField(verbose_name='Название', db_comment='Название', help_text='Название книги', max_length=250)
+    author = models.CharField(verbose_name='Автор(ы)', db_comment='Автор(ы)', max_length=250)
+    files = models.FileField(verbose_name='Файл', db_comment='Файл', upload_to='files/')
+    is_active = models.BooleanField(verbose_name='Опубликована', db_comment='Опубликована', default=True)
+    download_count = models.PositiveIntegerField(verbose_name='Просмотров', db_comment='Просмотров', help_text='Количество просмотров)', default=0)
+
+    class Meta:
+        verbose_name = 'Книга'
+        verbose_name_plural = 'Книги'
 
     def __str__(self):
         return self.name

@@ -80,32 +80,34 @@
                     </p>
                 </div>
             </div>
-<div class="user-bio">
-    <p><strong>Биография: </strong>
-        {% if user.biography %}
-            <span id="bio-short">{{ user.biography|slice:":1000" }}{% if user.biography|length > 1000 %}...{% endif %}</span>
-            <span id="bio-full" style="display: none;">{{ user.biography }}</span>
-            {% if user.biography|length > 1000 %}
-                <a href="javascript:void(0)" id="toggle-bio" onclick="toggleBio()">Развернуть</a>
-            {% endif %}
-        {% else %}
-            <span class="text-danger">Информация не заполнена</span>
-        {% endif %}
-    </p>
-    {% if is_owner %}
-        <a href="{% url 'user_edit' user.slug %}" class="btn btn-warning btn-sm">Редактировать данные</a>
-    {% endif %}
-</div>
-        </div>
-        <div class="card">
             <div class="user-bio">
-                <h1>Контроль рабочего времени</h1>
-                <p><strong>Отработанное время за текущий день: </strong>{{ daily_time }}</p>
-                <p><strong>Отработанное время за текущий месяц: </strong>{{ monthly_time }}</p>
-                <p><strong>Отработанное время за текущий год: </strong>{{ yearly_time }}</p>
-                <a href="{% url 'user_time' user.slug %}" class="btn btn-warning btn-sm">Подробней</a>
+                <p><strong>Биография: </strong>
+                    {% if user.biography %}
+                        <span id="bio-short">{{ user.biography|slice:":1000" }}{% if user.biography|length > 1000 %}...{% endif %}</span>
+                        <span id="bio-full" style="display: none;">{{ user.biography }}</span>
+                        {% if user.biography|length > 1000 %}
+                            <a href="javascript:void(0)" id="toggle-bio" onclick="toggleBio()">Развернуть</a>
+                        {% endif %}
+                    {% else %}
+                        <span class="text-danger">Информация не заполнена</span>
+                    {% endif %}
+                </p>
+                {% if is_owner_or_admin %}
+                    <a href="{% url 'user_edit' user.slug %}" class="btn btn-warning btn-sm">Редактировать данные</a>
+                {% endif %}
             </div>
         </div>
+        {% if is_owner_or_admin %}
+            <div class="card">
+                <div class="user-bio">
+                    <h1>Контроль рабочего времени</h1>
+                    <p><strong>Отработанное время за текущий день: </strong>{{ daily_time }}</p>
+                    <p><strong>Отработанное время за текущий месяц: </strong>{{ monthly_time }}</p>
+                    <p><strong>Отработанное время за текущий год: </strong>{{ yearly_time }}</p>
+                    <a href="{% url 'user_time' user.slug %}" class="btn btn-warning btn-sm">Подробней</a>
+                </div>
+            </div>
+        {% endif %}
         <div class="card">
             <div class="user-bio">
                 <h1>Участие в проектах</h1>
