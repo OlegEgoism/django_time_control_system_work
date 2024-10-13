@@ -70,7 +70,7 @@ def news_list(request):
         news_all = paginator.page(1)
     except EmptyPage:
         news_all = paginator.page(paginator.num_pages)
-    return render(request, 'news/news_list.html', context={
+    return render(request, template_name='news/news_list.html', context={
         'config': config,
         'news_all': news_all,
         'search_query': search_query
@@ -273,7 +273,7 @@ def subdivision_list(request):
         subdivisions_page = paginator.page(1)
     except EmptyPage:
         subdivisions_page = paginator.page(paginator.num_pages)
-    return render(request, 'subdivision_list.html', context={
+    return render(request, template_name='subdivision_list.html', context={
         'config': config,
         'subdivisions': subdivisions_page,
         'search_query': search_query
@@ -298,7 +298,7 @@ def project_list(request):
         projects_page = paginator.page(1)
     except EmptyPage:
         projects_page = paginator.page(paginator.num_pages)
-    return render(request, 'project_list.html', context={
+    return render(request, template_name='project_list.html', context={
         'config': config,
         'projects': projects_page,
         'search_query': search_query
@@ -312,26 +312,21 @@ def book_list(request):
     page_size = config.book_page
     search_query = request.GET.get('q', '')
     query = Q(author__icontains=search_query) | Q(name__icontains=search_query)
-
     books = Book.objects.filter(query).order_by('name')
     paginator = Paginator(books, page_size)
     page = request.GET.get('page')
-
     try:
         books_page = paginator.page(page)
     except PageNotAnInteger:
         books_page = paginator.page(1)
     except EmptyPage:
         books_page = paginator.page(paginator.num_pages)
-
-    # Преобразуем размер файла для каждой книги
     for book in books_page:
         if book.files:
             book.file_size = convert_size(book.files.size)
         else:
             book.file_size = "Не указан"
-
-    return render(request, 'book.html', context={
+    return render(request, template_name='book.html', context={
         'config': config,
         'books': books_page,
         'search_query': search_query
@@ -351,11 +346,26 @@ def convert_size(size_bytes):
 
 def book_download_file(request, id_book):
     book = get_object_or_404(Book, id_book=id_book)
-    book.download_count += 1  # Увеличиваем счетчик скачиваний
-    book.save()  # Сохраняем изменения
     response = HttpResponse(book.files, content_type='application/pdf')  # Укажите правильный тип содержимого
     response['Content-Disposition'] = f'attachment; filename="{book.name}.pdf"'  # Устанавливаем имя файла
     return response
+
+from django.http import JsonResponse
+def increment_download_count(request, id_book):
+    book = get_object_or_404(Book, id_book=id_book)
+    book.download_count += 1
+    book.save()
+
+    return JsonResponse({'new_count': book.download_count})
+
+
+
+
+
+
+
+
+
 
 
 

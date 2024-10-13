@@ -33,9 +33,11 @@
                             <td class="book-name">{{ book.name }}</td>
                             <td class="book-author">{{ book.author }}</td>
                             <td class="book-file">
-                                <div><a href="{% url 'download_book' book.id_book %}" class="btn btn-primary">Скачать</a></div>
+                                <div>
+                                    <a href="{% url 'download_book' book.id_book %}" class="btn btn-primary" onclick="incrementDownload('{{ book.id_book }}')">Скачать</a>
+                                </div>
                                 <div>{{ book.file_size }}</div>
-                                <div>Скачал(и): {{ book.download_count }}</div>
+                                <div id="downloads-{{ book.id_book }}">Скачал(и): {{ book.download_count }}</div>
                             </td>
                         </tr>
                     {% endfor %}
@@ -64,4 +66,5 @@
             {% endif %}
         </div>
     </div>
+    <script src="{% static 'js/book.js' %}"></script>
 {% endblock %}

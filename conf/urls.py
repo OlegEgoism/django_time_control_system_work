@@ -18,7 +18,7 @@ from user_guide.views import (
     user_edit,
     user_time,
     user_login,
-    user_logout,
+    user_logout, increment_download_count,
 
 )
 
@@ -43,6 +43,9 @@ urlpatterns = [
     # Библиотека
     path('book_list/', book_list, name='book_list'),
     path('book_download_file/<str:id_book>/', book_download_file, name='download_book'),
+    path('increment_download/<str:id_book>/', increment_download_count, name='increment_download'),
+
+
     # Авторизация(Вход/Выход)
     path('login/', user_login, name='login'),
     path('logout/', user_logout, name='logout'),
