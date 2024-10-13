@@ -297,14 +297,14 @@ def chat_list(request):
 def create_chat(request):
     """Создание нового чата"""
     if request.method == 'POST':
-        form = ChatForm(request.POST)
+        form = ChatForm(request.POST, instance=request.user)  # Передаем request.user
         if form.is_valid():
             chat = form.save(commit=False)
-            chat.sender = request.user
+            chat.sender = request.user  # Устанавливаем текущего пользователя как инициатора чата
             chat.save()
             return redirect('chat_detail', id_chat=chat.id_chat)
     else:
-        form = ChatForm(instance=request.user)
+        form = ChatForm(instance=request.user)  # Передаем request.user
     return render(request, template_name='chats/create_chat.html', context={
         'form': form
     })

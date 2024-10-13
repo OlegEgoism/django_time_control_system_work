@@ -47,13 +47,29 @@ class MessageForm(forms.ModelForm):
         fields = 'content',
 
 
+# class ChatForm(forms.ModelForm):
+
+#     class Meta:
+#         model = Chat
+#         fields = 'recipient',
+#
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         current_user = kwargs.get('initial', {}).get('recipient', None)
+#         if current_user is not None:
+#             self.fields['recipient'].queryset = CustomUser.objects.exclude(id_custom_user=current_user.id_custom_user)
+
+
+
 class ChatForm(forms.ModelForm):
     class Meta:
         model = Chat
-        fields = 'recipient',
+        fields = ['recipient']  # Используем список для полей
 
     def __init__(self, *args, **kwargs):
+        current_user = kwargs.pop('instance', None)  # Получаем текущего пользователя
         super().__init__(*args, **kwargs)
-        current_user = kwargs.get('initial', {}).get('recipient', None)
+
         if current_user is not None:
+            # Исключаем текущего пользователя из queryset
             self.fields['recipient'].queryset = CustomUser.objects.exclude(id_custom_user=current_user.id_custom_user)
