@@ -32,7 +32,7 @@ def home(request):
 
 
 def news_list(request):
-    """Список новостей"""
+    """Новости"""
     config = Setting.objects.first()
     page_size = config.news_page
     search_query = request.GET.get('q', '')
@@ -55,7 +55,7 @@ def news_list(request):
 
 
 def user_list(request):
-    """Список сотрудников"""
+    """Сотрудники"""
     config = Setting.objects.first()
     search_query = request.GET.get('q', '')
     query = Q(fio__icontains=search_query) | \
@@ -80,7 +80,7 @@ def user_list(request):
 
 
 def subdivision_list(request):
-    """Список подразделений с фильтром по названию отдела"""
+    """Подразделения"""
     config = Setting.objects.first()
     page_size = config.subdivision_page
     search_query = request.GET.get('q', '')
@@ -103,7 +103,7 @@ def subdivision_list(request):
 
 
 def project_list(request):
-    """Список проектов"""
+    """Проекты"""
     config = Setting.objects.first()
     page_size = config.project_page
     search_query = request.GET.get('q', '')

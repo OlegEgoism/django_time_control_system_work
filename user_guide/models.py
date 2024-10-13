@@ -6,22 +6,22 @@ from user_guide.all_validator import phone_mobile_validator, percentage_completi
 
 
 class DateStamp(models.Model):
-    """Отметка даты"""
-    created = models.DateTimeField(verbose_name='Дата и время создания', db_comment='Дата и время создания', auto_now_add=True)
-    updated = models.DateTimeField(verbose_name='Дата и время изменения', db_comment='Дата и время изменения', auto_now=True)
+    """Временные отметки"""
+    created = models.DateTimeField(verbose_name='Дата создания', db_comment='Дата создания', auto_now_add=True)
+    updated = models.DateTimeField(verbose_name='Дата изменения', db_comment='Дата изменения', auto_now=True)
 
     class Meta:
         abstract = True
 
 
 class Address(DateStamp):
-    """Адрес рабочего места"""
+    """Адреса"""
     id_address = ULIDField(verbose_name='id_address', db_comment='id_address', default=default, primary_key=True, editable=False)
-    name = models.CharField(verbose_name='Адрес рабочего места', db_comment='Адрес рабочего места', max_length=250, db_index=True, unique=True)
+    name = models.CharField(verbose_name='Адрес', db_comment='Адрес', max_length=250, db_index=True, unique=True)
 
     class Meta:
-        verbose_name = 'Адрес рабочего места'
-        verbose_name_plural = 'Адреса рабочего места'
+        verbose_name = 'Адрес'
+        verbose_name_plural = 'Адреса'
         ordering = 'name',
 
     def __str__(self):
@@ -29,13 +29,13 @@ class Address(DateStamp):
 
 
 class Office(DateStamp):
-    """Кабинет рабочего места"""
+    """Кабинет"""
     id_office = ULIDField(verbose_name='id_office', db_comment='id_office', default=default, primary_key=True, editable=False)
     name = models.CharField(verbose_name='Кабинет', db_comment='Кабинет', max_length=250, db_index=True, unique=True)
 
     class Meta:
-        verbose_name = 'Кабинет рабочего места'
-        verbose_name_plural = 'Кабинеты рабочего места'
+        verbose_name = 'Кабинет'
+        verbose_name_plural = 'Кабинеты'
         ordering = 'name',
 
     def __str__(self):
@@ -114,8 +114,8 @@ class CustomUser(AbstractUser):
     email = models.EmailField(verbose_name='Почта', db_comment='Почта', unique=True, blank=True, null=True)
     phone_mobile = models.CharField(verbose_name='Телефон мобильный', db_comment='Телефон мобильный', help_text='Формат +375(00)000-00-00', validators=[phone_mobile_validator], max_length=100, unique=True, blank=True, null=True)
     phone_working = models.CharField(verbose_name='Телефон рабочий', db_comment='Телефон рабочий', help_text='Формат 8(000)000-00-00', max_length=100, blank=True, null=True)
-    address = models.ForeignKey(Address, verbose_name='Адрес рабочего места', db_comment='Адрес рабочего места', on_delete=models.PROTECT, related_name='custom_user_address', blank=True, null=True)
-    office = models.ForeignKey(Office, verbose_name='Кабинет рабочего места', db_comment='Кабинет рабочего места', on_delete=models.PROTECT, related_name='custom_user_office', blank=True, null=True)
+    address = models.ForeignKey(Address, verbose_name='Адрес', db_comment='Адрес', help_text='Адрес рабочего места', on_delete=models.PROTECT, related_name='custom_user_address', blank=True, null=True)
+    office = models.ForeignKey(Office, verbose_name='Кабинет', db_comment='Кабинет', help_text='Кабинет рабочего места', on_delete=models.PROTECT, related_name='custom_user_office', blank=True, null=True)
     subdivision = models.ForeignKey(Subdivision, verbose_name='Подразделение', db_comment='Подразделение', on_delete=models.PROTECT, related_name='custom_user_subdivision', blank=True, null=True)
     position = models.ForeignKey(Position, verbose_name='Должность', db_comment='Должность', on_delete=models.PROTECT, related_name='custom_user_position', blank=True, null=True)
     note = models.ForeignKey(Note, verbose_name='Заметка', db_comment='Заметка', on_delete=models.PROTECT, related_name='custom_user_note', blank=True, null=True)
@@ -148,9 +148,9 @@ class CustomUser(AbstractUser):
 class StatusLocation(models.Model):
     """Контроль времени"""
     id_status_location = ULIDField(verbose_name='id_status_location', db_comment='id_status_location', default=default, primary_key=True, editable=False)
-    created = models.DateTimeField(verbose_name='Дата и время (входа, выхода)', db_comment='Дата и время', auto_now_add=True)
-    custom_user = models.ForeignKey(CustomUser, verbose_name='Сотрудник', db_comment='Сотрудник', on_delete=models.PROTECT, null=True, blank=True, related_name='status_location_custom_user')
-    camera = models.ForeignKey('Camera', verbose_name='Камера', db_comment='Камера', on_delete=models.PROTECT, null=True, blank=True, related_name='status_location_camera')
+    created = models.DateTimeField(verbose_name='Дата и время (входа, выхода)', db_comment='Дата и время (входа, выхода)', auto_now_add=True)
+    custom_user = models.ForeignKey(CustomUser, verbose_name='Сотрудник', db_comment='Сотрудник', on_delete=models.PROTECT, related_name='status_location_custom_user', blank=True, null=True)
+    camera = models.ForeignKey('Camera', verbose_name='Камера', db_comment='Камера', on_delete=models.PROTECT, related_name='status_location_camera', blank=True, null=True)
 
     class Meta:
         verbose_name = 'Контроль времени'
@@ -170,7 +170,7 @@ class Camera(models.Model):
     id_camera = ULIDField(verbose_name='id_camera', db_comment='id_camera', default=default, primary_key=True, editable=False)
     finding = models.IntegerField(verbose_name='Нахождение', db_comment='Нахождение', choices=FINDING_CHOICES)
     is_active = models.BooleanField(verbose_name='Активный', db_comment='Активный', default=True)
-    address = models.ForeignKey(Address, verbose_name='Адрес рабочего места', db_comment='Адрес рабочего места', on_delete=models.PROTECT, null=True, blank=True, related_name='camera_address')
+    address = models.ForeignKey(Address, verbose_name='Адрес', db_comment='Адрес', help_text='Адрес рабочего места', on_delete=models.PROTECT, related_name='camera_address', blank=True, null=True)
 
     class Meta:
         verbose_name = 'Камера'
@@ -185,8 +185,8 @@ class Camera(models.Model):
 class Files(DateStamp):
     """Файл"""
     id_files = ULIDField(verbose_name='id_files', db_comment='id_files', default=default, primary_key=True, editable=False)
-    files = models.FileField(verbose_name='Файлы', upload_to='files/', blank=True, null=True)
-    news = models.ForeignKey('News', verbose_name='Новость', on_delete=models.CASCADE, null=True, blank=True, related_name='files_news')
+    files = models.FileField(verbose_name='Файл', db_comment='Файл', upload_to='files/', blank=True, null=True)
+    news = models.ForeignKey('News', verbose_name='Новость', db_comment='Новость', on_delete=models.CASCADE, related_name='files_news', blank=True, null=True)
 
     class Meta:
         verbose_name = 'Файл'
@@ -203,10 +203,10 @@ class Files(DateStamp):
 class News(DateStamp):
     """Новость"""
     id_news = ULIDField(verbose_name='id_news', db_comment='id_news', default=default, primary_key=True, editable=False)
-    name = models.CharField(verbose_name='Название', max_length=100)
-    description = models.TextField(verbose_name='Описание')
-    is_active = models.BooleanField(verbose_name='Опубликована', default=True)
-    views_count = models.PositiveIntegerField(verbose_name='Просмотров', default=0)
+    name = models.CharField(verbose_name='Название', db_comment='Название', max_length=100)
+    description = models.TextField(verbose_name='Описание', db_comment='Описание')
+    is_active = models.BooleanField(verbose_name='Опубликована', db_comment='Опубликована', default=True)
+    views_count = models.PositiveIntegerField(verbose_name='Просмотров', db_comment='Просмотров', help_text='Количество просмотров)',  default=0)
 
     class Meta:
         verbose_name = 'Новость'
@@ -218,18 +218,18 @@ class News(DateStamp):
 
 
 class Setting(DateStamp):
-    """Настройки сайта"""
+    """Настройки"""
     id_setting = ULIDField(verbose_name='id_setting', db_comment='id_setting', default=default, primary_key=True, editable=False)
-    logo = models.ImageField(verbose_name='Логотип организации', db_comment='Логотип организации', upload_to='logo/', default='logo/default/default_logo.png', blank=True, null=True)
-    name = models.CharField(verbose_name='Название организации', help_text='Укажите краткое название', db_comment='Название организации', max_length=100, default='Организация')
-    news_page = models.IntegerField(verbose_name='Пагинация новостей', default=5)
-    subdivision_page = models.IntegerField(verbose_name='Пагинация подразделений', default=5)
-    project_page = models.IntegerField(verbose_name='Пагинация проектов', default=5)
-    time_page = models.IntegerField(verbose_name='Пагинация контроля времени', default=5)
+    logo = models.ImageField(verbose_name='Логотип', db_comment='Логотип', upload_to='logo/', default='logo/default/default_logo.png', blank=True, null=True)
+    name = models.CharField(verbose_name='Название', db_comment='Название', help_text='Название организации (краткое)', max_length=100, default='КП организации')
+    news_page = models.IntegerField(verbose_name='Пагинация новостей', db_comment='Пагинация новостей', default=5)
+    subdivision_page = models.IntegerField(verbose_name='Пагинация подразделений', db_comment='Пагинация подразделений', default=5)
+    project_page = models.IntegerField(verbose_name='Пагинация проектов', db_comment='Пагинация проектов', default=5)
+    time_page = models.IntegerField(verbose_name='Пагинация контроля времени', db_comment='Пагинация контроля времени', default=5)
 
     class Meta:
-        verbose_name = 'Настройки сайта'
-        verbose_name_plural = 'Настройки сайта'
+        verbose_name = 'Настройки'
+        verbose_name_plural = 'Настройки'
 
     def __str__(self):
         return self.name

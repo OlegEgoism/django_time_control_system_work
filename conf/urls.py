@@ -26,13 +26,13 @@ urlpatterns = [
 
     # Главная
     path('', home, name='home'),
-    # Список новостей
+    # Новости
     path('news_list/', news_list, name='news_list'),
-    # Список сотрудников
+    # Сотрудники
     path('user_list/', user_list, name='user_list'),
-    # Список подразделений
+    # Подразделения
     path('subdivision_list/', subdivision_list, name='subdivision_list'),
-    # Список проектов
+    # Проекты
     path('project_list/', project_list, name='project_list'),
     # Авторизация(Вход/Выход)
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),

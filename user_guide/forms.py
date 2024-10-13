@@ -5,7 +5,7 @@ from .models import CustomUser, Camera, Address
 
 
 class CustomUserCreationForm(UserCreationForm):
-    """Пользовательская форма создания пользователя"""
+    """Пользовательская форма создания сотрудника"""
 
     class Meta:
         model = CustomUser
@@ -13,7 +13,7 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class CustomUserChangeForm(UserChangeForm):
-    """Пользовательская форма смены пользователя"""
+    """Пользовательская форма смены сотрудника"""
 
     class Meta:
         model = CustomUser

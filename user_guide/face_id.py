@@ -20,7 +20,7 @@ camera_id = '0191d2ca-9b37-e294-8bfc-0938553497c5'  # ID камеры
 video_capture = cv2.VideoCapture(0)  # Захват видео с веб-камеры
 video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-last_record_times = {}  # Словарь для отслеживания времени последней записи для каждого пользователя
+last_record_times = {}  # Словарь для отслеживания времени последней записи для каждого сотрудника
 
 # Загрузка известных лиц из базы данных
 for filename in os.listdir(image_folder):
@@ -30,7 +30,7 @@ for filename in os.listdir(image_folder):
         face_encoding = face_recognition.face_encodings(image)
         if face_encoding:  # Если кодировка найдена
             known_face_encodings.append(face_encoding[0])  # Добавляем первую найденную кодировку
-            known_face_names.append(filename)  # Сохраняем имя файла (которое будет связано с пользователем)
+            known_face_names.append(filename)  # Сохраняем имя файла (которое будет связано с сотрудника)
 
 # Основной цикл обработки видео
 while True:
@@ -55,9 +55,9 @@ while True:
                     try:
                         custom_user = CustomUser.objects.get(photo=f'photo_user/{filename}')
                         if not custom_user.is_active:
-                            print(f"Пользователь {custom_user.username} не активен.")
+                            print(f"Сотрудник {custom_user.username} не активен")
                             continue
-                        slug = custom_user.slug.split('-')[0]  # Получаем поле slug пользователя
+                        slug = custom_user.slug.split('-')[0]  # Получаем поле slug сотрудника
                         current_time = time.time()
                         if custom_user.id_custom_user in last_record_times:
                             if current_time - last_record_times[custom_user.id_custom_user] >= time_update_camera:  # Через какое время обновляем дату
@@ -67,7 +67,7 @@ while True:
                                     created=timezone.now()  # Записываем текущее время
                                 )
                                 last_record_times[custom_user.id_custom_user] = current_time  # Обновляем время последней записи
-                                print(f"Записан пользователь: {custom_user.fio or custom_user.username}")
+                                print(f"Записан сотрудник: {custom_user.fio or custom_user.username}")
                         else:
                             StatusLocation.objects.create(
                                 custom_user=custom_user,
@@ -77,7 +77,7 @@ while True:
                             last_record_times[custom_user.id_custom_user] = current_time  # Сохраняем время первой записи
                             print(f"Сотрудник: {custom_user.fio or custom_user.username}")
                     except CustomUser.DoesNotExist:
-                        print(f"Пользователь с фото {filename} не найден.")
+                        print(f"Сотрудник с фото {filename} не найден.")
                 cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
                 cv2.putText(frame, slug.capitalize(), (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
     cv2.imshow('Video', frame)

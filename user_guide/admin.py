@@ -188,7 +188,7 @@ class NoteAdmin(admin.ModelAdmin):
 class CustomUserAdmin(UserAdmin):
     """Сотрудник"""
 
-    # Подключаем кастомные формы для создания и изменения пользователя
+    # Подключаем кастомные формы для создания и изменения сотрудника
     add_form = CustomUserCreationForm  # Форма для создания
     form = CustomUserChangeForm  # Форма для изменения
     model = CustomUser
@@ -217,7 +217,7 @@ class CustomUserAdmin(UserAdmin):
     list_filter = 'is_active', NoteFilter, SubdivisionFilter, PositionFilter, AddressFilter, ProjectFilter
     readonly_fields = 'last_login', 'date_joined', 'preview_photo',
     search_fields = 'username', 'fio', 'phone_mobile', 'phone_working', 'position', 'subdivision',
-    search_help_text = 'Поиск по логину, имени пользователя и номеру телефона, должности, подразделению'
+    search_help_text = 'Поиск по логину, имени сотрудника и номеру телефона, должности, подразделению'
     prepopulated_fields = {'slug': ('fio',)}
     inlines = StatusLocationInline,
     list_select_related = 'address', 'office', 'note', 'position', 'subdivision',
@@ -232,7 +232,7 @@ class CustomUserAdmin(UserAdmin):
     preview_photo.short_description = 'Фотография'
 
     def save_model(self, request, obj, form, change):
-        """Проверка, есть ли еще один пользователь с таким же адресом электронной почты"""
+        """Проверка, есть ли еще один сотрудник с таким же адресом электронной почты"""
         if obj.email:
             if CustomUser.objects.filter(email=obj.email).exclude(pk=obj.pk).exists():
                 self.message_user(request, "Этот адрес электронной почты уже связан с другим аккаунтом", level='ERROR')

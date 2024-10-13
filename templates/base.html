@@ -15,10 +15,10 @@
     <h2>{{ config.name }}</h2>
     <ul>
         <li><a href="{% url 'home' %}">Главная</a></li>
-        <li><a href="{% url 'news_list' %}">Список новостей</a></li>
-        <li><a href="{% url 'user_list' %}">Список сотрудников</a></li>
-        <li><a href="{% url 'subdivision_list' %}">Список подразделений</a></li>
-        <li><a href="{% url 'project_list' %}">Список проектов</a></li>
+        <li><a href="{% url 'news_list' %}">Новости</a></li>
+        <li><a href="{% url 'user_list' %}">Сотрудники</a></li>
+        <li><a href="{% url 'subdivision_list' %}">Подразделения</a></li>
+        <li><a href="{% url 'project_list' %}">Проекты</a></li>
 
         {% if user.is_authenticated %}
             <li><a href="#">Проверка знаний</a></li>
