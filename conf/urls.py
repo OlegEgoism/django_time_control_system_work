@@ -46,8 +46,8 @@ urlpatterns = [
     path('project_list/', project_list, name='project_list'),
     # Библиотека
     path('book_list/', book_list, name='book_list'),
-    path('book_download_file/<str:id_book>/', book_download_file, name='download_book'),
-    path('increment_download/<str:id_book>/', book_download_count, name='increment_download'),
+    path('book_download_file/<str:id_book>/', book_download_file, name='book_download_file'),
+    path('book_download_count/<str:id_book>/', book_download_count, name='book_download_count'),
     # Авторизация(Вход/Выход)
     path('login/', user_login, name='login'),
     path('logout/', user_logout, name='logout'),

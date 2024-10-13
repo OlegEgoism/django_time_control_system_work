@@ -1,6 +1,6 @@
 function incrementDownload(bookId) {
     // Асинхронный запрос для увеличения счетчика загрузок
-    fetch(`/increment_download/${bookId}/`)
+    fetch(`/book_download_count/${bookId}/`)
         .then(response => response.json())
         .then(data => {
             const downloadCountElement = document.querySelector(`#downloads-${bookId}`);
