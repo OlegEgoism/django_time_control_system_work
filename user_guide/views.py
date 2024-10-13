@@ -3,14 +3,13 @@ from collections import defaultdict
 from datetime import timedelta, datetime
 from itertools import groupby
 from operator import attrgetter
+from pyexpat.errors import messages
 from urllib.parse import quote
 from django.conf import settings
-from django.contrib import messages
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q, Subquery, OuterRef, Count
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.utils.dateformat import DateFormat
 
 from user_guide.forms import CustomUserForm, StatusLocationFilterForm
 from user_guide.models import (
@@ -25,8 +24,10 @@ from user_guide.models import (
 def home(request):
     """Главная"""
     config = Setting.objects.first()
+    users = CustomUser.objects.get(is_active=True)
     return render(request, template_name='home.html', context={
         'config': config,
+        'users': users,
     })
 
 
@@ -123,6 +124,9 @@ def project_list(request):
         'projects': projects_page,
         'search_query': search_query
     })
+
+
+
 
 
 # __________________
