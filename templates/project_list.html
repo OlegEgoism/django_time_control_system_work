@@ -8,7 +8,7 @@
         <div class="card">
             <form method="get" action="{% url 'project_list' %}" class="d-flex align-items-center">
                 <h1>Проекты</h1>
-                <input type="text" class="form-control mr-1 search-input" name="q" value="{{ search_query }}" placeholder="Поиск по названию проекта, описанию и владельцу">
+                <input type="text" class="form-control mr-1 search-input" name="q" value="{{ search_query }}" placeholder="Поиск по названию, описанию и владельцу">
                 <button type="submit" class="btn btn-primary mr-1">Поиск</button>
                 <a href="{% url 'project_list' %}" class="btn btn-secondary">Очистить</a>
             </form>
@@ -16,10 +16,10 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th class="project-name">Название проекта</th>
-                        <th class="project-owner">Владелец проекта</th>
-                        <th class="project-description">Описание проекта</th>
-                        <th class="project-number">Процент готовности</th>
+                        <th class="project-name">Название</th>
+                        <th class="project-description">Описание</th>
+                        <th class="project-owner">Владелец</th>
+                        <th class="project-number">Готовность</th>
                         <th class="project-number">Количество сотрудников</th>
                     </tr>
                     </thead>
@@ -27,7 +27,6 @@
                     {% for project in projects %}
                         <tr>
                             <td class="project-name">{{ project.name }}</td>
-                            <td class="project-owner">{{ project.owner }}</td>
                             <td class="project-description text-left">
                                 {% if project.description %}
                                     <span id="short">{{ project.description|slice:":500" }}{% if project.description|length > 500 %}...{% endif %}</span>
@@ -39,6 +38,7 @@
                                     <span class="text-danger">Информация не заполнена</span>
                                 {% endif %}
                             </td>
+                            <td class="project-owner">{{ project.owner }}</td>
                             <td class="project-number">{{ project.percentage_completion }} %</td>
                             <td class="project-number">{{ project.employee_count }}</td>
                         </tr>

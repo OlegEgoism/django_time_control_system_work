@@ -7,7 +7,7 @@
         <div class="card">
             <form method="get" action="{% url 'subdivision_list' %}" class="d-flex align-items-center">
                 <h1>Подразделения</h1>
-                <input type="text" class="form-control mr-1 search-input" name="q" value="{{ search_query }}" placeholder="Поиск по названию подразделения и описанию">
+                <input type="text" class="form-control mr-1 search-input" name="q" value="{{ search_query }}" placeholder="Поиск по названию и описанию">
                 <button type="submit" class="btn btn-primary mr-1">Поиск</button>
                 <a href="{% url 'subdivision_list' %}" class="btn btn-secondary">Очистить</a>
             </form>
@@ -15,8 +15,8 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th class="subdivision-name">Название подразделения</th>
-                        <th class="subdivision-description">Описание подразделения</th>
+                        <th class="subdivision-name">Название</th>
+                        <th class="subdivision-description">Описание</th>
                         <th class="subdivision-number">Количество сотрудников</th>
                     </tr>
                     </thead>

@@ -8,7 +8,7 @@
             <div>
                 <form method="get" action="{% url 'user_list' %}" class="d-flex align-items-center">
                     <h1>Сотрудники</h1>
-                    <input type="text" class="form-control mr-1 search-input" name="q" value="{{ search_query }}" placeholder="Поиск по ФИО, должности, почте, адресу рабочего места, телефону">
+                    <input type="text" class="form-control mr-1 search-input" name="q" value="{{ search_query }}" placeholder="Поиск по ФИО, должности, почте, телефону, телефону, адресу рабочего места">
                     <button type="submit" class="btn btn-primary mr-1">Поиск</button>
                     <a href="{% url 'user_list' %}" class="btn btn-secondary">Очистить</a>
                 </form>
