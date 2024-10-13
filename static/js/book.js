@@ -12,5 +12,3 @@ function incrementDownload(bookId) {
         })
         .catch(error => console.error('Ошибка при обновлении счетчика:', error));
 }
-
-

@@ -4,21 +4,25 @@ from django.contrib import admin
 from django.urls import path
 from user_guide.views import (
     home,
-    news_list,
-    user_list,
-    subdivision_list,
-    project_list,
-    book_list,
-    book_download_file,
 
+    news_list,
     news_info,
     news_download_file,
 
+    user_list,
     user_info,
     user_edit,
     user_time,
+
+    subdivision_list,
+    project_list,
+
+    book_list,
+    book_download_file,
+    book_download_count,
+
     user_login,
-    user_logout, increment_download_count,
+    user_logout,
 
 )
 
@@ -43,9 +47,7 @@ urlpatterns = [
     # Библиотека
     path('book_list/', book_list, name='book_list'),
     path('book_download_file/<str:id_book>/', book_download_file, name='download_book'),
-    path('increment_download/<str:id_book>/', increment_download_count, name='increment_download'),
-
-
+    path('increment_download/<str:id_book>/', book_download_count, name='increment_download'),
     # Авторизация(Вход/Выход)
     path('login/', user_login, name='login'),
     path('logout/', user_logout, name='logout'),

@@ -6,11 +6,15 @@ from itertools import groupby
 from operator import attrgetter
 from pyexpat.errors import messages
 from urllib.parse import quote
-from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
 from django.conf import settings
 from django.contrib.auth import logout
 from django.contrib import messages
 from django.http import HttpResponse
+from django.contrib.auth import (
+    authenticate,
+    login
+)
 from django.core.paginator import (
     Paginator,
     PageNotAnInteger,
@@ -345,46 +349,35 @@ def convert_size(size_bytes):
 
 
 def book_download_file(request, id_book):
+    """Скачивание книги"""
     book = get_object_or_404(Book, id_book=id_book)
-    response = HttpResponse(book.files, content_type='application/pdf')  # Укажите правильный тип содержимого
-    response['Content-Disposition'] = f'attachment; filename="{book.name}.pdf"'  # Устанавливаем имя файла
+    response = HttpResponse(book.files, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{book.name}.pdf"'
     return response
 
-from django.http import JsonResponse
-def increment_download_count(request, id_book):
+
+def book_download_count(request, id_book):
+    """Счетчик скачиваний книги"""
     book = get_object_or_404(Book, id_book=id_book)
     book.download_count += 1
     book.save()
-
     return JsonResponse({'new_count': book.download_count})
-
-
-
-
-
-
-
-
-
-
 
 
 # TODO Авторизация(Вход/Выход)
 def user_login(request):
+    """Вход"""
     config = Setting.objects.first()
-
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
-
         if user is not None:
             login(request, user)
             return redirect('/')  # Перенаправление после успешного входа
         else:
             error_message = 'Неверный логин или пароль'
             return render(request, 'login.html', {'config': config, 'error_message': error_message})
-
     return render(request, 'login.html', {'config': config})
 
 
