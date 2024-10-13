@@ -221,7 +221,7 @@ class Setting(DateStamp):
     """Настройки"""
     id_setting = ULIDField(verbose_name='id_setting', db_comment='id_setting', default=default, primary_key=True, editable=False)
     logo = models.ImageField(verbose_name='Логотип', db_comment='Логотип', upload_to='logo/', default='logo/default/default_logo.png', blank=True, null=True)
-    name = models.CharField(verbose_name='Название', db_comment='Название', help_text='Название организации (краткое)', max_length=100, default='КП организации')
+    name = models.CharField(verbose_name='Название', db_comment='Название', help_text='Название организации (краткое)', max_length=11, default='ОРГАНИЗАЦИЯ')
     news_page = models.IntegerField(verbose_name='Пагинация новостей', db_comment='Пагинация новостей', default=5)
     subdivision_page = models.IntegerField(verbose_name='Пагинация подразделений', db_comment='Пагинация подразделений', default=5)
     project_page = models.IntegerField(verbose_name='Пагинация проектов', db_comment='Пагинация проектов', default=5)

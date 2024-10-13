@@ -1,3 +1,14 @@
+.logo-container {
+    width: 180px;
+}
+
+.logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
 body {
     background-color: #f0f4f8;
     display: flex;

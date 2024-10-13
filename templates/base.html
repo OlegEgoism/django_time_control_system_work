@@ -12,7 +12,11 @@
 <body>
 
 <nav>
-    <h2>{{ config.name }}</h2>
+<div class="logo-container">
+    <h2>
+        <img class="logo" src="{{ config.logo.url }}" alt="Логотип">{{ config.name }}
+    </h2>
+</div>
     <ul>
         <li><a href="{% url 'home' %}">Главная</a></li>
         <li><a href="{% url 'news_list' %}">Новости</a></li>
