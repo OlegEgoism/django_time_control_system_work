@@ -365,8 +365,8 @@ def book_download_count(request, id_book):
 
 
 # TODO Профсоюз
-
 def trade_union(request):
+    """Профсоюз"""
     config = Setting.objects.first()
     trade_union_positions = TradeUnionPosition.objects.select_related('custom_user', 'position').all()
     trade_union_photos = TradeUnionPhoto.objects.all()
