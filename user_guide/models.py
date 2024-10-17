@@ -120,6 +120,7 @@ class CustomUser(AbstractUser):
     position = models.ForeignKey(Position, verbose_name='Должность', db_comment='Должность', on_delete=models.PROTECT, related_name='custom_user_position', blank=True, null=True)
     note = models.ForeignKey(Note, verbose_name='Заметка', db_comment='Заметка', on_delete=models.PROTECT, related_name='custom_user_note', blank=True, null=True)
     project = models.ManyToManyField(Project, verbose_name='Проект', related_name='custom_user_project', blank=True)
+    cardholder = models.BooleanField(verbose_name='Член профсоюза', db_comment='Член профсоюза', default=False)
 
     class Meta:
         verbose_name = 'Сотрудник'
@@ -220,8 +221,10 @@ class News(DateStamp):
 class Setting(DateStamp):
     """Настройки"""
     id_setting = ULIDField(verbose_name='id_setting', db_comment='id_setting', default=default, primary_key=True, editable=False)
-    logo = models.ImageField(verbose_name='Логотип', db_comment='Логотип', upload_to='logo/', default='logo/default/default_logo.png', blank=True, null=True)
-    name = models.CharField(verbose_name='Название', db_comment='Название', help_text='Название организации (краткое)', max_length=11, default='ОРГАНИЗАЦИЯ')
+    logo = models.ImageField(verbose_name='Логотип организации', db_comment='Логотип организации', upload_to='logo/', default='logo/default/default_logo.png', blank=True, null=True)
+    name = models.CharField(verbose_name='Название организации', db_comment='Название организации', help_text='Название организации (краткое)', max_length=100, default='ОРГАНИЗАЦИЯ')
+    trade_union_name = models.CharField(verbose_name='Название профсоюза', db_comment='Название профсоюза', max_length=200)
+    trade_union_description = models.TextField(verbose_name='Описание профсоюза', db_comment='Описание профсоюза')
     news_page = models.IntegerField(verbose_name='Пагинация новостей', db_comment='Пагинация новостей', default=5)
     subdivision_page = models.IntegerField(verbose_name='Пагинация подразделений', db_comment='Пагинация подразделений', default=5)
     project_page = models.IntegerField(verbose_name='Пагинация проектов', db_comment='Пагинация проектов', default=5)
@@ -244,11 +247,54 @@ class Book(DateStamp):
     author = models.CharField(verbose_name='Автор(ы)', db_comment='Автор(ы)', max_length=250)
     files = models.FileField(verbose_name='Файл', db_comment='Файл', upload_to='files/')
     is_active = models.BooleanField(verbose_name='Опубликована', db_comment='Опубликована', default=True)
-    download_count = models.PositiveIntegerField(verbose_name='Просмотров', db_comment='Просмотров', help_text='Количество просмотров)', default=0)
+    download_count = models.PositiveIntegerField(verbose_name='Количество скачиваний', db_comment='Количество скачиваний', default=0)
 
     class Meta:
         verbose_name = 'Книга'
         verbose_name_plural = 'Книги'
+
+    def __str__(self):
+        return self.name
+
+
+class TradeUnionPosition(DateStamp):
+    """Сотрудник профсоюза"""
+    id_trade_union_position = ULIDField(verbose_name='id_trade_union_position', db_comment='id_trade_union_position', default=default, primary_key=True, editable=False)
+    custom_user = models.ForeignKey(CustomUser, verbose_name='Сотрудник ППО', db_comment='Сотрудник ППО', on_delete=models.PROTECT, related_name='trade_union_position_custom_user')
+    position = models.ForeignKey(Position, verbose_name='Должность', db_comment='Должность', on_delete=models.PROTECT, related_name='trade_union_position')
+
+    class Meta:
+        verbose_name = 'Сотрудник профсоюза'
+        verbose_name_plural = 'Сотрудники профсоюза'
+
+    def __str__(self):
+        return self.custom_user.fio
+
+
+class TradeUnionPhoto(DateStamp):
+    """Фото мероприятий профсоюза"""
+    id_trade_union_photo = ULIDField(verbose_name='id_trade_union_photo', db_comment='id_trade_union_photo', default=default, primary_key=True, editable=False)
+    photo = models.ImageField(verbose_name='Фотография c мероприятия', db_comment='Фотография c мероприятия', upload_to='trade_union_photo/')
+    setting = models.ForeignKey(Setting, verbose_name='Настройки', db_comment='Настройки', on_delete=models.CASCADE, related_name='trade_union_photo_setting', blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Фото мероприятий профсоюза'
+        verbose_name_plural = 'Фото мероприятий профсоюза'
+
+    def __str__(self):
+        return f'{self.id_trade_union_photo}'
+
+
+class TradeUnionEvent(DateStamp):
+    """Профсоюзные мероприятия"""
+    id_trade_union_event = ULIDField(verbose_name='id_trade_union_event', db_comment='id_trade_union_event', default=default, primary_key=True, editable=False)
+    name = models.CharField(verbose_name='Название', db_comment='Название', help_text='Название книги', max_length=250)
+    description = models.TextField(verbose_name='Описание', db_comment='Описание')
+    is_active = models.BooleanField(verbose_name='Активный', db_comment='Активный', default=True)
+
+    class Meta:
+        verbose_name = 'Профсоюзное мероприятие'
+        verbose_name_plural = 'Профсоюзные мероприятия'
 
     def __str__(self):
         return self.name

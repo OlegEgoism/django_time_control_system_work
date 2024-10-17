@@ -19,7 +19,7 @@ from user_guide.models import (
     Files,
     News,
     Office,
-    Project, Book
+    Project, Book, TradeUnionPosition, TradeUnionPhoto, TradeUnionEvent
 )
 
 
@@ -72,7 +72,24 @@ class FilesInline(admin.TabularInline):
     """Файлы"""
     model = Files
     extra = 1
-    max_num = 10  # Лимит до 10 файлов
+    max_num = 10  # Лимит до файлов
+
+
+class TradeUnionPhotoInline(admin.TabularInline):
+    """Файлы"""
+    model = TradeUnionPhoto
+    extra = 0
+    max_num = 50  # Лимит до файлов
+    readonly_fields = 'preview_photo',
+    fields = 'preview_photo', 'photo',
+
+    def preview_photo(self, obj):
+        if obj.photo:
+            return mark_safe(f'<img src="{obj.photo.url}" width="100" height="100"/>')
+        else:
+            return 'Нет фото'
+
+    preview_photo.short_description = 'Фотография мероприятий'
 
 
 # ______________________________________________________
@@ -199,9 +216,8 @@ class CustomUserAdmin(UserAdmin):
 
         ('ЛИЧНЫЕ ДАННЫЕ', {
             'fields': (
-                'preview_photo', 'photo', 'fio', 'slug', 'birthday', 'biography', 'email', 'phone_mobile',
-                'phone_working',
-                'address', 'office', 'note', 'position', 'subdivision', 'project',)},),
+                'preview_photo', 'photo', 'fio', 'slug', 'birthday', 'biography', 'email', 'phone_mobile', 'phone_working',
+                'address', 'office', 'note', 'position', 'subdivision', 'project', 'cardholder')},),
         ('РАЗРЕШЕНИЯ', {
             # 'classes': ('collapse',),
             'fields': (
@@ -291,9 +307,10 @@ class NewsAdmin(admin.ModelAdmin):
 @admin.register(Setting)
 class SettingAdmin(admin.ModelAdmin):
     """Настройки"""
-    fields = 'preview_logo', 'logo', 'name', 'news_page', 'subdivision_page', 'project_page', 'book_page', 'time_page',
-    list_display = 'name', 'preview_logo', 'created', 'updated',
+    fields = 'preview_logo', 'logo', 'name', 'trade_union_name', 'trade_union_description', 'news_page', 'subdivision_page', 'project_page', 'book_page', 'time_page',
+    list_display = 'name', 'preview_logo', 'trade_union_photo_count', 'created', 'updated',
     readonly_fields = 'created', 'updated', 'preview_logo',
+    inlines = TradeUnionPhotoInline,
 
     def preview_logo(self, obj):
         if obj.logo:
@@ -308,8 +325,55 @@ class SettingAdmin(admin.ModelAdmin):
             return False
         return True
 
+    def trade_union_photo_count(self, obj):
+        if obj.trade_union_photo_setting.count() == 0:
+            return 'Нет файлов'
+        else:
+            return obj.trade_union_photo_setting.count()
+
+    trade_union_photo_count.short_description = 'Количество фото мероприятий профсоюза'
+
 
 @admin.register(Book)
-class BookAdmin(admin.ModelAdmin):
+class TradeUnionAdmin(admin.ModelAdmin):
     """Книги"""
-    list_display = 'author', 'name', 'created', 'updated',
+    list_display = 'author', 'name', 'preview_logo', 'download_count', 'created', 'updated',
+    readonly_fields = 'preview_logo', 'download_count', 'created', 'updated',
+    fields = 'author', 'name', 'preview_logo', 'logo', 'files', 'is_active', 'download_count', 'created', 'updated',
+    search_fields = 'author', 'name',
+    search_help_text = 'Поиск по названию автору и названию'
+    date_hierarchy = 'created'
+    list_per_page = 20
+    ordering = 'created',
+
+    def preview_logo(self, obj):
+        if obj.logo:
+            return mark_safe(f'<img src="{obj.logo.url}" width="100" height="100"/>')
+        else:
+            return 'Нет обложки'
+
+    preview_logo.short_description = 'Обложка'
+
+
+@admin.register(TradeUnionPosition)
+class TradeUnionPositionAdmin(admin.ModelAdmin):
+    """Сотрудники профсоюза"""
+    list_display = 'custom_user', 'position', 'created', 'updated',
+
+
+@admin.register(TradeUnionEvent)
+class TradeUnionEventAdmin(admin.ModelAdmin):
+    """Сотрудники профсоюза"""
+    list_display = 'name', 'short_description', 'is_active', 'created', 'updated',
+    list_filter = 'is_active',
+    search_fields = 'name',
+    search_help_text = 'Поиск по названию и описанию'
+    date_hierarchy = 'created'
+    list_per_page = 20
+    ordering = 'created',
+
+    def short_description(self, obj):
+        len_str = 100
+        return obj.description[:len_str] + "..." if len(obj.description) > len_str else obj.description
+
+    short_description.short_description = 'Описание мероприятия'

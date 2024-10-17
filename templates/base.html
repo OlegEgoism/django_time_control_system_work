@@ -24,11 +24,12 @@
         <li><a href="{% url 'subdivision_list' %}">Подразделения</a></li>
         <li><a href="{% url 'project_list' %}">Проекты</a></li>
         <li><a href="{% url 'book_list' %}">Книги</a></li>
+        <li><a href="{% url 'trade_union' %}">Профсоюз</a></li>
+    
         {% if user.is_authenticated %}
             <li><a href="#"># Проверка знаний</a></li>
             <li><a href="#"># Органайзер</a></li>
             <li><a href="#"># Чат</a></li>
-            <li><a href="#"># Личный кабинет</a></li>
             <li>
                 <form action="{% url 'logout' %}" method="post">
                     {% csrf_token %}

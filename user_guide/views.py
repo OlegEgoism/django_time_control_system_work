@@ -42,7 +42,7 @@ from user_guide.models import (
     News,
     Files,
     Subdivision,
-    Project, Book
+    Project, Book, TradeUnionPosition, TradeUnionPhoto
 )
 
 
@@ -362,6 +362,20 @@ def book_download_count(request, id_book):
     book.download_count += 1
     book.save()
     return JsonResponse({'new_count': book.download_count})
+
+
+# TODO Профсоюз
+
+def trade_union(request):
+    config = Setting.objects.first()
+    trade_union_positions = TradeUnionPosition.objects.select_related('custom_user', 'position').all()
+    trade_union_photos = TradeUnionPhoto.objects.all()
+    return render(request, template_name='trade_union.html', context={
+        'config': config,
+        'trade_union_positions': trade_union_positions,
+        'trade_union_photos': trade_union_photos
+    })
+
 
 
 # TODO Авторизация(Вход/Выход)

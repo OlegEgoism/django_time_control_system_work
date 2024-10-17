@@ -249,3 +249,21 @@ form input, form select {
 }
 
 
+.hover-photo {
+    transition: transform 0.2s ease; /* Анимация плавного увеличения */
+}
+
+.hover-photo:hover {
+    transform: scale(2); /* Увеличение изображения в 2 раза */
+}
+
+.hover-photo {
+    transition: transform 0.2s ease; /* Анимация плавного увеличения */
+    width: 300px;
+}
+
+.hover-photo:hover {
+    transform: scale(1.5); /* Увеличение изображения */
+
+}
+
