@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Профсоюз{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="card">
+            <h1>Профсоюз {{ config.trade_union_name }}</h1>
+            <h5>{{ config.trade_union_description }}</h5>
+            <table>
+                <thead>
+                <tr>
+                    <th>Фотография</th>
+                    <th>ФИО</th>
+                    <th>Должность</th>
+                    <th>Почта</th>
+                    <th>Телефон</th>
+                </tr>
+                </thead>
+                <tbody>
+                <h2>Профсоюзный комитет</h2>
+                {% for position in trade_union_positions %}
+                    <tr>
+                        <td>
+                            {% if position.custom_user.photo %}
+                                <img src="{{ position.custom_user.photo.url }}" alt="Фото {{ position.custom_user.fio }}" width="100">
+                            {% else %}
+                                <img src="{{ position.custom_user.get_default_photo_url }}" alt="Фото отсутствует" width="100">
+                            {% endif %}
+                        </td>
+                        <td>{{ position.custom_user.fio }}</td>
+                        <td>{{ position.position.name }}</td>
+                        <td>{{ position.custom_user.email }}</td>
+                        <td>Мобильный: {{ position.custom_user.phone_mobile }} Рабочий: {{ position.position.phone_working }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <h2>Фотографии c мероприятий</h2>
+
+
+<div class="photo-container">
+    <div class="row">
+        {% for photo in trade_union_photos %}
+            <div class="col-3 mb-3">  <!-- 4 изображения в ряд -->
+                <div class="hover-photo">
+                    <img src="{{ photo.photo.url }}" alt="Фото мероприятия" class="img-fluid">
+                </div>
+            </div>
+        {% empty %}
+            <p>Нет фотографий для отображения.</p>
+        {% endfor %}
+    </div>
+</div>
+
+        
+
+        </div>
+    </div>
+    </div>
+{% endblock %}
