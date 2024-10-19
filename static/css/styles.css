@@ -133,6 +133,13 @@ th.book-downloads {
     width: 160px;
 }
 
+th.trade_union_fio {
+    width: 300px;
+}
+
+
+
+
 
 .photo-fio {
     display: flex;
@@ -266,4 +273,6 @@ form input, form select {
     transform: scale(1.5); /* Увеличение изображения */
 
 }
+
+
 

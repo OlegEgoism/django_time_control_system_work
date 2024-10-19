@@ -42,7 +42,7 @@ from user_guide.models import (
     News,
     Files,
     Subdivision,
-    Project, Book, TradeUnionPosition, TradeUnionPhoto
+    Project, Book, TradeUnionPosition, TradeUnionPhoto, TradeUnionEvent
 )
 
 
@@ -370,10 +370,12 @@ def trade_union(request):
     config = Setting.objects.first()
     trade_union_positions = TradeUnionPosition.objects.select_related('custom_user', 'position').all()
     trade_union_photos = TradeUnionPhoto.objects.all()
+    trade_union_events = TradeUnionEvent.objects.filter(is_active=True)
     return render(request, template_name='trade_union.html', context={
         'config': config,
         'trade_union_positions': trade_union_positions,
-        'trade_union_photos': trade_union_photos
+        'trade_union_photos': trade_union_photos,
+        'trade_union_events': trade_union_events,
     })
 
 

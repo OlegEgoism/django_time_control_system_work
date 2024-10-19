@@ -16,7 +16,7 @@ frame_count = 0
 process_every_n_frame = 4  # Процессировать каждую рамку
 image_folder = os.path.join(BASE_DIR, 'media/photo_user')  # Путь к папке с изображениями
 known_face_encodings, known_face_names = [], []
-camera_id = '0191d2ca-9b37-e294-8bfc-0938553497c5'  # ID камеры
+camera_id = '01J7QTM5045M40SRZ446R8T862'  # ID камеры
 video_capture = cv2.VideoCapture(0)  # Захват видео с веб-камеры
 video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)

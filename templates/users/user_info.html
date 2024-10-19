@@ -108,6 +108,7 @@
                 </div>
             </div>
         {% endif %}
+    {% if projects %}
         <div class="card">
             <div class="user-bio">
                 <h1>Участие в проектах</h1>
@@ -143,6 +144,7 @@
                 </table>
             </div>
         </div>
+    {% endif %}
         <a href="{% url 'user_list' %}" class="btn btn-secondary">Назад</a>
     </div>
     <script src="{% static 'js/roll.js' %}"></script>

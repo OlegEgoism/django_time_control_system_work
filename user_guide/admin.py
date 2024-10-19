@@ -157,7 +157,9 @@ class SubdivisionAdmin(admin.ModelAdmin):
 
     def short_question(self, obj):
         len_str = 200
-        return obj.description[:len_str] + "..." if len(obj.description) > len_str else obj.description
+        if obj.description:
+            return obj.description[:len_str] + "..." if len(obj.description) > len_str else obj.description
+        return "Информация не заполнена"
 
     short_question.short_description = 'Описание деятельности'
 
@@ -180,7 +182,9 @@ class ProjectAdmin(admin.ModelAdmin):
 
     def short_question(self, obj):
         len_str = 200
-        return obj.description[:len_str] + "..." if len(obj.description) > len_str else obj.description
+        if obj.description:
+            return obj.description[:len_str] + "..." if len(obj.description) > len_str else obj.description
+        return "Информация не заполнена"
 
     short_question.short_description = 'Описание деятельности'
 
@@ -365,6 +369,7 @@ class TradeUnionPositionAdmin(admin.ModelAdmin):
 class TradeUnionEventAdmin(admin.ModelAdmin):
     """Сотрудники профсоюза"""
     list_display = 'name', 'short_description', 'is_active', 'created', 'updated',
+    list_editable = 'is_active',
     list_filter = 'is_active',
     search_fields = 'name',
     search_help_text = 'Поиск по названию и описанию'
@@ -374,6 +379,8 @@ class TradeUnionEventAdmin(admin.ModelAdmin):
 
     def short_description(self, obj):
         len_str = 100
-        return obj.description[:len_str] + "..." if len(obj.description) > len_str else obj.description
+        if obj.description:
+            return obj.description[:len_str] + "..." if len(obj.description) > len_str else obj.description
+        return "Информация не заполнена"
 
     short_description.short_description = 'Описание мероприятия'
