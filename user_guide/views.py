@@ -388,7 +388,7 @@ def trade_union(request):
         trade_union_events_page = paginator.page(paginator.num_pages)
     trade_union_positions = TradeUnionPosition.objects.select_related('custom_user', 'position').all()
     photo_count = TradeUnionPhoto.objects.filter(trade_union_event__is_active=True).count()
-    return render(request, template_name='trade_union.html', context={
+    return render(request, template_name='trade_union/trade_union.html', context={
         'config': config,
         'trade_union_positions': trade_union_positions,
         'trade_union_events': trade_union_events_page,
@@ -406,7 +406,7 @@ def trade_union_event(request, name):
     event.views_count += 1
     event.save()
     photos = TradeUnionPhoto.objects.filter(trade_union_event=event)
-    return render(request, 'trade_union_event_detail.html', {
+    return render(request, template_name='trade_union/trade_union_event_detail.html', context={
         'config': config,
         'event': event,
         'photos': photos,
@@ -427,7 +427,9 @@ def user_login(request):
         else:
             error_message = 'Неверный логин или пароль'
             return render(request, 'login.html', {'config': config, 'error_message': error_message})
-    return render(request, 'login.html', {'config': config})
+    return render(request, template_name='login.html', context={
+        'config': config
+    })
 
 
 def user_logout(request):
