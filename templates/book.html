@@ -8,7 +8,7 @@
         <div class="card">
             <form method="get" action="{% url 'book_list' %}" class="d-flex align-items-center mb-3">
                 <h1>Книги</h1>
-                <input type="text" class="form-control mr-1 search-input" name="q" value="{{ search_query }}" placeholder="Поиск по названию и автору">
+                <input type="text" class="form-control mr-1 search-input" name="q" value="{{ search_query }}" placeholder="Поиск по названию и автору книги">
                 <button type="submit" class="btn btn-primary mr-1">Поиск</button>
                 <a href="{% url 'book_list' %}" class="btn btn-secondary">Очистить</a>
             </form>
