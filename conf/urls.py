@@ -25,6 +25,7 @@ from user_guide.views import (
     user_logout,
 
     trade_union,
+    trade_union_event,
 
 )
 
@@ -52,6 +53,7 @@ urlpatterns = [
     path('book_download_count/<str:id_book>/', book_download_count, name='book_download_count'),
     # Профсоюз
     path('trade_union/', trade_union, name='trade_union'),
+    path('trade_union_event/<str:name>/', trade_union_event, name='trade_union_event'),
     # Авторизация(Вход/Выход)
     path('login/', user_login, name='login'),
     path('logout/', user_logout, name='logout'),

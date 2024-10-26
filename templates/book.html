@@ -23,24 +23,31 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for book in books %}
-                        <tr>
-                            <td class="book-logo">
-                                {% if book.logo %}
-                                    <img src="{{ book.logo.url }}" alt="{{ book.name }} обложка" style="max-width: 100px; max-height: 150px;">
-                                {% endif %}
-                            </td>
-                            <td class="book-name">{{ book.name }}</td>
-                            <td class="book-author">{{ book.author }}</td>
-                            <td class="book-file">
-                                <div>
-                                    <a class="btn btn-primary" onclick="incrementDownload('{{ book.id_book }}')">Скачать</a>
-                                </div>
-                                <div>{{ book.file_size }}</div>
-                                <div id="downloads-{{ book.id_book }}">Скачал(и): {{ book.download_count }}</div>
-                            </td>
-                        </tr>
-                    {% endfor %}
+{% for book in books %}
+    <tr>
+        <td class="book-logo">
+            {% if book.logo %}
+                <img src="{{ book.logo.url }}" alt="{{ book.name }} обложка" style="max-width: 100px; max-height: 150px;">
+            {% else %}
+                <img src="{% static 'img/default-book.png' %}" alt="Обложка отсутствует" style="max-width: 100px; max-height: 150px;">
+            {% endif %}
+        </td>
+        <td class="book-name">{{ book.name }}</td>
+        <td class="book-author">{{ book.author }}</td>
+        <td class="book-file">
+            {% if book.files %}
+                <div>
+                    <a class="btn btn-primary" onclick="incrementDownload('{{ book.id_book }}')">Скачать</a>
+                </div>
+                <div>{{ book.file_size }}</div>
+                <div id="downloads-{{ book.id_book }}">Скачал(и): {{ book.download_count }}</div>
+            {% else %}
+                <div>Файл отсутствует</div>
+            {% endif %}
+        </td>
+    </tr>
+{% endfor %}
+
                     </tbody>
                 </table>
                 <div class="pagination">

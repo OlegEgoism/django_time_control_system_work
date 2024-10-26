@@ -229,6 +229,7 @@ class Setting(DateStamp):
     subdivision_page = models.IntegerField(verbose_name='Пагинация подразделений', db_comment='Пагинация подразделений', default=5)
     project_page = models.IntegerField(verbose_name='Пагинация проектов', db_comment='Пагинация проектов', default=5)
     book_page = models.IntegerField(verbose_name='Пагинация книг', db_comment='Пагинация книг', default=5)
+    trade_union_page = models.IntegerField(verbose_name='Пагинация профсоюзных мероприятий', db_comment='Пагинация профсоюзных мероприятий', default=5)
     time_page = models.IntegerField(verbose_name='Пагинация контроля времени', db_comment='Пагинация контроля времени', default=5)
 
     class Meta:
@@ -258,43 +259,44 @@ class Book(DateStamp):
 
 
 class TradeUnionPosition(DateStamp):
-    """Сотрудник профсоюза"""
+    """ППО сотрудник"""
     id_trade_union_position = ULIDField(verbose_name='id_trade_union_position', db_comment='id_trade_union_position', default=default, primary_key=True, editable=False)
-    custom_user = models.ForeignKey(CustomUser, verbose_name='Сотрудник ППО', db_comment='Сотрудник ППО', on_delete=models.PROTECT, related_name='trade_union_position_custom_user')
+    custom_user = models.ForeignKey(CustomUser, verbose_name='ППО сотрудник', db_comment='ППО сотрудник', on_delete=models.PROTECT, related_name='trade_union_position_custom_user')
     position = models.ForeignKey(Position, verbose_name='Должность', db_comment='Должность', on_delete=models.PROTECT, related_name='trade_union_position')
 
     class Meta:
-        verbose_name = 'Сотрудник профсоюза'
-        verbose_name_plural = 'Сотрудники профсоюза'
+        verbose_name = 'ППО сотрудник'
+        verbose_name_plural = 'ППО сотрудники'
 
     def __str__(self):
         return self.custom_user.fio
 
 
-class TradeUnionPhoto(DateStamp):
-    """Фото мероприятий профсоюза"""
-    id_trade_union_photo = ULIDField(verbose_name='id_trade_union_photo', db_comment='id_trade_union_photo', default=default, primary_key=True, editable=False)
-    photo = models.ImageField(verbose_name='Фотография c мероприятия', db_comment='Фотография c мероприятия', upload_to='trade_union_photo/')
-    setting = models.ForeignKey(Setting, verbose_name='Настройки', db_comment='Настройки', on_delete=models.CASCADE, related_name='trade_union_photo_setting', blank=True, null=True)
-
-    class Meta:
-        verbose_name = 'Фото мероприятий профсоюза'
-        verbose_name_plural = 'Фото мероприятий профсоюза'
-
-    def __str__(self):
-        return f'{self.id_trade_union_photo}'
-
-
 class TradeUnionEvent(DateStamp):
-    """Профсоюзные мероприятия"""
+    """ППО мероприятие"""
     id_trade_union_event = ULIDField(verbose_name='id_trade_union_event', db_comment='id_trade_union_event', default=default, primary_key=True, editable=False)
     name = models.CharField(verbose_name='Название', db_comment='Название', help_text='Название книги', max_length=250)
     description = models.TextField(verbose_name='Описание', db_comment='Описание')
     is_active = models.BooleanField(verbose_name='Активный', db_comment='Активный', default=True)
+    views_count = models.PositiveIntegerField(verbose_name='Просмотров', db_comment='Просмотров', help_text='Количество просмотров)', default=0)
 
     class Meta:
-        verbose_name = 'Профсоюзное мероприятие'
-        verbose_name_plural = 'Профсоюзные мероприятия'
+        verbose_name = 'ППО мероприятие'
+        verbose_name_plural = 'ППО мероприятия'
 
     def __str__(self):
         return self.name
+
+
+class TradeUnionPhoto(DateStamp):
+    """ППО фото мероприятий"""
+    id_trade_union_photo = ULIDField(verbose_name='id_trade_union_photo', db_comment='id_trade_union_photo', default=default, primary_key=True, editable=False)
+    photo = models.ImageField(verbose_name='Фотография', db_comment='Фотография', upload_to='trade_union_photo/')
+    trade_union_event = models.ForeignKey(TradeUnionEvent, verbose_name='Мероприятие', db_comment='Мероприятие', on_delete=models.CASCADE, related_name='trade_union_photo_event', blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'ППО фото мероприятий'
+        verbose_name_plural = 'ППО фото мероприятий'
+
+    def __str__(self):
+        return f'{self.id_trade_union_photo}'

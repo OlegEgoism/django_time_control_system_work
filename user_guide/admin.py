@@ -311,10 +311,9 @@ class NewsAdmin(admin.ModelAdmin):
 @admin.register(Setting)
 class SettingAdmin(admin.ModelAdmin):
     """Настройки"""
-    fields = 'preview_logo', 'logo', 'name', 'trade_union_name', 'trade_union_description', 'news_page', 'subdivision_page', 'project_page', 'book_page', 'time_page',
-    list_display = 'name', 'preview_logo', 'trade_union_photo_count', 'created', 'updated',
+    fields = 'preview_logo', 'logo', 'name', 'trade_union_name', 'trade_union_description', 'news_page', 'subdivision_page', 'project_page', 'book_page', 'trade_union_page', 'time_page',
+    list_display = 'name', 'created', 'updated',
     readonly_fields = 'created', 'updated', 'preview_logo',
-    inlines = TradeUnionPhotoInline,
 
     def preview_logo(self, obj):
         if obj.logo:
@@ -328,14 +327,6 @@ class SettingAdmin(admin.ModelAdmin):
         if self.model.objects.count() >= 1:
             return False
         return True
-
-    def trade_union_photo_count(self, obj):
-        if obj.trade_union_photo_setting.count() == 0:
-            return 'Нет файлов'
-        else:
-            return obj.trade_union_photo_setting.count()
-
-    trade_union_photo_count.short_description = 'Количество фото мероприятий профсоюза'
 
 
 @admin.register(Book)
@@ -368,7 +359,7 @@ class TradeUnionPositionAdmin(admin.ModelAdmin):
 @admin.register(TradeUnionEvent)
 class TradeUnionEventAdmin(admin.ModelAdmin):
     """Сотрудники профсоюза"""
-    list_display = 'name', 'short_description', 'is_active', 'created', 'updated',
+    list_display = 'name', 'short_description', 'is_active', 'trade_union_photo_count', 'created', 'updated',
     list_editable = 'is_active',
     list_filter = 'is_active',
     search_fields = 'name',
@@ -376,11 +367,20 @@ class TradeUnionEventAdmin(admin.ModelAdmin):
     date_hierarchy = 'created'
     list_per_page = 20
     ordering = 'created',
+    inlines = TradeUnionPhotoInline,
 
     def short_description(self, obj):
-        len_str = 100
+        len_str = 200
         if obj.description:
             return obj.description[:len_str] + "..." if len(obj.description) > len_str else obj.description
         return "Информация не заполнена"
 
     short_description.short_description = 'Описание мероприятия'
+
+    def trade_union_photo_count(self, obj):
+        if obj.trade_union_photo_event.count() == 0:
+            return 'Нет файлов'
+        else:
+            return obj.trade_union_photo_event.count()
+
+    trade_union_photo_count.short_description = 'Количество фото'

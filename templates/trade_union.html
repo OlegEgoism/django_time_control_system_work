@@ -7,74 +7,110 @@
         <div class="card">
             <h1>Профсоюз {{ config.trade_union_name }}</h1>
             <h5>{{ config.trade_union_description }}</h5>
+            
+            <h1>Профсоюзный комитет</h1>
             <table class="table table-bordered">
                 <thead>
-                <tr>
-                    <th class="trade_union_fio">ФИО</th>
-                    <th>Должность</th>
-                    <th>Почта</th>
-                    <th>Телефон</th>
-                </tr>
+                    <tr>
+                        <th class="trade_union_fio">ФИО</th>
+                        <th>Должность</th>
+                        <th>Почта</th>
+                        <th>Телефон</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <h2>Профсоюзный комитет</h2>
-                {% for position in trade_union_positions %}
-                    <tr>
-                        <td>
-                            <div class="photo-fio">
-                                {% if position.custom_user.photo %}
-                                    <img src="{{ position.custom_user.photo.url }}" alt="Фото {{ position.custom_user.fio }}" width="100">
-                                {% else %}
-                                    <img src="{{ position.custom_user.get_default_photo_url }}" alt="Фото отсутствует" width="100">
-                                {% endif %}
-                                {{ position.custom_user.fio }}
-
-                            </div>
-                        </td>
-                        <td>{{ position.position.name }}</td>
-                        <td>{{ position.custom_user.email }}</td>
-                        <td>
-                            {% if position.custom_user.phone_mobile %}
-                                Мобильный: {{ position.custom_user.phone_mobile }}
-                            {% endif %}
-                            {% if position.custom_user.phone_working %}
-                                {% if position.custom_user.phone_mobile %}
-                                    <br>
-                                {% endif %}
-                                Рабочий: {{ position.custom_user.phone_working }}
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
+                    {% for position in trade_union_positions %}
+                        <tr>
+                            <td colspan="4">
+                                <details>
+                                    <summary>
+                                        {{ position.custom_user.fio }} - {{ position.position.name }}
+                                    </summary>
+                                    <table class="table">
+                                        <tr>
+                                            <td>
+                                                <div class="photo-fio">
+                                                    {% if position.custom_user.photo %}
+                                                        <img src="{{ position.custom_user.photo.url }}" alt="Фото {{ position.custom_user.fio }}" width="100">
+                                                    {% else %}
+                                                        <img src="{{ position.custom_user.get_default_photo_url }}" alt="Фото отсутствует" width="100">
+                                                    {% endif %}
+                                                    {{ position.custom_user.fio }}
+                                                </div>
+                                            </td>
+                                            <td>{{ position.position.name }}</td>
+                                            <td>{{ position.custom_user.email }}</td>
+                                            <td>
+                                                {% if position.custom_user.phone_mobile %}
+                                                    Мобильный: {{ position.custom_user.phone_mobile }}
+                                                {% endif %}
+                                                {% if position.custom_user.phone_working %}
+                                                    {% if position.custom_user.phone_mobile %}
+                                                        <br>
+                                                    {% endif %}
+                                                    Рабочий: {{ position.custom_user.phone_working }}
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </details>
+                            </td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
 
-            {% if trade_union_events %}
-                <h2>Мероприятия</h2>
-                {% for event in trade_union_events %}
-                    Мероприятие - {{ event.name }} <br>
-                    {{ event.description }}
-                    Дата создания {{ event.created }}
-                {% endfor %}
-            {% endif %}
-
-            <h2>Фотографии c мероприятий</h2>
-            <div class="photo-container">
-                <div class="row">
-                    {% for photo in trade_union_photos %}
-                        <div class="col-3 mb-3">  <!-- 4 изображения в ряд -->
-                            <div class="hover-photo">
-                                <img src="{{ photo.photo.url }}" alt="Фото мероприятия" class="img-fluid">
-                            </div>
+            {% if trade_union_events.object_list.exists %}
+                <form method="get" action="{% url 'trade_union' %}" class="d-flex align-items-center">
+                    <h1>Профсоюзные мероприятия</h1>
+                    <input type="text" class="form-control mr-1 search-input" name="q" value="{{ search_query }}" placeholder="Поиск названию и описанию мероприятия">
+                    <button type="submit" class="btn btn-primary mr-1">Поиск</button>
+                    <a href="{% url 'trade_union' %}" class="btn btn-secondary">Очистить</a>
+                </form>
+                
+                <table class="table table-bordered">
+                    {% for event in trade_union_events %}
+                        <div class="news-item">
+                            <h3>
+                                <a href="{% url 'trade_union_event' event.name %}">
+                                    {{ event.name }}
+                                </a>
+                            </h3>
+                            <p>
+                                {{ event.description|safe|slice:":500" }}...
+                                <a href="{% url 'trade_union_event' event.name %}">Читать дальше</a>
+                            </p>
+                            <p class="details">
+                                <div class="details-content">
+                                    <span>Дата публикации: {{ event.created|date:"d.m.Y г. H:i" }}</span><br>
+                                    <span>Просмотров: {{ event.views_count }}</span><br>
+                                    <span>Фотографий: {{ photo_count }} шт.</span>
+                                </div>
+                            </p>
                         </div>
-                    {% empty %}
-                        <p>Нет фотографий для отображения.</p>
                     {% endfor %}
+                </table>
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if trade_union_events.has_previous %}
+                            <a href="?page={{ trade_union_events.previous_page_number }}" class="btn btn-outline-primary"><<</a>
+                        {% endif %}
+                        {% for page_num in trade_union_events.paginator.page_range %}
+                            {% if page_num == trade_union_events.number %}
+                                <strong class="btn btn-primary">{{ page_num }}</strong>
+                            {% else %}
+                                <a href="?page={{ page_num }}" class="btn btn-outline-primary">{{ page_num }}</a>
+                            {% endif %}
+                        {% endfor %}
+                        {% if trade_union_events.has_next %}
+                            <a href="?page={{ trade_union_events.next_page_number }}" class="btn btn-outline-primary">>></a>
+                        {% endif %}
+                    </span>
                 </div>
-            </div>
-
-
+                <p>Страница {{ trade_union_events.number }} из {{ trade_union_events.paginator.num_pages }}</p>
+            {% else %}
+                <h2 class="no-results">В настоящий момент нет опубликованных мероприятий</h2>
+            {% endif %}
         </div>
-    </div>
     </div>
 {% endblock %}

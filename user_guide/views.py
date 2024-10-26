@@ -6,7 +6,7 @@ from itertools import groupby
 from operator import attrgetter
 from pyexpat.errors import messages
 from urllib.parse import quote
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.conf import settings
 from django.contrib.auth import logout
 from django.contrib import messages
@@ -42,7 +42,11 @@ from user_guide.models import (
     News,
     Files,
     Subdivision,
-    Project, Book, TradeUnionPosition, TradeUnionPhoto, TradeUnionEvent
+    Project,
+    Book,
+    TradeUnionPosition,
+    TradeUnionPhoto,
+    TradeUnionEvent
 )
 
 
@@ -326,10 +330,10 @@ def book_list(request):
     except EmptyPage:
         books_page = paginator.page(paginator.num_pages)
     for book in books_page:
-        if book.files:
+        if book.files and os.path.exists(book.files.path):
             book.file_size = convert_size(book.files.size)
         else:
-            book.file_size = "Не указан"
+            book.file_size = "Файл не найден"
     return render(request, template_name='book.html', context={
         'config': config,
         'books': books_page,
@@ -351,6 +355,8 @@ def convert_size(size_bytes):
 def book_download_file(request, id_book):
     """Скачивание книги"""
     book = get_object_or_404(Book, id_book=id_book)
+    if not book.files or not os.path.exists(book.files.path):
+        raise Http404("Файл не найден или был удален.")
     response = HttpResponse(book.files, content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="{book.name}.pdf"'
     return response
@@ -368,16 +374,43 @@ def book_download_count(request, id_book):
 def trade_union(request):
     """Профсоюз"""
     config = Setting.objects.first()
+    page_size = config.trade_union_page
+    search_query = request.GET.get('q', '')
+    query = Q(name__icontains=search_query) | Q(description__icontains=search_query)
+    trade_union_events = TradeUnionEvent.objects.filter(is_active=True).filter(query).order_by('created')
+    paginator = Paginator(trade_union_events, page_size)
+    page = request.GET.get('page')
+    try:
+        trade_union_events_page = paginator.page(page)
+    except PageNotAnInteger:
+        trade_union_events_page = paginator.page(1)
+    except EmptyPage:
+        trade_union_events_page = paginator.page(paginator.num_pages)
     trade_union_positions = TradeUnionPosition.objects.select_related('custom_user', 'position').all()
-    trade_union_photos = TradeUnionPhoto.objects.all()
-    trade_union_events = TradeUnionEvent.objects.filter(is_active=True)
+    photo_count = TradeUnionPhoto.objects.filter(trade_union_event__is_active=True).count()
     return render(request, template_name='trade_union.html', context={
         'config': config,
         'trade_union_positions': trade_union_positions,
-        'trade_union_photos': trade_union_photos,
-        'trade_union_events': trade_union_events,
+        'trade_union_events': trade_union_events_page,
+        'photo_count': photo_count,
+        'search_query': search_query
     })
 
+
+
+
+def trade_union_event(request, name):
+    """Профсоюзное мероприятие"""
+    config = Setting.objects.first()
+    event = get_object_or_404(TradeUnionEvent, name=name)
+    event.views_count += 1
+    event.save()
+    photos = TradeUnionPhoto.objects.filter(trade_union_event=event)
+    return render(request, 'trade_union_event_detail.html', {
+        'config': config,
+        'event': event,
+        'photos': photos,
+    })
 
 
 # TODO Авторизация(Вход/Выход)

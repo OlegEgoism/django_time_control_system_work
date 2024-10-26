@@ -3,7 +3,6 @@ click==8.1.7
 Django==5.1.2
 django-admin-autocomplete-filter==0.7.1
 django-admin-rangefilter==0.13.2
-django-ckeditor==6.7.1
 django-js-asset==2.2.0
 django-ulid==0.0.4
 dlib==19.24.6

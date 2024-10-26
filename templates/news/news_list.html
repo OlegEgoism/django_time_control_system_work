@@ -11,6 +11,7 @@
                 <button type="submit" class="btn btn-primary mr-1">Поиск</button>
                 <a href="{% url 'news_list' %}" class="btn btn-secondary">Очистить</a>
             </form>
+        
             {% if news_all.object_list.exists %}
                 <table class="table table-bordered">
                     {% for new in news_all.object_list %}
@@ -23,7 +24,7 @@
                                 </p>
                                 <p class="details">
                                 <div class="details-content">
-                                    <span>Дата публикации: {{ new.created|date:"d.m.Y г. H:i" }}</span>
+                                    <span>Дата публикации: {{ new.created|date:"d.m.Y г. H:i" }}</span><br>
                                     <span>Просмотров: {{ new.views_count }}</span>
                                 </div>
                                 </p>
@@ -31,6 +32,7 @@
                         </div>
                     {% endfor %}
                 </table>
+                
                 <div class="pagination">
                         <span class="step-links">
                             {% if news_all.has_previous %}
@@ -49,6 +51,7 @@
                         </span>
                 </div>
                 <p>Страница {{ news_all.number }} из {{ news_all.paginator.num_pages }}</p>
+                
             {% else %}
                 <h2 class="no-results">В настоящий момент нет информации</h2>
             {% endif %}
