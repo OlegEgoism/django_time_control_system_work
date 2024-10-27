@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}Сотрудники{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="card">
+            <div>
+                <form method="get" action="{% url 'user_list' %}" class="d-flex align-items-center">
+                    <h1>Сотрудники</h1>
+                    <input type="text" class="form-control mr-1 search-input" name="q" value="{{ search_query }}" placeholder="Поиск по ФИО, должности, почте, телефону, телефону, адресу рабочего места">
+                    <button type="submit" class="btn btn-primary mr-1">Поиск</button>
+                    <a href="{% url 'user_list' %}" class="btn btn-secondary">Очистить</a>
+                </form>
+            </div>
+            {% if grouped_users %}
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>ФИО</th>
+                        <th>Должность</th>
+                        <th>Почта</th>
+                        <th>Телефон</th>
+                        <th>Адрес рабочего места</th>
+                        <th>Статус нахождения</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for subdivision, positions in grouped_users.items %}
+                        <tr>
+                            <td colspan="6">
+                                <details>
+                                    <summary>{{ subdivision.name }}</summary>
+                                    <table>
+                                        {% for position, users in positions.items %}
+                                            {% for user in users %}
+                                                <tr>
+                                                    <td>
+                                                        <div class="photo-fio">
+                                                            {% if user.photo %}
+                                                                <a href="{% url 'user_info' user.slug %}">
+                                                                    <img src="{{ user.photo.url }}" alt="Фото {{ user.username }}">
+                                                                </a>
+                                                            {% endif %}
+                                                            <div>
+                                                                <a href="{% url 'user_info' user.slug %}">{{ user.fio }}</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>{{ position.name }}</td>
+                                                    <td>{{ user.email }}</td>
+                                                    <td>
+                                                        {% if user.phone_mobile %}Мобильный: {{ user.phone_mobile }}{% endif %}<br>
+                                                        {% if user.phone_working %}Рабочий: {{ user.phone_working }}{% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if user.address %}{{ user.address }}{% endif %} <br>
+                                                        {% if user.office %}
+                                                            {% if user.office %}кабинет {{ user.office }}{% endif %}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if user.latest_status %}
+                                                            {% if user.latest_status == 1 %}
+                                                                На работе с
+                                                            {% else %}
+                                                                Отсутствует с
+                                                            {% endif %}
+                                                            {{ user.latest_created|date:"H:i" }} <br>
+                                                            {{ user.address.name }}
+                                                        {% else %}
+                                                            Нет данных
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </table>
+                                </details>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <h2 class="no-results">В настоящий момент нет информации</h2>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

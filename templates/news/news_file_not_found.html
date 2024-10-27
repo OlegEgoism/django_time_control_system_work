@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ news.name }}{% endblock %}
+
+{% block content %}
+
+    <div class="title_page">Скачиваемый файл не найден</div>
+    <div class="home_page">
+        <h2><a href="{% url 'news' news.id %}">Вернуться к новости</a></h2>
+
+{% endblock %}
