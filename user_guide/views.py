@@ -89,7 +89,6 @@ def news_info(request, name):
     """Новость"""
     config = Setting.objects.first()
     news = get_object_or_404(News, name=name)
-    print('___________________', news.files_news.all())
     news.views_count += 1
     news.save()
     files_with_existence = []

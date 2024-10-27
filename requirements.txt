@@ -22,3 +22,5 @@ transliterate==1.10.2
 typing_extensions==4.12.2
 ulid-py==1.1.0
 update==0.0.1
+django-ckeditor==6.7.1
+
