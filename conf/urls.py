@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from user_guide.views import (
     home,
 
@@ -28,10 +28,13 @@ from user_guide.views import (
     trade_union_event,
 
 )
-
+from ckeditor_uploader import views as ckeditor_views
 urlpatterns = [
     # Админка
     path('admin/', admin.site.urls),
+    # Редактор текста
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('ckeditor/upload/', ckeditor_views.upload, name='ckeditor_upload'),
     # Главная
     path('', home, name='home'),
     # Новости

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'user_guide',  # Проект корпоративный портал
     'admin_auto_filters',  # Фильтрация по полям и поиску по названию
     'rangefilter',  # Фильтрация для времени
+    'ckeditor',  # Отображение текста на страницах
 ]
 
 MIDDLEWARE = [
@@ -123,9 +124,9 @@ USE_TZ = True
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR, "static", ]
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -138,3 +139,31 @@ LOGOUT_REDIRECT_URL = '/'  # Перенаправление после успе�
 
 # Для абстрактной модели пользователя
 AUTH_USER_MODEL = 'user_guide.CustomUser'
+
+
+"""Ckeditor"""
+CKEDITOR_UPLOAD_PATH = 'ckeditor_images/'  # Папка для загрузки изображений
+CKEDITOR_IMAGE_BACKEND = "pillow"
+CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
+CKEDITOR_CONFIGS = {
+    'all_text': {
+        'allowedContent': True,
+        'toolbar': 'Custom',
+        'height': 360,
+        'width': 900,
+        'toolbar_Custom': [
+            ['Preview', 'Maximize', 'RemoveFormat', '-'],
+            ['Undo', 'Redo', '-', ],
+            ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', 'SpecialChar', '-'],
+            ['TextColor', 'BGColor'],
+            '/',
+            ['NumberedList', 'BulletedList', 'Outdent', 'Indent', '-'],
+            ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-'],
+            ['Font', 'FontSize'],
+            ['Styles', 'Format'],
+            ['Image'],
+        ],
+        'filebrowserUploadUrl': '/ckeditor/upload/',  # URL для загрузки файлов
+        'filebrowserImageUploadUrl': '/ckeditor/upload/',  # URL для загрузки изображений
+    }
+}

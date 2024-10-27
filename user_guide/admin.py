@@ -311,7 +311,7 @@ class NewsAdmin(admin.ModelAdmin):
 @admin.register(Setting)
 class SettingAdmin(admin.ModelAdmin):
     """Настройки"""
-    fields = 'preview_logo', 'logo', 'name', 'trade_union_name', 'trade_union_description', 'news_page', 'subdivision_page', 'project_page', 'book_page', 'trade_union_page', 'time_page',
+    fields = 'preview_logo', 'logo', 'name', 'info_description', 'trade_union_name', 'trade_union_description', 'news_page', 'subdivision_page', 'project_page', 'book_page', 'trade_union_page', 'time_page',
     list_display = 'name', 'created', 'updated',
     readonly_fields = 'created', 'updated', 'preview_logo',
 

@@ -3,31 +3,32 @@
 {% block title %}{{ event.name }}{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="card">
-        <h1>{{ event.name }}</h1>
-        <p>{{ event.description }}</p>
-        <p class="details">
-            <span>Дата публикации: {{ event.created|date:"d.m.Y г. H:i" }}</span><br>
-            <span>Просмотров: {{ event.views_count }}</span><br>
-            <span>Фотографий: {{ photos.count }} шт.</span>
-        </p>
-        {% if photos.exists %}
-            <h3>Фотографии мероприятия</h3>
-            <div class="row">
-                {% for photo in photos %}
-                    <div class="col-md-3 mb-4 text-center">
-                        <img src="{{ photo.photo.url }}" alt="Фото {{ event.name }}" class="img-thumbnail" width="400">
-                        <div>
-                            <a href="{{ photo.photo.url }}" download class="btn btn-primary mt-2">Скачать</a>
+    <div class="container">
+        <div class="card">
+            <h1>{{ event.name }}</h1>
+            <p>{{ event.description|safe }}</p>
+            <p class="details">
+                <span>Дата публикации: {{ event.created|date:"d.m.Y г. H:i" }}</span><br>
+                <span>Просмотров: {{ event.views_count }}</span><br>
+            </p>
+            {% if photos.exists %}
+                <p class="details">
+                    <span>Фотографий: {{ photos.count }} шт.</span>
+                </p>
+                <h3>Фотографии мероприятия</h3>
+                <div class="row">
+                    {% for photo in photos %}
+                        <div class="col-md-3 mb-4 text-center">
+                            <img src="{{ photo.photo.url }}" alt="Фото {{ event.name }}" class="img-thumbnail" width="400">
+                            <div>
+                                <a href="{{ photo.photo.url }}" download class="btn btn-primary mt-2">Скачать</a>
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
-            </div>
-                        {% else %}
-                <h2 class="no-results">В настоящий момент нет опубликованных фотографий</h2>
-        {% endif %}
+                    {% endfor %}
+                </div>
+
+            {% endif %}
+        </div>
+        <a href="{% url 'trade_union' %}" class="btn btn-secondary mt-3">Назад</a>
     </div>
-    <a href="{% url 'trade_union' %}" class="btn btn-secondary mt-3">Назад</a>
-</div>
 {% endblock %}

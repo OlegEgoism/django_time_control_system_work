@@ -377,7 +377,7 @@ def trade_union(request):
     page_size = config.trade_union_page
     search_query = request.GET.get('q', '')
     query = Q(name__icontains=search_query) | Q(description__icontains=search_query)
-    trade_union_events = TradeUnionEvent.objects.filter(is_active=True).filter(query).order_by('created')
+    trade_union_events = TradeUnionEvent.objects.filter(is_active=True).filter(query).order_by('-created')
     paginator = Paginator(trade_union_events, page_size)
     page = request.GET.get('page')
     try:

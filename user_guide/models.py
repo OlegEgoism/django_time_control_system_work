@@ -1,3 +1,4 @@
+from ckeditor.fields import RichTextField
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -222,9 +223,10 @@ class Setting(DateStamp):
     """Настройки"""
     id_setting = ULIDField(verbose_name='id_setting', db_comment='id_setting', default=default, primary_key=True, editable=False)
     logo = models.ImageField(verbose_name='Логотип организации', db_comment='Логотип организации', upload_to='logo/', default='logo/default/default_logo.png', blank=True, null=True)
-    name = models.CharField(verbose_name='Название организации', db_comment='Название организации', help_text='Название организации (краткое)', max_length=100, default='ОРГАНИЗАЦИЯ')
+    name = models.CharField(verbose_name='Название организации', db_comment='Название организации', help_text='Название организации (краткое)', max_length=100, default='КСУ')
+    info_description = RichTextField(verbose_name='Описание сайта', db_comment='Описание сайта', config_name='all_text', default='Описание сайта')
     trade_union_name = models.CharField(verbose_name='Название профсоюза', db_comment='Название профсоюза', max_length=200)
-    trade_union_description = models.TextField(verbose_name='Описание профсоюза', db_comment='Описание профсоюза')
+    trade_union_description = RichTextField(verbose_name='Описание профсоюза', db_comment='Описание профсоюза', config_name='all_text')
     news_page = models.IntegerField(verbose_name='Пагинация новостей', db_comment='Пагинация новостей', default=5)
     subdivision_page = models.IntegerField(verbose_name='Пагинация подразделений', db_comment='Пагинация подразделений', default=5)
     project_page = models.IntegerField(verbose_name='Пагинация проектов', db_comment='Пагинация проектов', default=5)
@@ -276,7 +278,7 @@ class TradeUnionEvent(DateStamp):
     """ППО мероприятие"""
     id_trade_union_event = ULIDField(verbose_name='id_trade_union_event', db_comment='id_trade_union_event', default=default, primary_key=True, editable=False)
     name = models.CharField(verbose_name='Название', db_comment='Название', help_text='Название книги', max_length=250)
-    description = models.TextField(verbose_name='Описание', db_comment='Описание')
+    description = RichTextField(verbose_name='Описание', db_comment='Описание', config_name='all_text')
     is_active = models.BooleanField(verbose_name='Активный', db_comment='Активный', default=True)
     views_count = models.PositiveIntegerField(verbose_name='Просмотров', db_comment='Просмотров', help_text='Количество просмотров)', default=0)
 
