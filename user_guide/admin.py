@@ -19,7 +19,7 @@ from user_guide.models import (
     Files,
     News,
     Office,
-    Project, Book, TradeUnionPosition, TradeUnionPhoto, TradeUnionEvent
+    Project, Book, TradeUnionPosition, TradeUnionPhoto, TradeUnionEvent, Room, Message
 )
 
 
@@ -384,3 +384,8 @@ class TradeUnionEventAdmin(admin.ModelAdmin):
             return obj.trade_union_photo_event.count()
 
     trade_union_photo_count.short_description = 'Количество фото'
+
+
+
+admin.site.register(Room)
+admin.site.register(Message)

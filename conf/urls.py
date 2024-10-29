@@ -25,7 +25,7 @@ from user_guide.views import (
     user_logout,
 
     trade_union,
-    trade_union_event,
+    trade_union_event, rooms, room,
 
 )
 from ckeditor_uploader import views as ckeditor_views
@@ -60,6 +60,10 @@ urlpatterns = [
     # Авторизация(Вход/Выход)
     path('login/', user_login, name='login'),
     path('logout/', user_logout, name='logout'),
+
+    path("room/", rooms, name="rooms"),
+    path("room/<str:slug>", room, name="room"),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

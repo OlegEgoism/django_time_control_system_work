@@ -46,7 +46,7 @@ from user_guide.models import (
     Book,
     TradeUnionPosition,
     TradeUnionPhoto,
-    TradeUnionEvent
+    TradeUnionEvent, Room, Message
 )
 
 
@@ -435,3 +435,26 @@ def user_logout(request):
     """Выход"""
     logout(request)
     return redirect('/')
+
+
+def rooms(request):
+    config = Setting.objects.first()
+    rooms = Room.objects.all()
+    return render(request, template_name="chat/rooms.html", context={
+        'config':config,
+        'rooms': rooms
+    })
+
+
+
+def room(request, slug):
+    room_name = Room.objects.get(slug=slug).name
+    messages = Message.objects.filter(room=Room.objects.get(slug=slug))
+    return render(request, "chat/room.html", {"room_name": room_name, "slug": slug, 'messages': messages})
+
+
+
+    # room = get_object_or_404(Room, slug=slug)
+    # room_name = room.name
+    # messages = Message.objects.filter(room=Room.objects.get(slug=slug))
+    # return render(request, "chat/room.html", {"room_name": room_name, 'messages': messages})
