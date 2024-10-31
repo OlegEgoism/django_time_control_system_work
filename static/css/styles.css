@@ -275,9 +275,7 @@ form input, form select {
 }
 
 .chatbox {
-    padding: 4px 2px;
-    max-height: 600px;
-    width: 600px;
+    height: 600px;
     overflow-y: scroll;
 }
 
@@ -293,5 +291,10 @@ form input, form select {
 }
 
 .card-chatbox {
-    padding: 20px;
+    padding: 10px;
+}
+
+.small-button {
+    width: 200px;
+    /*text: left;*/
 }
