@@ -396,8 +396,6 @@ def trade_union(request):
     })
 
 
-
-
 def trade_union_event(request, name):
     """Профсоюзное мероприятие"""
     config = Setting.objects.first()
@@ -437,24 +435,30 @@ def user_logout(request):
     return redirect('/')
 
 
+# TODO Чат
 def rooms(request):
+    """Список чатов"""
     config = Setting.objects.first()
     rooms = Room.objects.all()
     return render(request, template_name="chat/rooms.html", context={
-        'config':config,
+        'config': config,
         'rooms': rooms
     })
 
 
-
 def room(request, slug):
-    room_name = Room.objects.get(slug=slug).name
-    messages = Message.objects.filter(room=Room.objects.get(slug=slug))
-    return render(request, "chat/room.html", {"room_name": room_name, "slug": slug, 'messages': messages})
-
-
-
-    # room = get_object_or_404(Room, slug=slug)
-    # room_name = room.name
-    # messages = Message.objects.filter(room=Room.objects.get(slug=slug))
-    # return render(request, "chat/room.html", {"room_name": room_name, 'messages': messages})
+    """Чат"""
+    config = Setting.objects.first()
+    try:
+        room_instance = Room.objects.get(slug=slug)
+        room_name = room_instance.name
+        messages = Message.objects.filter(room=room_instance)
+        created_date = room_instance.created
+    except Room.DoesNotExist:
+        raise Http404("Чат не найден")
+    return render(request, template_name="chat/room.html", context={
+        'config': config,
+        'room_name': room_name,
+        'messages': messages,
+        'created_date': created_date
+    })

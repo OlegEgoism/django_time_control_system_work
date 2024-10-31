@@ -304,19 +304,29 @@ class TradeUnionPhoto(DateStamp):
         return f'{self.id_trade_union_photo}'
 
 
-class Room(models.Model):
-    name = models.CharField(max_length=20)
-    slug = models.SlugField(max_length=100)
+class Room(DateStamp):
+    """Чат"""
+    name = models.CharField(verbose_name='Название', db_comment='Название', max_length=50, unique=True)
+    slug = models.SlugField(verbose_name='slug', db_comment='slug', max_length=50, unique=True, db_index=True, blank=True, null=True)
+
+
+    class Meta:
+        verbose_name = 'Чат'
+        verbose_name_plural = 'Чаты'
 
     def __str__(self):
-        return "Room : " + self.name + " | Id : " + self.slug
+        return f'{self.name} - ({self.slug})'
 
 
-class Message(models.Model):
+class Message(DateStamp):
+    """Сообщение"""
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    content = models.TextField()
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    created_on = models.DateTimeField(auto_now_add=True)
+    content = models.TextField()
+
+    class Meta:
+        verbose_name = 'Сообщение'
+        verbose_name_plural = 'Сообщения'
 
     def __str__(self):
-        return "Message is :- " + self.content
+        return self.content

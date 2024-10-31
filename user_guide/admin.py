@@ -387,5 +387,17 @@ class TradeUnionEventAdmin(admin.ModelAdmin):
 
 
 
-admin.site.register(Room)
 admin.site.register(Message)
+
+
+@admin.register(Room)
+class RoomAdmin(admin.ModelAdmin):
+    """Чат"""
+    list_display = 'name', 'slug', 'created', 'updated',
+    readonly_fields = 'created', 'updated',
+    search_fields = 'name',
+    prepopulated_fields = {'slug': ('name',)}
+    search_help_text = 'Поиск по названию чата'
+    ordering = 'name',
+    list_per_page = 20
+

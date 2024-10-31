@@ -60,8 +60,8 @@ urlpatterns = [
     # Авторизация(Вход/Выход)
     path('login/', user_login, name='login'),
     path('logout/', user_logout, name='logout'),
-
-    path("room/", rooms, name="rooms"),
+    # Чат
+    path("rooms/", rooms, name="rooms"),
     path("room/<str:slug>", room, name="room"),
 
 ]

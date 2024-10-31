@@ -27,17 +27,10 @@
         <li><a href="{% url 'trade_union' %}">Профсоюз</a></li>
     
         {% if user.is_authenticated %}
+        <li><a href="{% url 'rooms' %}">Чаты</a></li>
+            
             <li><a href="#"># Проверка знаний</a></li>
             <li><a href="#"># Органайзер</a></li>
-            
-            
-{#<ul>#}
-{#    {% for room in rooms %}#}
-        <li><a href="{% url 'rooms' %}">Чаты</a></li>
-{#    {% endfor %}#}
-{#</ul>#}
-
-            
             
             <li>
                 <form action="{% url 'logout' %}" method="post">

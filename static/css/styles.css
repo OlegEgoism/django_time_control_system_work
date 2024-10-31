@@ -274,5 +274,24 @@ form input, form select {
 
 }
 
+.chatbox {
+    padding: 4px 2px;
+    max-height: 600px;
+    width: 600px;
+    overflow-y: scroll;
+}
 
+.created_date {
+    font-size: 12px
+}
 
+.chat-photo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.card-chatbox {
+    padding: 20px;
+}

@@ -1,9 +1,7 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
-
 from user_guide.models import CustomUser, Room, Message
-
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -28,26 +26,39 @@ class ChatConsumer(AsyncWebsocketConsumer):
         username = text_data_json["username"]
         room_name = text_data_json["room_name"]
 
-        await self.save_message(message, username, room_name)
+        created_message = await self.save_message(message, username, room_name)
+
+        user = await sync_to_async(CustomUser.objects.get)(username=username)
+        fio = user.fio
+        photo = user.photo.url
+        created = created_message.created.strftime("%Y-%m-%d %H:%M:%S")
 
         await self.channel_layer.group_send(
             self.roomGroupName, {
                 "type": "sendMessage",
                 "message": message,
-                "username": username,
+                "fio": fio,
+                "photo": photo,
+                "created": created,
                 "room_name": room_name,
             }
         )
 
     async def sendMessage(self, event):
         message = event["message"]
-        username = event["username"]
-        await self.send(text_data=json.dumps({"message": message, "username": username}))
+        fio = event["fio"]
+        photo = event["photo"]
+        created = event["created"]
+
+        await self.send(text_data=json.dumps({
+            "message": message,
+            "fio": fio,
+            "photo": photo,
+            "created": created
+        }))
 
     @sync_to_async
     def save_message(self, message, username, room_name):
-        print(username, room_name, "----------------------")
         user = CustomUser.objects.get(username=username)
         room = Room.objects.get(name=room_name)
-
-        Message.objects.create(user=user, room=room, content=message)
+        return Message.objects.create(user=user, room=room, content=message)
