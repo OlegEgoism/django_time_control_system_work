@@ -271,7 +271,6 @@ form input, form select {
 
 .hover-photo:hover {
     transform: scale(1.5); /* Увеличение изображения */
-
 }
 
 .chatbox {
@@ -298,3 +297,8 @@ form input, form select {
     width: 200px;
     /*text: left;*/
 }
+
+.span-size{
+    font-size: 14px;
+}
+
