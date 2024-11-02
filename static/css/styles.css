@@ -137,10 +137,6 @@ th.trade_union_fio {
     width: 300px;
 }
 
-
-
-
-
 .photo-fio {
     display: flex;
     align-items: initial;
@@ -301,3 +297,17 @@ form input, form select {
     font-size: 14px;
 }
 
+.card-chat-user{
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    width: 100%;
+    margin-left: 340px;
+    background-color: white;
+}
+
+.user-link {
+    color: black;
+    font-weight: bold;
+}

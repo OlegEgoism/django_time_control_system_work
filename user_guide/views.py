@@ -454,11 +454,13 @@ def room(request, slug):
         room_name = room_instance.name
         messages = Message.objects.filter(room=room_instance)
         created_date = room_instance.created
+        unique_users = CustomUser.objects.filter(message_user__room=room_instance).distinct()
     except Room.DoesNotExist:
         raise Http404("Чат не найден")
     return render(request, template_name="chat/room.html", context={
         'config': config,
         'room_name': room_name,
         'messages': messages,
-        'created_date': created_date
+        'created_date': created_date,
+        'unique_users': unique_users
     })
