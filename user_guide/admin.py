@@ -401,7 +401,10 @@ class RoomAdmin(admin.ModelAdmin):
     list_per_page = 20
 
     def user_count(self, obj):
-        return obj.message_content.values('user').distinct().count()
+        if obj.message_content.count() == 0:
+            return 'Нет сотрудников'
+        else:
+            return obj.message_content.values('user').distinct().count()
 
     user_count.short_description = 'Количество сотрудников'
 
