@@ -121,6 +121,7 @@ class CustomUser(AbstractUser):
     position = models.ForeignKey(Position, verbose_name='Должность', db_comment='Должность', on_delete=models.PROTECT, related_name='custom_user_position', blank=True, null=True)
     note = models.ForeignKey(Note, verbose_name='Заметка', db_comment='Заметка', on_delete=models.PROTECT, related_name='custom_user_note', blank=True, null=True)
     project = models.ManyToManyField(Project, verbose_name='Проект', related_name='custom_user_project', blank=True)
+    room = models.ManyToManyField('Room', verbose_name='Чат', db_comment='Чат', related_name='custom_user_room', blank=True)
     cardholder = models.BooleanField(verbose_name='Член профсоюза', db_comment='Член профсоюза', default=False)
 
     class Meta:

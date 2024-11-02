@@ -293,11 +293,11 @@ form input, form select {
     width: 200px;
 }
 
-.span-size{
+.span-size {
     font-size: 14px;
 }
 
-.card-chat-user{
+.card-chat-user {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

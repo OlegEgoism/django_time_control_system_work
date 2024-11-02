@@ -221,7 +221,7 @@ class CustomUserAdmin(UserAdmin):
         ('ЛИЧНЫЕ ДАННЫЕ', {
             'fields': (
                 'preview_photo', 'photo', 'fio', 'slug', 'birthday', 'biography', 'email', 'phone_mobile', 'phone_working',
-                'address', 'office', 'note', 'position', 'subdivision', 'project', 'cardholder')},),
+                'address', 'office', 'note', 'position', 'subdivision', 'project', 'room', 'cardholder',)},),
         ('РАЗРЕШЕНИЯ', {
             # 'classes': ('collapse',),
             'fields': (
