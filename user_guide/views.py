@@ -439,7 +439,7 @@ def user_logout(request):
 def rooms(request):
     """Список чатов"""
     config = Setting.objects.first()
-    rooms = Room.objects.all()
+    rooms = Room.objects.filter(is_active=True).annotate(user_count=Count('message_content__user', distinct=True))
     return render(request, template_name="chat/rooms.html", context={
         'config': config,
         'rooms': rooms

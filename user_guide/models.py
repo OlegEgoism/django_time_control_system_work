@@ -308,6 +308,7 @@ class Room(DateStamp):
     """Чат"""
     name = models.CharField(verbose_name='Название', db_comment='Название', max_length=50, unique=True)
     slug = models.SlugField(verbose_name='slug', db_comment='slug', max_length=50, unique=True, db_index=True, blank=True, null=True)
+    is_active = models.BooleanField(verbose_name='Активный', db_comment='Активный', default=True)
 
 
     class Meta:
@@ -315,18 +316,18 @@ class Room(DateStamp):
         verbose_name_plural = 'Чаты'
 
     def __str__(self):
-        return f'{self.name} - ({self.slug})'
+        return self.name
 
 
 class Message(DateStamp):
     """Сообщение"""
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    content = models.TextField()
+    user = models.ForeignKey(CustomUser, verbose_name='Сотрудник', db_comment='Сотрудник', on_delete=models.CASCADE, related_name='message_user')
+    room = models.ForeignKey(Room, verbose_name='Чат', db_comment='Чат', on_delete=models.CASCADE, related_name='message_content')
+    content = models.TextField(verbose_name='Текст сообщения', db_comment='Текст сообщения',)
 
     class Meta:
         verbose_name = 'Сообщение'
         verbose_name_plural = 'Сообщения'
 
     def __str__(self):
-        return self.content
+        return f'{self.room}'

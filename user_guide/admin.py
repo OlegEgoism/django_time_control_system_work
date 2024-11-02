@@ -386,18 +386,50 @@ class TradeUnionEventAdmin(admin.ModelAdmin):
     trade_union_photo_count.short_description = 'Количество фото'
 
 
-
-admin.site.register(Message)
-
-
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
     """Чат"""
-    list_display = 'name', 'slug', 'created', 'updated',
-    readonly_fields = 'created', 'updated',
+    list_display = 'name', 'user_count', 'room_count', 'is_active', 'created', 'updated',
+    list_editable = 'is_active',
+    list_filter = 'is_active',
+    readonly_fields = 'user_count', 'room_count', 'created', 'updated',
     search_fields = 'name',
-    prepopulated_fields = {'slug': ('name',)}
     search_help_text = 'Поиск по названию чата'
+    prepopulated_fields = {'slug': ('name',)}
+    date_hierarchy = 'created'
     ordering = 'name',
     list_per_page = 20
 
+    def user_count(self, obj):
+        return obj.message_content.values('user').distinct().count()
+
+    user_count.short_description = 'Количество сотрудников'
+
+    def room_count(self, obj):
+        if obj.message_content.count() == 0:
+            return 'Нет сообщений'
+        else:
+            return obj.message_content.count()
+
+    room_count.short_description = 'Количество сообщений'
+
+
+@admin.register(Message)
+class MessageAdmin(admin.ModelAdmin):
+    """Сообщение"""
+    list_display = 'user', 'room', 'short_content', 'created', 'updated',
+    list_filter = 'room',
+    readonly_fields = 'user', 'room', 'created', 'updated',
+    search_fields = 'user', 'content',
+    search_help_text = 'Поиск по названию чата'
+    date_hierarchy = 'created'
+    ordering = 'room',
+    list_per_page = 20
+
+    def short_content(self, obj):
+        len_str = 200
+        if obj.content:
+            return obj.content[:len_str] + "..." if len(obj.content) > len_str else obj.content
+        return "Информация не заполнена"
+
+    short_content.short_description = 'Сообщение'
