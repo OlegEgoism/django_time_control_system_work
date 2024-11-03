@@ -233,8 +233,8 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('username', 'email', 'fio', 'slug', 'password1', 'password2'),
         }),
     )
-    list_display = 'username', 'preview_photo', 'fio', 'phone_mobile', 'phone_working', 'note', 'subdivision', 'position', 'address_info', 'is_active',
-    list_filter = 'is_active', NoteFilter, SubdivisionFilter, PositionFilter, AddressFilter, ProjectFilter
+    list_display = 'username', 'preview_photo', 'fio', 'phone_mobile', 'note', 'subdivision', 'position', 'address_info', 'is_active', 'cardholder',
+    list_filter = 'cardholder', 'is_active', NoteFilter, SubdivisionFilter, PositionFilter, AddressFilter, ProjectFilter
     readonly_fields = 'last_login', 'date_joined', 'preview_photo',
     search_fields = 'username', 'fio', 'phone_mobile', 'phone_working', 'position', 'subdivision',
     search_help_text = 'Поиск по логину, имени сотрудника и номеру телефона, должности, подразделению'

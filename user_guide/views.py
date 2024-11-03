@@ -305,11 +305,24 @@ def project_list(request):
         projects_page = paginator.page(1)
     except EmptyPage:
         projects_page = paginator.page(paginator.num_pages)
-    return render(request, template_name='project_list.html', context={
+    return render(request, template_name='projects/project_list.html', context={
         'config': config,
         'projects': projects_page,
         'search_query': search_query
     })
+
+
+def project_info(request, id_project):
+    """Отображение информации о проекте и списке сотрудников"""
+    config = Setting.objects.first()
+    project = Project.objects.annotate(employee_count=Count('custom_user_project')).get(id_project=id_project)
+    employees = CustomUser.objects.filter(project=project)
+    return render(request, template_name="projects/project_info.html", context={
+        'config': config,
+        'project': project,
+        'employees': employees,
+    })
+
 
 
 # TODO Книги

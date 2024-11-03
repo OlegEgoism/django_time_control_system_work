@@ -108,43 +108,47 @@
                 </div>
             </div>
         {% endif %}
-    {% if projects %}
-        <div class="card">
-            <div class="user-bio">
-                <h1>Участие в проектах</h1>
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th class="project-name">Название проекта</th>
-                        <th class="project-owner">Владелец проекта</th>
-                        <th class="project-description">Описание проекта</th>
-                        <th class="project-number">Процент готовности</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for project in projects %}
+        {% if projects %}
+            <div class="card">
+                <div class="user-bio">
+                    <h1>Участие в проектах</h1>
+                    <table class="table table-bordered">
+                        <thead>
                         <tr>
-                            <td class="project-name">{{ project.name }}</td>
-                            <td class="project-name">{{ project.owner }}</td>
-                            <td class="project-description text-left">
-                                {% if project.description %}
-                                    <span id="short">{{ project.description|slice:":500" }}{% if project.description|length > 500 %}...{% endif %}</span>
-                                    <span id="full" style="display: none;">{{ project.description }}</span>
-                                    {% if project.description|length > 500 %}
-                                        <a href="javascript:void(0)" id="toggle" onclick="toggleInfo()">Развернуть</a>
-                                    {% endif %}
-                                {% else %}
-                                    <span class="text-danger">Информация не заполнена</span>
-                                {% endif %}
-                            </td>
-                            <td class="project-number">{{ project.percentage_completion }} %</td>
+                            <th class="project-name">Название проекта</th>
+                            <th class="project-owner">Владелец проекта</th>
+                            <th class="project-description">Описание проекта</th>
+                            <th class="project-number">Процент готовности</th>
                         </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {% for project in projects %}
+                            <tr>
+                                <td class="project-name">
+                                    <a href="{% url 'project_info' project.id_project %}">{{ project.name }}</a>
+                                </td>
+                                <td class="project-name">{{ project.owner }}</td>
+                                <td class="project-description text-left">
+
+                                    {% if project.description %}
+                                        <span id="description-short-{{ forloop.counter }}" class="description-short">{{ project.description|slice:":500" }}{% if project.description|length > 500 %}...{% endif %}</span>
+                                        <span id="description-full-{{ forloop.counter }}" class="description-full" style="display: none;">{{ project.description }}</span>
+                                        {% if project.description|length > 500 %}
+                                            <a href="javascript:void(0)" id="toggle-description-{{ forloop.counter }}" onclick="toggleDescriptionProject({{ forloop.counter }})">Развернуть</a>
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="text-danger">Информация не заполнена</span>
+                                    {% endif %}
+
+                                </td>
+                                <td class="project-number">{{ project.percentage_completion }} %</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-    {% endif %}
+        {% endif %}
         <a href="{% url 'user_list' %}" class="btn btn-secondary">Назад</a>
     </div>
     <script src="{% static 'js/roll.js' %}"></script>

@@ -15,7 +15,9 @@ from user_guide.views import (
     user_time,
 
     subdivision_list,
+
     project_list,
+    project_info,
 
     book_list,
     book_download_file,
@@ -50,6 +52,7 @@ urlpatterns = [
     path('subdivision_list/', subdivision_list, name='subdivision_list'),
     # Проекты
     path('project_list/', project_list, name='project_list'),
+    path('project_info/<str:id_project>/', project_info, name='project_info'),
     # Библиотека
     path('book_list/', book_list, name='book_list'),
     path('book_download_file/<str:id_book>/', book_download_file, name='book_download_file'),

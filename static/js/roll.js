@@ -1,3 +1,4 @@
+// user_info.html
 function toggleBio() {
     const shortBio = document.getElementById("bio-short");
     const fullBio = document.getElementById("bio-full");
@@ -10,6 +11,42 @@ function toggleBio() {
     } else {
         fullBio.style.display = "none";
         shortBio.style.display = "inline";
+        toggleLink.innerText = "Развернуть";
+    }
+}
+
+
+// user_info.html
+function toggleDescriptionProject(counter) {
+    const shortDesc = document.getElementById(`description-short-${counter}`);
+    const fullDesc = document.getElementById(`description-full-${counter}`);
+    const toggleLink = document.getElementById(`toggle-description-${counter}`);
+
+    if (fullDesc.style.display === "none") {
+        fullDesc.style.display = "inline";
+        shortDesc.style.display = "none";
+        toggleLink.innerText = "Свернуть";
+    } else {
+        fullDesc.style.display = "none";
+        shortDesc.style.display = "inline";
+        toggleLink.innerText = "Развернуть";
+    }
+}
+
+
+// project_info.html
+function toggleDescription(counter) {
+    const shortDesc = document.getElementById(`sub-desc-short-${counter}`);
+    const fullDesc = document.getElementById(`sub-desc-full-${counter}`);
+    const toggleLink = document.getElementById(`toggle-desc-${counter}`);
+
+    if (fullDesc.style.display === "none") {
+        fullDesc.style.display = "inline";
+        shortDesc.style.display = "none";
+        toggleLink.innerText = "Свернуть";
+    } else {
+        fullDesc.style.display = "none";
+        shortDesc.style.display = "inline";
         toggleLink.innerText = "Развернуть";
     }
 }
@@ -28,21 +65,5 @@ function toggleInfo() {
         full.style.display = "none";
         short.style.display = "inline";
         toggle.innerText = "Развернуть";
-    }
-}
-
-function toggleDescription(counter) {
-    const shortDesc = document.getElementById(`sub-desc-short-${counter}`);
-    const fullDesc = document.getElementById(`sub-desc-full-${counter}`);
-    const toggleLink = document.getElementById(`toggle-desc-${counter}`);
-
-    if (fullDesc.style.display === "none") {
-        fullDesc.style.display = "inline";
-        shortDesc.style.display = "none";
-        toggleLink.innerText = "Свернуть";
-    } else {
-        fullDesc.style.display = "none";
-        shortDesc.style.display = "inline";
-        toggleLink.innerText = "Развернуть";
     }
 }

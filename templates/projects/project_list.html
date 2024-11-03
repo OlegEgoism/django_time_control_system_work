@@ -26,7 +26,11 @@
                     <tbody>
                     {% for project in projects %}
                         <tr>
-                            <td class="project-name">{{ project.name }}</td>
+                            <td class="project-name">
+                                <a href="{% url 'project_info' project.id_project %}">{{ project.name }}</a>
+                            </td>
+
+                            
                             <td class="project-description text-left">
                                 {% if project.description %}
                                     <span id="short">{{ project.description|slice:":500" }}{% if project.description|length > 500 %}...{% endif %}</span>
@@ -38,6 +42,8 @@
                                     <span class="text-danger">Информация не заполнена</span>
                                 {% endif %}
                             </td>
+                            
+                            
                             <td class="project-owner">{{ project.owner }}</td>
                             <td class="project-number">{{ project.percentage_completion }} %</td>
                             <td class="project-number">{{ project.employee_count }}</td>
@@ -67,6 +73,7 @@
                 <h2 class="no-results">В настоящий момент нет информации</h2>
             {% endif %}
         </div>
+                <a href="{% url 'user_list' %}" class="btn btn-secondary">Назад</a>
     </div>
     <script src="{% static 'js/roll.js' %}"></script>
 {% endblock %}
