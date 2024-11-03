@@ -24,31 +24,31 @@
                     </tr>
                     </thead>
                     <tbody>
+
                     {% for project in projects %}
                         <tr>
                             <td class="project-name">
                                 <a href="{% url 'project_info' project.id_project %}">{{ project.name }}</a>
                             </td>
 
-                            
                             <td class="project-description text-left">
                                 {% if project.description %}
-                                    <span id="short">{{ project.description|slice:":500" }}{% if project.description|length > 500 %}...{% endif %}</span>
-                                    <span id="full" style="display: none;">{{ project.description }}</span>
+                                    <span id="short-desc-{{ forloop.counter }}">{{ project.description|slice:":500" }}{% if project.description|length > 500 %}...{% endif %}</span>
+                                    <span id="full-desc-{{ forloop.counter }}" style="display: none;">{{ project.description }}</span>
                                     {% if project.description|length > 500 %}
-                                        <a href="javascript:void(0)" id="toggle" onclick="toggleInfo()">Развернуть</a>
+                                        <a href="javascript:void(0)" id="toggle-desc-{{ forloop.counter }}" onclick="toggleDescriptionProd({{ forloop.counter }})">Развернуть</a>
                                     {% endif %}
                                 {% else %}
                                     <span class="text-danger">Информация не заполнена</span>
                                 {% endif %}
                             </td>
-                            
-                            
+
                             <td class="project-owner">{{ project.owner }}</td>
                             <td class="project-number">{{ project.percentage_completion }} %</td>
                             <td class="project-number">{{ project.employee_count }}</td>
                         </tr>
                     {% endfor %}
+
                     </tbody>
                 </table>
                 <div class="pagination">
@@ -73,7 +73,6 @@
                 <h2 class="no-results">В настоящий момент нет информации</h2>
             {% endif %}
         </div>
-                <a href="{% url 'user_list' %}" class="btn btn-secondary">Назад</a>
     </div>
     <script src="{% static 'js/roll.js' %}"></script>
 {% endblock %}

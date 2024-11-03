@@ -26,10 +26,10 @@
                             <td class="subdivision-name">{{ subdivision.name }}</td>
                             <td class="subdivision-description text-left">
                                 {% if subdivision.description %}
-                                    <span id="sub-desc-short-{{ forloop.counter }}">{{ subdivision.description|slice:":100" }}{% if subdivision.description|length > 100 %}...{% endif %}</span>
-                                    <span id="sub-desc-full-{{ forloop.counter }}" style="display: none;">{{ subdivision.description }}</span>
+                                    <span id="sub-short-{{ forloop.counter }}">{{ subdivision.description|slice:":100" }}{% if subdivision.description|length > 100 %}...{% endif %}</span>
+                                    <span id="sub-full-{{ forloop.counter }}" style="display: none;">{{ subdivision.description }}</span>
                                     {% if subdivision.description|length > 100 %}
-                                        <a href="javascript:void(0)" id="toggle-desc-{{ forloop.counter }}" onclick="toggleDescription123({{ forloop.counter }})">Развернуть</a>
+                                        <a href="javascript:void(0)" id="sub-toggle-{{ forloop.counter }}" onclick="toggleDescriptionSub({{ forloop.counter }})">Развернуть</a>
                                     {% endif %}
                                 {% else %}
                                     <span class="text-danger">Информация не заполнена</span>
