@@ -1,0 +1,2197 @@
+[
+  {
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+      "action_time": "2024-11-09T17:57:12.557Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 14,
+      "object_id": "01JC9159PJM3NFVNF8DYRXXS4R",
+      "object_repr": "КСУ",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 2,
+    "fields": {
+      "action_time": "2024-11-09T18:02:58.564Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 6,
+      "object_id": "01JC91FVM1NESX3DWW7ESF9XQ7",
+      "object_repr": "Бакалейная 12",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 3,
+    "fields": {
+      "action_time": "2024-11-09T18:03:05.277Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 10,
+      "object_id": "01JC91G25TV4GR8QE3SD5MZYEB",
+      "object_repr": "23",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 4,
+    "fields": {
+      "action_time": "2024-11-09T18:03:15.681Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 9,
+      "object_id": "01JC91GCAZQBZREKJ85ECTJMC2",
+      "object_repr": "Удаленная форма работы",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 5,
+    "fields": {
+      "action_time": "2024-11-09T18:03:32.963Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 11,
+      "object_id": "01JC91GX71PJZAPHY21YSQ3193",
+      "object_repr": "Веб разрабодчик",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 6,
+    "fields": {
+      "action_time": "2024-11-09T18:06:28.788Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 15,
+      "object_id": "01JC91P8XH0B0YY74DA46SYR0D",
+      "object_repr": "Отдел веб проектирования",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 7,
+    "fields": {
+      "action_time": "2024-11-09T18:09:49.777Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 12,
+      "object_id": "01JC91WD6EJ5489T0KCR0JRAYT",
+      "object_repr": "Хранилище данных",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 8,
+    "fields": {
+      "action_time": "2024-11-09T18:10:13.336Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 13,
+      "object_id": "1",
+      "object_repr": "Хранилище данных",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 9,
+    "fields": {
+      "action_time": "2024-11-09T18:10:26.067Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 17,
+      "object_id": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "object_repr": "Крутой Олег Юрьевич",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0424\\u0418\\u041e\", \"Slug\", \"\\u0414\\u0430\\u0442\\u0430 \\u0440\\u043e\\u0436\\u0434\\u0435\\u043d\\u0438\\u044f\", \"\\u0411\\u0438\\u043e\\u0433\\u0440\\u0430\\u0444\\u0438\\u044f\", \"\\u041f\\u043e\\u0447\\u0442\\u0430\", \"\\u0422\\u0435\\u043b\\u0435\\u0444\\u043e\\u043d \\u043c\\u043e\\u0431\\u0438\\u043b\\u044c\\u043d\\u044b\\u0439\", \"\\u0422\\u0435\\u043b\\u0435\\u0444\\u043e\\u043d \\u0440\\u0430\\u0431\\u043e\\u0447\\u0438\\u0439\", \"\\u0410\\u0434\\u0440\\u0435\\u0441\", \"\\u041a\\u0430\\u0431\\u0438\\u043d\\u0435\\u0442\", \"\\u0414\\u043e\\u043b\\u0436\\u043d\\u043e\\u0441\\u0442\\u044c\", \"\\u041f\\u043e\\u0434\\u0440\\u0430\\u0437\\u0434\\u0435\\u043b\\u0435\\u043d\\u0438\\u0435\", \"\\u041f\\u0440\\u043e\\u0435\\u043a\\u0442\", \"\\u0427\\u0430\\u0442\", \"\\u0427\\u043b\\u0435\\u043d \\u043f\\u0440\\u043e\\u0444\\u0441\\u043e\\u044e\\u0437\\u0430\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 10,
+    "fields": {
+      "action_time": "2024-11-09T18:11:49.116Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 17,
+      "object_id": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "object_repr": "Крутой Олег Юрьевич",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0424\\u043e\\u0442\\u043e\\u0433\\u0440\\u0430\\u0444\\u0438\\u044f\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 11,
+    "fields": {
+      "action_time": "2024-11-09T18:15:44.734Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 20,
+      "object_id": "4",
+      "object_repr": "Хранилище данных",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 12,
+    "fields": {
+      "action_time": "2024-11-09T18:21:26.779Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 14,
+      "object_id": "01JC9159PJM3NFVNF8DYRXXS4R",
+      "object_repr": "КСУ",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041e\\u043f\\u0438\\u0441\\u0430\\u043d\\u0438\\u0435 \\u0441\\u0430\\u0439\\u0442\\u0430\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 13,
+    "fields": {
+      "action_time": "2024-11-09T18:24:15.067Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 14,
+      "object_id": "01JC9159PJM3NFVNF8DYRXXS4R",
+      "object_repr": "КСУ",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041e\\u043f\\u0438\\u0441\\u0430\\u043d\\u0438\\u0435 \\u0441\\u0430\\u0439\\u0442\\u0430\", \"\\u041d\\u0430\\u0437\\u0432\\u0430\\u043d\\u0438\\u0435 \\u043f\\u0440\\u043e\\u0444\\u0441\\u043e\\u044e\\u0437\\u0430\", \"\\u041e\\u043f\\u0438\\u0441\\u0430\\u043d\\u0438\\u0435 \\u043f\\u0440\\u043e\\u0444\\u0441\\u043e\\u044e\\u0437\\u0430\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 14,
+    "fields": {
+      "action_time": "2024-11-09T18:24:30.153Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 14,
+      "object_id": "01JC9159PJM3NFVNF8DYRXXS4R",
+      "object_repr": "КСУ",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041e\\u043f\\u0438\\u0441\\u0430\\u043d\\u0438\\u0435 \\u0441\\u0430\\u0439\\u0442\\u0430\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 15,
+    "fields": {
+      "action_time": "2024-11-09T18:25:46.863Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 14,
+      "object_id": "01JC9159PJM3NFVNF8DYRXXS4R",
+      "object_repr": "КСУ",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041b\\u043e\\u0433\\u043e\\u0442\\u0438\\u043f \\u043e\\u0440\\u0433\\u0430\\u043d\\u0438\\u0437\\u0430\\u0446\\u0438\\u0438\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 16,
+    "fields": {
+      "action_time": "2024-11-09T18:27:35.406Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 14,
+      "object_id": "01JC9159PJM3NFVNF8DYRXXS4R",
+      "object_repr": "КСУ",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 17,
+    "fields": {
+      "action_time": "2024-11-09T18:28:46.300Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 17,
+      "object_id": "01JC92Z2W4RF0B0PTP1Q1PJV27",
+      "object_repr": "Большой Иван Иванович",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 18,
+    "fields": {
+      "action_time": "2024-11-09T18:35:07.947Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 10,
+      "object_id": "01JC93AQSA3ED9QRGTDQ50A8BP",
+      "object_repr": "21",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 19,
+    "fields": {
+      "action_time": "2024-11-09T18:35:19.152Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 11,
+      "object_id": "01JC93B2QD8NABX4962SVARHTH",
+      "object_repr": "Аналитик",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 20,
+    "fields": {
+      "action_time": "2024-11-09T18:36:12.992Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 15,
+      "object_id": "01JC93CQ9X55EY37AVN750Q182",
+      "object_repr": "Отдел аналитики",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 21,
+    "fields": {
+      "action_time": "2024-11-09T18:36:37.092Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 17,
+      "object_id": "01JC92Z2W4RF0B0PTP1Q1PJV27",
+      "object_repr": "Большой Иван Иванович",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0424\\u043e\\u0442\\u043e\\u0433\\u0440\\u0430\\u0444\\u0438\\u044f\", \"\\u0414\\u0430\\u0442\\u0430 \\u0440\\u043e\\u0436\\u0434\\u0435\\u043d\\u0438\\u044f\", \"\\u0411\\u0438\\u043e\\u0433\\u0440\\u0430\\u0444\\u0438\\u044f\", \"\\u041f\\u043e\\u0447\\u0442\\u0430\", \"\\u0422\\u0435\\u043b\\u0435\\u0444\\u043e\\u043d \\u043c\\u043e\\u0431\\u0438\\u043b\\u044c\\u043d\\u044b\\u0439\", \"\\u0422\\u0435\\u043b\\u0435\\u0444\\u043e\\u043d \\u0440\\u0430\\u0431\\u043e\\u0447\\u0438\\u0439\", \"\\u0410\\u0434\\u0440\\u0435\\u0441\", \"\\u041a\\u0430\\u0431\\u0438\\u043d\\u0435\\u0442\", \"\\u0417\\u0430\\u043c\\u0435\\u0442\\u043a\\u0430\", \"\\u0414\\u043e\\u043b\\u0436\\u043d\\u043e\\u0441\\u0442\\u044c\", \"\\u041f\\u043e\\u0434\\u0440\\u0430\\u0437\\u0434\\u0435\\u043b\\u0435\\u043d\\u0438\\u0435\", \"\\u041f\\u0440\\u043e\\u0435\\u043a\\u0442\", \"\\u0427\\u0430\\u0442\", \"\\u0427\\u043b\\u0435\\u043d \\u043f\\u0440\\u043e\\u0444\\u0441\\u043e\\u044e\\u0437\\u0430\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 22,
+    "fields": {
+      "action_time": "2024-11-09T18:38:08.961Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 17,
+      "object_id": "01JC93G8B8CE2CN79VZVDEKKRV",
+      "object_repr": "Микро Алла Ивановна",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 23,
+    "fields": {
+      "action_time": "2024-11-09T18:39:23.951Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 11,
+      "object_id": "01JC93JHSB3NNJTX3JVC606QAA",
+      "object_repr": "Инженер разработчик",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 24,
+    "fields": {
+      "action_time": "2024-11-09T18:39:34.539Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 17,
+      "object_id": "01JC93G8B8CE2CN79VZVDEKKRV",
+      "object_repr": "Микро Алла Ивановна",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0424\\u043e\\u0442\\u043e\\u0433\\u0440\\u0430\\u0444\\u0438\\u044f\", \"\\u0414\\u0430\\u0442\\u0430 \\u0440\\u043e\\u0436\\u0434\\u0435\\u043d\\u0438\\u044f\", \"\\u041f\\u043e\\u0447\\u0442\\u0430\", \"\\u0422\\u0435\\u043b\\u0435\\u0444\\u043e\\u043d \\u043c\\u043e\\u0431\\u0438\\u043b\\u044c\\u043d\\u044b\\u0439\", \"\\u0422\\u0435\\u043b\\u0435\\u0444\\u043e\\u043d \\u0440\\u0430\\u0431\\u043e\\u0447\\u0438\\u0439\", \"\\u0410\\u0434\\u0440\\u0435\\u0441\", \"\\u041a\\u0430\\u0431\\u0438\\u043d\\u0435\\u0442\", \"\\u0414\\u043e\\u043b\\u0436\\u043d\\u043e\\u0441\\u0442\\u044c\", \"\\u041f\\u043e\\u0434\\u0440\\u0430\\u0437\\u0434\\u0435\\u043b\\u0435\\u043d\\u0438\\u0435\", \"\\u041f\\u0440\\u043e\\u0435\\u043a\\u0442\", \"\\u0427\\u0430\\u0442\", \"\\u0427\\u043b\\u0435\\u043d \\u043f\\u0440\\u043e\\u0444\\u0441\\u043e\\u044e\\u0437\\u0430\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 25,
+    "fields": {
+      "action_time": "2024-11-09T18:40:23.448Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 17,
+      "object_id": "01JC93G8B8CE2CN79VZVDEKKRV",
+      "object_repr": "Микро Алла Ивановна",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0424\\u043e\\u0442\\u043e\\u0433\\u0440\\u0430\\u0444\\u0438\\u044f\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 26,
+    "fields": {
+      "action_time": "2024-11-09T18:41:12.284Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 17,
+      "object_id": "01JC93G8B8CE2CN79VZVDEKKRV",
+      "object_repr": "Микро Алла Ивановна",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0424\\u043e\\u0442\\u043e\\u0433\\u0440\\u0430\\u0444\\u0438\\u044f\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 27,
+    "fields": {
+      "action_time": "2024-11-09T18:41:42.309Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 17,
+      "object_id": "01JC93G8B8CE2CN79VZVDEKKRV",
+      "object_repr": "Микро Алла Ивановна",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0424\\u043e\\u0442\\u043e\\u0433\\u0440\\u0430\\u0444\\u0438\\u044f\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 28,
+    "fields": {
+      "action_time": "2024-11-09T18:42:12.728Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 17,
+      "object_id": "01JC93G8B8CE2CN79VZVDEKKRV",
+      "object_repr": "Микро Алла Зузо",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0424\\u0418\\u041e\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 29,
+    "fields": {
+      "action_time": "2024-11-09T18:43:39.440Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 17,
+      "object_id": "01JC93TB2VB8BMHA2ZX5E0WQZ8",
+      "object_repr": "Кривок Сосо Николаевич",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 30,
+    "fields": {
+      "action_time": "2024-11-09T18:44:11.543Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 17,
+      "object_id": "01JC93TB2VB8BMHA2ZX5E0WQZ8",
+      "object_repr": "Кривок Сосо Николаевич",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0424\\u043e\\u0442\\u043e\\u0433\\u0440\\u0430\\u0444\\u0438\\u044f\", \"\\u0414\\u0430\\u0442\\u0430 \\u0440\\u043e\\u0436\\u0434\\u0435\\u043d\\u0438\\u044f\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 31,
+    "fields": {
+      "action_time": "2024-11-09T18:46:06.422Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 10,
+      "object_id": "01JC93YTTK317PNXK9X0R8MQ2V",
+      "object_repr": "11",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 32,
+    "fields": {
+      "action_time": "2024-11-09T18:46:21.597Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 11,
+      "object_id": "01JC93Z9MV9YNTH3QNH7WZJ87K",
+      "object_repr": "Руководитель проекта",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 33,
+    "fields": {
+      "action_time": "2024-11-09T18:47:13.074Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 12,
+      "object_id": "01JC940VXGZ3BP1R1FQX5KZJ36",
+      "object_repr": "Справочник данных",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 34,
+    "fields": {
+      "action_time": "2024-11-09T18:47:38.216Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 17,
+      "object_id": "01JC93TB2VB8BMHA2ZX5E0WQZ8",
+      "object_repr": "Кривок Сосо Николаевич",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0411\\u0438\\u043e\\u0433\\u0440\\u0430\\u0444\\u0438\\u044f\", \"\\u0422\\u0435\\u043b\\u0435\\u0444\\u043e\\u043d \\u043c\\u043e\\u0431\\u0438\\u043b\\u044c\\u043d\\u044b\\u0439\", \"\\u0410\\u0434\\u0440\\u0435\\u0441\", \"\\u041a\\u0430\\u0431\\u0438\\u043d\\u0435\\u0442\", \"\\u0414\\u043e\\u043b\\u0436\\u043d\\u043e\\u0441\\u0442\\u044c\", \"\\u041f\\u043e\\u0434\\u0440\\u0430\\u0437\\u0434\\u0435\\u043b\\u0435\\u043d\\u0438\\u0435\", \"\\u041f\\u0440\\u043e\\u0435\\u043a\\u0442\", \"\\u0427\\u0430\\u0442\", \"\\u0427\\u043b\\u0435\\u043d \\u043f\\u0440\\u043e\\u0444\\u0441\\u043e\\u044e\\u0437\\u0430\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 35,
+    "fields": {
+      "action_time": "2024-11-09T18:48:58.553Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 15,
+      "object_id": "01JC9442XR5D0APASC6T7QY5SV",
+      "object_repr": "Отдел тестирования",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 36,
+    "fields": {
+      "action_time": "2024-11-09T18:49:56.963Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 6,
+      "object_id": "01JC945VZ0J79C4HK9MQV987KV",
+      "object_repr": "Колбовая 1",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 37,
+    "fields": {
+      "action_time": "2024-11-09T18:50:38.132Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 17,
+      "object_id": "01JC9473YT73G4SK8TBC04M69A",
+      "object_repr": "Оперной Илья Петрович",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 38,
+    "fields": {
+      "action_time": "2024-11-09T18:50:47.439Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 17,
+      "object_id": "01JC9473YT73G4SK8TBC04M69A",
+      "object_repr": "Оперной Илья Петрович",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0424\\u043e\\u0442\\u043e\\u0433\\u0440\\u0430\\u0444\\u0438\\u044f\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 39,
+    "fields": {
+      "action_time": "2024-11-09T18:51:57.337Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 11,
+      "object_id": "01JC949HGPEYNAAF8EN9PQW5TC",
+      "object_repr": "Тестировщик",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 40,
+    "fields": {
+      "action_time": "2024-11-09T18:53:00.952Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 17,
+      "object_id": "01JC9473YT73G4SK8TBC04M69A",
+      "object_repr": "Оперной Илья Петрович",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0414\\u0430\\u0442\\u0430 \\u0440\\u043e\\u0436\\u0434\\u0435\\u043d\\u0438\\u044f\", \"\\u0422\\u0435\\u043b\\u0435\\u0444\\u043e\\u043d \\u043c\\u043e\\u0431\\u0438\\u043b\\u044c\\u043d\\u044b\\u0439\", \"\\u0410\\u0434\\u0440\\u0435\\u0441\", \"\\u041a\\u0430\\u0431\\u0438\\u043d\\u0435\\u0442\", \"\\u0417\\u0430\\u043c\\u0435\\u0442\\u043a\\u0430\", \"\\u0414\\u043e\\u043b\\u0436\\u043d\\u043e\\u0441\\u0442\\u044c\", \"\\u041f\\u043e\\u0434\\u0440\\u0430\\u0437\\u0434\\u0435\\u043b\\u0435\\u043d\\u0438\\u0435\", \"\\u041f\\u0440\\u043e\\u0435\\u043a\\u0442\", \"\\u0427\\u0430\\u0442\", \"\\u0427\\u043b\\u0435\\u043d \\u043f\\u0440\\u043e\\u0444\\u0441\\u043e\\u044e\\u0437\\u0430\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 41,
+    "fields": {
+      "action_time": "2024-11-09T18:59:56.575Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 8,
+      "object_id": "01JC94R5GYFHAB2EHA7WMNZP9N",
+      "object_repr": "IT проблемы",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 42,
+    "fields": {
+      "action_time": "2024-11-09T19:00:36.117Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 8,
+      "object_id": "01JC94SC4KJNPXKRY47FK616J5",
+      "object_repr": "Как писать код",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 43,
+    "fields": {
+      "action_time": "2024-11-09T19:01:27.290Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 18,
+      "object_id": "01JC94TY3M363XG3V3TNDEZ4Y6",
+      "object_repr": "Вход - (Бакалейная 12)",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 44,
+    "fields": {
+      "action_time": "2024-11-09T19:01:32.410Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 18,
+      "object_id": "01JC94V33G0A8Y72WX68B6B8ZW",
+      "object_repr": "Выход - (Бакалейная 12)",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 45,
+    "fields": {
+      "action_time": "2024-11-09T19:03:48.460Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 21,
+      "object_id": "01JC94Z7Z2P3ZNQW32CYFWQ9JJ",
+      "object_repr": "",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 46,
+    "fields": {
+      "action_time": "2024-11-09T19:03:51.428Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 21,
+      "object_id": "01JC94Z7Z2P3ZNQW32CYFWQ9JJ",
+      "object_repr": "",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 47,
+    "fields": {
+      "action_time": "2024-11-09T19:03:54.695Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 21,
+      "object_id": "01JC94ZE1W81R024XW5KF2TSQ2",
+      "object_repr": "",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 48,
+    "fields": {
+      "action_time": "2024-11-09T19:03:58.150Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 21,
+      "object_id": "01JC94ZE1W81R024XW5KF2TSQ2",
+      "object_repr": "",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 49,
+    "fields": {
+      "action_time": "2024-11-09T19:04:05.333Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 21,
+      "object_id": "01JC94ZRE8G04A13A3XV77QWV2",
+      "object_repr": "",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 50,
+    "fields": {
+      "action_time": "2024-11-09T19:04:08.956Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 21,
+      "object_id": "01JC94ZVZDG9JSZPNET1TB8JHY",
+      "object_repr": "",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 51,
+    "fields": {
+      "action_time": "2024-11-09T19:04:10.181Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 21,
+      "object_id": "01JC94ZX639C7PVPNFHX7R0SH3",
+      "object_repr": "",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 52,
+    "fields": {
+      "action_time": "2024-11-09T19:04:15.671Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "content_type": 21,
+      "object_id": "01JC94ZX639C7PVPNFHX7R0SH3",
+      "object_repr": "",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 1,
+    "fields": {
+      "name": "Can add log entry",
+      "content_type": 1,
+      "codename": "add_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 2,
+    "fields": {
+      "name": "Can change log entry",
+      "content_type": 1,
+      "codename": "change_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 3,
+    "fields": {
+      "name": "Can delete log entry",
+      "content_type": 1,
+      "codename": "delete_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 4,
+    "fields": {
+      "name": "Can view log entry",
+      "content_type": 1,
+      "codename": "view_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 5,
+    "fields": {
+      "name": "Can add permission",
+      "content_type": 2,
+      "codename": "add_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 6,
+    "fields": {
+      "name": "Can change permission",
+      "content_type": 2,
+      "codename": "change_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 7,
+    "fields": {
+      "name": "Can delete permission",
+      "content_type": 2,
+      "codename": "delete_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 8,
+    "fields": {
+      "name": "Can view permission",
+      "content_type": 2,
+      "codename": "view_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 9,
+    "fields": {
+      "name": "Can add group",
+      "content_type": 3,
+      "codename": "add_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 10,
+    "fields": {
+      "name": "Can change group",
+      "content_type": 3,
+      "codename": "change_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 11,
+    "fields": {
+      "name": "Can delete group",
+      "content_type": 3,
+      "codename": "delete_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 12,
+    "fields": {
+      "name": "Can view group",
+      "content_type": 3,
+      "codename": "view_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 13,
+    "fields": {
+      "name": "Can add content type",
+      "content_type": 4,
+      "codename": "add_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 14,
+    "fields": {
+      "name": "Can change content type",
+      "content_type": 4,
+      "codename": "change_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 15,
+    "fields": {
+      "name": "Can delete content type",
+      "content_type": 4,
+      "codename": "delete_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 16,
+    "fields": {
+      "name": "Can view content type",
+      "content_type": 4,
+      "codename": "view_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 17,
+    "fields": {
+      "name": "Can add session",
+      "content_type": 5,
+      "codename": "add_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 18,
+    "fields": {
+      "name": "Can change session",
+      "content_type": 5,
+      "codename": "change_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 19,
+    "fields": {
+      "name": "Can delete session",
+      "content_type": 5,
+      "codename": "delete_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 20,
+    "fields": {
+      "name": "Can view session",
+      "content_type": 5,
+      "codename": "view_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 21,
+    "fields": {
+      "name": "Can add Адрес",
+      "content_type": 6,
+      "codename": "add_address"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 22,
+    "fields": {
+      "name": "Can change Адрес",
+      "content_type": 6,
+      "codename": "change_address"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 23,
+    "fields": {
+      "name": "Can delete Адрес",
+      "content_type": 6,
+      "codename": "delete_address"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 24,
+    "fields": {
+      "name": "Can view Адрес",
+      "content_type": 6,
+      "codename": "view_address"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 25,
+    "fields": {
+      "name": "Can add Книга",
+      "content_type": 7,
+      "codename": "add_book"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 26,
+    "fields": {
+      "name": "Can change Книга",
+      "content_type": 7,
+      "codename": "change_book"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 27,
+    "fields": {
+      "name": "Can delete Книга",
+      "content_type": 7,
+      "codename": "delete_book"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 28,
+    "fields": {
+      "name": "Can view Книга",
+      "content_type": 7,
+      "codename": "view_book"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 29,
+    "fields": {
+      "name": "Can add Новость",
+      "content_type": 8,
+      "codename": "add_news"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 30,
+    "fields": {
+      "name": "Can change Новость",
+      "content_type": 8,
+      "codename": "change_news"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 31,
+    "fields": {
+      "name": "Can delete Новость",
+      "content_type": 8,
+      "codename": "delete_news"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 32,
+    "fields": {
+      "name": "Can view Новость",
+      "content_type": 8,
+      "codename": "view_news"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 33,
+    "fields": {
+      "name": "Can add Заметка",
+      "content_type": 9,
+      "codename": "add_note"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 34,
+    "fields": {
+      "name": "Can change Заметка",
+      "content_type": 9,
+      "codename": "change_note"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 35,
+    "fields": {
+      "name": "Can delete Заметка",
+      "content_type": 9,
+      "codename": "delete_note"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 36,
+    "fields": {
+      "name": "Can view Заметка",
+      "content_type": 9,
+      "codename": "view_note"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 37,
+    "fields": {
+      "name": "Can add Кабинет",
+      "content_type": 10,
+      "codename": "add_office"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 38,
+    "fields": {
+      "name": "Can change Кабинет",
+      "content_type": 10,
+      "codename": "change_office"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 39,
+    "fields": {
+      "name": "Can delete Кабинет",
+      "content_type": 10,
+      "codename": "delete_office"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 40,
+    "fields": {
+      "name": "Can view Кабинет",
+      "content_type": 10,
+      "codename": "view_office"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 41,
+    "fields": {
+      "name": "Can add Должность",
+      "content_type": 11,
+      "codename": "add_position"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 42,
+    "fields": {
+      "name": "Can change Должность",
+      "content_type": 11,
+      "codename": "change_position"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 43,
+    "fields": {
+      "name": "Can delete Должность",
+      "content_type": 11,
+      "codename": "delete_position"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 44,
+    "fields": {
+      "name": "Can view Должность",
+      "content_type": 11,
+      "codename": "view_position"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 45,
+    "fields": {
+      "name": "Can add Проект",
+      "content_type": 12,
+      "codename": "add_project"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 46,
+    "fields": {
+      "name": "Can change Проект",
+      "content_type": 12,
+      "codename": "change_project"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 47,
+    "fields": {
+      "name": "Can delete Проект",
+      "content_type": 12,
+      "codename": "delete_project"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 48,
+    "fields": {
+      "name": "Can view Проект",
+      "content_type": 12,
+      "codename": "view_project"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 49,
+    "fields": {
+      "name": "Can add Чат",
+      "content_type": 13,
+      "codename": "add_room"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 50,
+    "fields": {
+      "name": "Can change Чат",
+      "content_type": 13,
+      "codename": "change_room"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 51,
+    "fields": {
+      "name": "Can delete Чат",
+      "content_type": 13,
+      "codename": "delete_room"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 52,
+    "fields": {
+      "name": "Can view Чат",
+      "content_type": 13,
+      "codename": "view_room"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 53,
+    "fields": {
+      "name": "Can add Настройки",
+      "content_type": 14,
+      "codename": "add_setting"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 54,
+    "fields": {
+      "name": "Can change Настройки",
+      "content_type": 14,
+      "codename": "change_setting"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 55,
+    "fields": {
+      "name": "Can delete Настройки",
+      "content_type": 14,
+      "codename": "delete_setting"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 56,
+    "fields": {
+      "name": "Can view Настройки",
+      "content_type": 14,
+      "codename": "view_setting"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 57,
+    "fields": {
+      "name": "Can add Подразделение",
+      "content_type": 15,
+      "codename": "add_subdivision"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 58,
+    "fields": {
+      "name": "Can change Подразделение",
+      "content_type": 15,
+      "codename": "change_subdivision"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 59,
+    "fields": {
+      "name": "Can delete Подразделение",
+      "content_type": 15,
+      "codename": "delete_subdivision"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 60,
+    "fields": {
+      "name": "Can view Подразделение",
+      "content_type": 15,
+      "codename": "view_subdivision"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 61,
+    "fields": {
+      "name": "Can add ППО мероприятие",
+      "content_type": 16,
+      "codename": "add_tradeunionevent"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 62,
+    "fields": {
+      "name": "Can change ППО мероприятие",
+      "content_type": 16,
+      "codename": "change_tradeunionevent"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 63,
+    "fields": {
+      "name": "Can delete ППО мероприятие",
+      "content_type": 16,
+      "codename": "delete_tradeunionevent"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 64,
+    "fields": {
+      "name": "Can view ППО мероприятие",
+      "content_type": 16,
+      "codename": "view_tradeunionevent"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 65,
+    "fields": {
+      "name": "Can add Сотрудник",
+      "content_type": 17,
+      "codename": "add_customuser"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 66,
+    "fields": {
+      "name": "Can change Сотрудник",
+      "content_type": 17,
+      "codename": "change_customuser"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 67,
+    "fields": {
+      "name": "Can delete Сотрудник",
+      "content_type": 17,
+      "codename": "delete_customuser"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 68,
+    "fields": {
+      "name": "Can view Сотрудник",
+      "content_type": 17,
+      "codename": "view_customuser"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 69,
+    "fields": {
+      "name": "Can add Камера",
+      "content_type": 18,
+      "codename": "add_camera"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 70,
+    "fields": {
+      "name": "Can change Камера",
+      "content_type": 18,
+      "codename": "change_camera"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 71,
+    "fields": {
+      "name": "Can delete Камера",
+      "content_type": 18,
+      "codename": "delete_camera"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 72,
+    "fields": {
+      "name": "Can view Камера",
+      "content_type": 18,
+      "codename": "view_camera"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 73,
+    "fields": {
+      "name": "Can add Файл",
+      "content_type": 19,
+      "codename": "add_files"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 74,
+    "fields": {
+      "name": "Can change Файл",
+      "content_type": 19,
+      "codename": "change_files"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 75,
+    "fields": {
+      "name": "Can delete Файл",
+      "content_type": 19,
+      "codename": "delete_files"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 76,
+    "fields": {
+      "name": "Can view Файл",
+      "content_type": 19,
+      "codename": "view_files"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 77,
+    "fields": {
+      "name": "Can add Сообщение",
+      "content_type": 20,
+      "codename": "add_message"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 78,
+    "fields": {
+      "name": "Can change Сообщение",
+      "content_type": 20,
+      "codename": "change_message"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 79,
+    "fields": {
+      "name": "Can delete Сообщение",
+      "content_type": 20,
+      "codename": "delete_message"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 80,
+    "fields": {
+      "name": "Can view Сообщение",
+      "content_type": 20,
+      "codename": "view_message"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 81,
+    "fields": {
+      "name": "Can add Контроль времени",
+      "content_type": 21,
+      "codename": "add_statuslocation"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 82,
+    "fields": {
+      "name": "Can change Контроль времени",
+      "content_type": 21,
+      "codename": "change_statuslocation"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 83,
+    "fields": {
+      "name": "Can delete Контроль времени",
+      "content_type": 21,
+      "codename": "delete_statuslocation"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 84,
+    "fields": {
+      "name": "Can view Контроль времени",
+      "content_type": 21,
+      "codename": "view_statuslocation"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 85,
+    "fields": {
+      "name": "Can add ППО фото мероприятий",
+      "content_type": 22,
+      "codename": "add_tradeunionphoto"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 86,
+    "fields": {
+      "name": "Can change ППО фото мероприятий",
+      "content_type": 22,
+      "codename": "change_tradeunionphoto"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 87,
+    "fields": {
+      "name": "Can delete ППО фото мероприятий",
+      "content_type": 22,
+      "codename": "delete_tradeunionphoto"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 88,
+    "fields": {
+      "name": "Can view ППО фото мероприятий",
+      "content_type": 22,
+      "codename": "view_tradeunionphoto"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 89,
+    "fields": {
+      "name": "Can add ППО сотрудник",
+      "content_type": 23,
+      "codename": "add_tradeunionposition"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 90,
+    "fields": {
+      "name": "Can change ППО сотрудник",
+      "content_type": 23,
+      "codename": "change_tradeunionposition"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 91,
+    "fields": {
+      "name": "Can delete ППО сотрудник",
+      "content_type": 23,
+      "codename": "delete_tradeunionposition"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 92,
+    "fields": {
+      "name": "Can view ППО сотрудник",
+      "content_type": 23,
+      "codename": "view_tradeunionposition"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 1,
+    "fields": {
+      "app_label": "admin",
+      "model": "logentry"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 2,
+    "fields": {
+      "app_label": "auth",
+      "model": "permission"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 3,
+    "fields": {
+      "app_label": "auth",
+      "model": "group"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 4,
+    "fields": {
+      "app_label": "contenttypes",
+      "model": "contenttype"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 5,
+    "fields": {
+      "app_label": "sessions",
+      "model": "session"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 6,
+    "fields": {
+      "app_label": "user_guide",
+      "model": "address"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 7,
+    "fields": {
+      "app_label": "user_guide",
+      "model": "book"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 8,
+    "fields": {
+      "app_label": "user_guide",
+      "model": "news"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 9,
+    "fields": {
+      "app_label": "user_guide",
+      "model": "note"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 10,
+    "fields": {
+      "app_label": "user_guide",
+      "model": "office"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 11,
+    "fields": {
+      "app_label": "user_guide",
+      "model": "position"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 12,
+    "fields": {
+      "app_label": "user_guide",
+      "model": "project"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 13,
+    "fields": {
+      "app_label": "user_guide",
+      "model": "room"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 14,
+    "fields": {
+      "app_label": "user_guide",
+      "model": "setting"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 15,
+    "fields": {
+      "app_label": "user_guide",
+      "model": "subdivision"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 16,
+    "fields": {
+      "app_label": "user_guide",
+      "model": "tradeunionevent"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 17,
+    "fields": {
+      "app_label": "user_guide",
+      "model": "customuser"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 18,
+    "fields": {
+      "app_label": "user_guide",
+      "model": "camera"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 19,
+    "fields": {
+      "app_label": "user_guide",
+      "model": "files"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 20,
+    "fields": {
+      "app_label": "user_guide",
+      "model": "message"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 21,
+    "fields": {
+      "app_label": "user_guide",
+      "model": "statuslocation"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 22,
+    "fields": {
+      "app_label": "user_guide",
+      "model": "tradeunionphoto"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 23,
+    "fields": {
+      "app_label": "user_guide",
+      "model": "tradeunionposition"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "2v39a5k68gbcgi4bdd7b371kpxijbqrd",
+    "fields": {
+      "session_data": ".eJxVjL0OgjAURt-ls2kslNteR5GYSHRwYHAhl_ZWUAMJP5Px3YWEQccv55zvLUqaxrqcBu7Lxoud2KpTivHR7m2aRenFYHErDlmeXwux-ZUrck9ul8I_qL130nXt2DeVXBS50kGeO8-v_er-HdQ01HNNYAnQAiVsXGKCRW1NAAOMqDiKvNVGe0pA6YCggos5qHkyVqxV8OLzBcCpPoc:1t9rDa:PkPaZTwdVpazaRj2pKebvAFU5UXGZehcq_YwshKiSZw",
+      "expire_date": "2024-11-23T19:33:58.619Z"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "hpt6ggb0hqe99kegv1yqbb7enijamg8r",
+    "fields": {
+      "session_data": ".eJxVzD0PgjAUheH_0tk07S20XDeBwZhoiHFxIu1tK6iBhI_J-N-VhEHn87znxWo7T009j2GoW8-2TMhDgRJKOJmqKPIzVqXYlzt9ubLNL3aWHqFbCn-33a3n1HfT0Dq-EL6uIz_2Pjzz1f4dNHZsvrXMAppERAEJYABJ2iNREFFRTK0mmQhFWgkkpY3xLrMgo9ZZ9CkCuJS9P5kpPeE:1t9pgb:DhoyOZCRmYOc6sXidi5wB40pbovtzRpAENulzD_-0Zo",
+      "expire_date": "2024-11-23T17:55:49.911Z"
+    }
+  },
+  {
+    "model": "user_guide.address",
+    "pk": "01JC91FVM1NESX3DWW7ESF9XQ7",
+    "fields": {
+      "created": "2024-11-09T18:02:58.563Z",
+      "updated": "2024-11-09T18:02:58.563Z",
+      "name": "Бакалейная 12"
+    }
+  },
+  {
+    "model": "user_guide.address",
+    "pk": "01JC945VZ0J79C4HK9MQV987KV",
+    "fields": {
+      "created": "2024-11-09T18:49:56.962Z",
+      "updated": "2024-11-09T18:49:56.962Z",
+      "name": "Колбовая 1"
+    }
+  },
+  {
+    "model": "user_guide.office",
+    "pk": "01JC91G25TV4GR8QE3SD5MZYEB",
+    "fields": {
+      "created": "2024-11-09T18:03:05.276Z",
+      "updated": "2024-11-09T18:03:05.276Z",
+      "name": "23"
+    }
+  },
+  {
+    "model": "user_guide.office",
+    "pk": "01JC93AQSA3ED9QRGTDQ50A8BP",
+    "fields": {
+      "created": "2024-11-09T18:35:07.947Z",
+      "updated": "2024-11-09T18:35:07.947Z",
+      "name": "21"
+    }
+  },
+  {
+    "model": "user_guide.office",
+    "pk": "01JC93YTTK317PNXK9X0R8MQ2V",
+    "fields": {
+      "created": "2024-11-09T18:46:06.421Z",
+      "updated": "2024-11-09T18:46:06.421Z",
+      "name": "11"
+    }
+  },
+  {
+    "model": "user_guide.position",
+    "pk": "01JC91GX71PJZAPHY21YSQ3193",
+    "fields": {
+      "created": "2024-11-09T18:03:32.963Z",
+      "updated": "2024-11-09T18:03:32.963Z",
+      "name": "Веб разрабодчик"
+    }
+  },
+  {
+    "model": "user_guide.position",
+    "pk": "01JC93B2QD8NABX4962SVARHTH",
+    "fields": {
+      "created": "2024-11-09T18:35:19.151Z",
+      "updated": "2024-11-09T18:35:19.151Z",
+      "name": "Аналитик"
+    }
+  },
+  {
+    "model": "user_guide.position",
+    "pk": "01JC93JHSB3NNJTX3JVC606QAA",
+    "fields": {
+      "created": "2024-11-09T18:39:23.950Z",
+      "updated": "2024-11-09T18:39:23.950Z",
+      "name": "Инженер разработчик"
+    }
+  },
+  {
+    "model": "user_guide.position",
+    "pk": "01JC93Z9MV9YNTH3QNH7WZJ87K",
+    "fields": {
+      "created": "2024-11-09T18:46:21.596Z",
+      "updated": "2024-11-09T18:46:21.596Z",
+      "name": "Руководитель проекта"
+    }
+  },
+  {
+    "model": "user_guide.position",
+    "pk": "01JC949HGPEYNAAF8EN9PQW5TC",
+    "fields": {
+      "created": "2024-11-09T18:51:57.336Z",
+      "updated": "2024-11-09T18:51:57.336Z",
+      "name": "Тестировщик"
+    }
+  },
+  {
+    "model": "user_guide.subdivision",
+    "pk": "01JC91P8XH0B0YY74DA46SYR0D",
+    "fields": {
+      "created": "2024-11-09T18:06:28.787Z",
+      "updated": "2024-11-09T18:06:28.787Z",
+      "name": "Отдел веб проектирования",
+      "description": "Команда специалистов, занимающаяся разработкой и поддержкой веб-приложений и сайтов. Основное направление работы отдела – создание интерактивных, удобных и высокопроизводительных веб-решений, которые соответствуют современным стандартам дизайна и функциональности.\r\nСпециалисты отдела веб-проектирования обеспечивают полный цикл разработки: от анализа требований и проектирования интерфейсов до программирования, тестирования и сопровождения. Основное внимание уделяется UX/UI-дизайну, адаптивности, безопасности и производительности приложений."
+    }
+  },
+  {
+    "model": "user_guide.subdivision",
+    "pk": "01JC93CQ9X55EY37AVN750Q182",
+    "fields": {
+      "created": "2024-11-09T18:36:12.991Z",
+      "updated": "2024-11-09T18:36:12.991Z",
+      "name": "Отдел аналитики",
+      "description": "подразделение в организации, ответственное за сбор, обработку и анализ данных для принятия стратегических решений и улучшения эффективности бизнеса. Основная задача отдела аналитики — предоставление руководству и другим подразделениям объективной, точной и своевременной информации, которая помогает в оптимизации процессов, прогнозировании тенденций и разработке новых стратегий."
+    }
+  },
+  {
+    "model": "user_guide.subdivision",
+    "pk": "01JC9442XR5D0APASC6T7QY5SV",
+    "fields": {
+      "created": "2024-11-09T18:48:58.553Z",
+      "updated": "2024-11-09T18:48:58.553Z",
+      "name": "Отдел тестирования",
+      "description": "Подразделение, ответственное за обеспечение качества продуктов и услуг компании, путем выявления дефектов, ошибок и несоответствий требованиям. Основная цель отдела тестирования — обеспечить надежность, безопасность и функциональность разрабатываемых систем, приложений или процессов до их внедрения в эксплуатацию. Этот процесс включает в себя как ручное, так и автоматизированное тестирование различных видов программного обеспечения и компонентов."
+    }
+  },
+  {
+    "model": "user_guide.project",
+    "pk": "01JC91WD6EJ5489T0KCR0JRAYT",
+    "fields": {
+      "created": "2024-11-09T18:09:49.776Z",
+      "updated": "2024-11-09T18:09:49.776Z",
+      "name": "Хранилище данных",
+      "owner": "Информационные системы",
+      "description": "Централизованная система хранения и управления данными, предназначенная для сбора, обработки и анализа больших объемов информации, поступающей из различных источников. Хранилище данных позволяет консолидировать данные, обеспечивая их структурирование и доступность для пользователей и аналитических систем.\r\nОсновные функции хранилища включают:\r\nСбор данных из различных информационных систем и внешних источников;\r\nИнтеграция данных с учетом разных форматов и структур, что упрощает доступ и анализ;\r\nАналитика и отчётность, включая поддержку инструментов визуализации и бизнес-анализа;\r\nБезопасность и защита данных с учетом актуальных требований к конфиденциальности и управлению доступом.\r\nХранилище данных \"Информационные системы\" является важным звеном в инфраструктуре компании, способствуя принятию обоснованных решений на основе комплексного анализа данных.",
+      "percentage_completion": 23
+    }
+  },
+  {
+    "model": "user_guide.project",
+    "pk": "01JC940VXGZ3BP1R1FQX5KZJ36",
+    "fields": {
+      "created": "2024-11-09T18:47:13.073Z",
+      "updated": "2024-11-09T18:47:13.073Z",
+      "name": "Справочник данных",
+      "owner": "МТС",
+      "description": "Проект \"Справочник данных\" представляет собой цифровую платформу для хранения, обработки и управления структурированной информацией, предназначенную для удобного поиска, актуализации и использования данных внутри организации или для внешних пользователей. Справочник данных включает в себя разнообразную информацию, которая используется для поддержки бизнес-операций, аналитики, отчетности и принятия решений.",
+      "percentage_completion": 11
+    }
+  },
+  {
+    "model": "user_guide.note",
+    "pk": "01JC91GCAZQBZREKJ85ECTJMC2",
+    "fields": {
+      "created": "2024-11-09T18:03:15.680Z",
+      "updated": "2024-11-09T18:03:15.680Z",
+      "name": "Удаленная форма работы"
+    }
+  },
+  {
+    "model": "user_guide.customuser",
+    "pk": "01JC912D2N7PCCBR9PD0HDA6TY",
+    "fields": {
+      "password": "pbkdf2_sha256$870000$57OZtrP0VsjEmlCkb22OEj$raJIRDbS2/n9uGQQ4NcOVWiCCPTcrkTpy7JNhUX3Pbk=",
+      "last_login": "2024-11-09T17:55:49.908Z",
+      "is_superuser": true,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2024-11-09T17:55:37.685Z",
+      "slug": "krutoj-oleg-yurevich",
+      "username": "admin",
+      "photo": "photo_user/1111.png",
+      "fio": "Крутой Олег Юрьевич",
+      "birthday": "2004-11-09",
+      "biography": "Опытный разработчик с глубокими знаниями в веб-разработке и визуализации данных. Олег активно занимается проектами, связанными с управлением персоналом, профсоюзной деятельностью и корпоративными приложениями. Он разрабатывает уникальные решения для обмена сообщениями и аналитики данных, используя современные технологии.",
+      "email": "krutoleg@gmail.com",
+      "phone_mobile": "+375(29)220-11-01",
+      "phone_working": "+8(017)204-21-34",
+      "address": "01JC91FVM1NESX3DWW7ESF9XQ7",
+      "office": "01JC91G25TV4GR8QE3SD5MZYEB",
+      "subdivision": "01JC91P8XH0B0YY74DA46SYR0D",
+      "position": "01JC91GX71PJZAPHY21YSQ3193",
+      "note": null,
+      "cardholder": true,
+      "groups": [],
+      "user_permissions": [],
+      "project": [
+        "01JC91WD6EJ5489T0KCR0JRAYT"
+      ],
+      "room": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "user_guide.customuser",
+    "pk": "01JC92Z2W4RF0B0PTP1Q1PJV27",
+    "fields": {
+      "password": "pbkdf2_sha256$870000$vxwLuOr6CK8jaJWqokqp9r$76H42l0R1D23e1LMtUv3pJ9wowoSyrn1y+nAo2mzfT4=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-11-09T18:28:46.084Z",
+      "slug": "bolshoj-ivan-ivanovich",
+      "username": "bolshoj",
+      "photo": "photo_user/-0016.jpeg",
+      "fio": "Большой Иван Иванович",
+      "birthday": "2000-11-09",
+      "biography": "После окончания школы Иван поступил в Московский государственный университет на факультет физики, где изучал квантовую механику. В 2003 году защитил диплом с отличием, получив степень бакалавра. В дальнейшем продолжил обучение в аспирантуре, где работал над темой, связанной с разработкой новых материалов для микроэлектроники.\r\n\r\nРаботу в науке Иван сочетал с преподаванием, став доцентом на своей кафедре в 2007 году. Он активно участвовал в международных научных конференциях и семинарах, являясь автором более 20 научных публикаций.\r\n\r\nКроме научной работы, Иван активно занимался общественной деятельностью. Он является членом нескольких профессиональных ассоциаций и научных обществ, а также участником образовательных проектов, направленных на развитие молодежи.",
+      "email": "lov@gmail.com",
+      "phone_mobile": "+375(29)123-32-34",
+      "phone_working": "+8(017)200-44-23",
+      "address": "01JC91FVM1NESX3DWW7ESF9XQ7",
+      "office": "01JC93AQSA3ED9QRGTDQ50A8BP",
+      "subdivision": "01JC93CQ9X55EY37AVN750Q182",
+      "position": "01JC93B2QD8NABX4962SVARHTH",
+      "note": "01JC91GCAZQBZREKJ85ECTJMC2",
+      "cardholder": true,
+      "groups": [],
+      "user_permissions": [],
+      "project": [
+        "01JC91WD6EJ5489T0KCR0JRAYT"
+      ],
+      "room": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "user_guide.customuser",
+    "pk": "01JC93G8B8CE2CN79VZVDEKKRV",
+    "fields": {
+      "password": "pbkdf2_sha256$870000$DKNmTVTX5uqArsagyef0nI$k8iKUrQ/nQS/Hw4+hPMsYDnGMqVvrSg9ZiWVqxa4GQE=",
+      "last_login": "2024-11-09T19:33:58.616Z",
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-11-09T18:38:08.744Z",
+      "slug": "mikro-alla-ivanovna",
+      "username": "alla",
+      "photo": "photo_user/Снимок_экрана_от_2024-11-09_21-41-31.png",
+      "fio": "Микро Алла Зузо",
+      "birthday": "2000-01-09",
+      "biography": "",
+      "email": "egoismlive@gmail.com",
+      "phone_mobile": "+375(29)320-14-77",
+      "phone_working": "+8(017)321-12-32",
+      "address": "01JC91FVM1NESX3DWW7ESF9XQ7",
+      "office": "01JC91G25TV4GR8QE3SD5MZYEB",
+      "subdivision": "01JC91P8XH0B0YY74DA46SYR0D",
+      "position": "01JC93JHSB3NNJTX3JVC606QAA",
+      "note": null,
+      "cardholder": true,
+      "groups": [],
+      "user_permissions": [],
+      "project": [
+        "01JC91WD6EJ5489T0KCR0JRAYT"
+      ],
+      "room": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "user_guide.customuser",
+    "pk": "01JC93TB2VB8BMHA2ZX5E0WQZ8",
+    "fields": {
+      "password": "pbkdf2_sha256$870000$oUadjRIXXuTuDtyKz29MVh$HWxp54VAOcQrffU6tj5+CEPkLq0xAfNEodi8pUCBZww=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-11-09T18:43:39.227Z",
+      "slug": "krivok-soso-nikolaevich",
+      "username": "soso",
+      "photo": "photo_user/-0014.jpeg",
+      "fio": "Кривок Сосо Николаевич",
+      "birthday": "2000-02-19",
+      "biography": "В 1997 году Сосо Кривок закончил университет с красным дипломом, а затем продолжил обучение в аспирантуре, где специализировался на изучении древнегрузинской культуры и архитектуры. Его диссертация на тему «Влияние византийской архитектуры на развитие грузинских храмов» была высоко оценена научным сообществом.\r\n\r\nПосле получения степени кандидата исторических наук в 2003 году, Сосо начал преподавательскую деятельность, став доцентом кафедры истории в Тбилисском университете. Он также активно занимается археологическими раскопками в Грузии, исследуя древние памятники и руины, что стало основой его научной карьеры.\r\n\r\nСосо Николаевич также известен своими проектами по сохранению культурного наследия Грузии. Он является автором нескольких публикаций по вопросам реставрации памятников архитектуры и инициатором ряда культурных мероприятий, направленных на привлечение внимания к историческому наследию страны.",
+      "email": "soso@gmail.com",
+      "phone_mobile": "+375(29)120-24-72",
+      "phone_working": null,
+      "address": "01JC91FVM1NESX3DWW7ESF9XQ7",
+      "office": "01JC93YTTK317PNXK9X0R8MQ2V",
+      "subdivision": "01JC91P8XH0B0YY74DA46SYR0D",
+      "position": "01JC93Z9MV9YNTH3QNH7WZJ87K",
+      "note": null,
+      "cardholder": true,
+      "groups": [],
+      "user_permissions": [],
+      "project": [
+        "01JC940VXGZ3BP1R1FQX5KZJ36"
+      ],
+      "room": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "user_guide.customuser",
+    "pk": "01JC9473YT73G4SK8TBC04M69A",
+    "fields": {
+      "password": "pbkdf2_sha256$870000$XPsfZ5vzjOOSFaUH0aTRIf$rQU22d7YY5LyCmpVS+eYvBVaPP1mQJ8hWcSQvW7jugE=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-11-09T18:50:37.914Z",
+      "slug": "opernoj-ilya-petrovich",
+      "username": "oper",
+      "photo": "photo_user/-0013.jpeg",
+      "fio": "Оперной Илья Петрович",
+      "birthday": "2001-01-01",
+      "biography": "",
+      "email": "oper@gmail.com",
+      "phone_mobile": "+375(29)320-21-27",
+      "phone_working": null,
+      "address": "01JC945VZ0J79C4HK9MQV987KV",
+      "office": "01JC93YTTK317PNXK9X0R8MQ2V",
+      "subdivision": "01JC9442XR5D0APASC6T7QY5SV",
+      "position": "01JC949HGPEYNAAF8EN9PQW5TC",
+      "note": "01JC91GCAZQBZREKJ85ECTJMC2",
+      "cardholder": true,
+      "groups": [],
+      "user_permissions": [],
+      "project": [
+        "01JC940VXGZ3BP1R1FQX5KZJ36",
+        "01JC91WD6EJ5489T0KCR0JRAYT"
+      ],
+      "room": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "user_guide.statuslocation",
+    "pk": "01JC94Z7Z2P3ZNQW32CYFWQ9JJ",
+    "fields": {
+      "created": "2024-11-08T19:03:48.458Z",
+      "custom_user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "camera": "01JC94TY3M363XG3V3TNDEZ4Y6"
+    }
+  },
+  {
+    "model": "user_guide.statuslocation",
+    "pk": "01JC94ZE1W81R024XW5KF2TSQ2",
+    "fields": {
+      "created": "2024-11-09T19:03:54.694Z",
+      "custom_user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "camera": "01JC94V33G0A8Y72WX68B6B8ZW"
+    }
+  },
+  {
+    "model": "user_guide.statuslocation",
+    "pk": "01JC94ZRE8G04A13A3XV77QWV2",
+    "fields": {
+      "created": "2024-02-09T19:04:05.331Z",
+      "custom_user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "camera": "01JC94TY3M363XG3V3TNDEZ4Y6"
+    }
+  },
+  {
+    "model": "user_guide.statuslocation",
+    "pk": "01JC94ZVZDG9JSZPNET1TB8JHY",
+    "fields": {
+      "created": "2024-02-10T19:04:08.954Z",
+      "custom_user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "camera": "01JC94V33G0A8Y72WX68B6B8ZW"
+    }
+  },
+  {
+    "model": "user_guide.camera",
+    "pk": "01JC94TY3M363XG3V3TNDEZ4Y6",
+    "fields": {
+      "finding": 1,
+      "is_active": true,
+      "address": "01JC91FVM1NESX3DWW7ESF9XQ7"
+    }
+  },
+  {
+    "model": "user_guide.camera",
+    "pk": "01JC94V33G0A8Y72WX68B6B8ZW",
+    "fields": {
+      "finding": 2,
+      "is_active": true,
+      "address": "01JC91FVM1NESX3DWW7ESF9XQ7"
+    }
+  },
+  {
+    "model": "user_guide.news",
+    "pk": "01JC94R5GYFHAB2EHA7WMNZP9N",
+    "fields": {
+      "created": "2024-11-09T18:59:56.575Z",
+      "updated": "2024-11-09T19:01:03.023Z",
+      "name": "IT проблемы",
+      "description": "В последние недели в мире информационных технологий наблюдается ряд значительных проблем, которые затрудняют работу как крупных компаний, так и малых бизнесов. Среди самых актуальных вопросов — увеличение числа кибератак, проблемы с безопасностью данных, а также сбои в работе популярных облачных сервисов.\r\n\r\n1. Увеличение кибератак\r\n\r\nОдной из самых серьезных угроз остаются кибератаки, которые становятся все более изощренными. Хакеры используют новые способы взлома систем и кражи личных данных, что приводит к огромным финансовым потерям для компаний. В ответ на это многие организации усиливают защиту своих информационных систем, внедряя более сложные механизмы шифрования и многоуровневые системы безопасности. Однако, по данным аналитиков, число успешных атак не снижается.\r\n\r\n2. Проблемы с облачными сервисами\r\n\r\nНедавние сбои в работе крупнейших облачных сервисов, таких как Amazon Web Services и Microsoft Azure, продемонстрировали уязвимость популярных платформ. Эти инциденты повлияли на работу тысяч компаний по всему миру, приводя к временным потерям данных и нарушению бизнес-процессов. Эксперты рекомендуют организациям пересматривать свои стратегии резервного копирования данных и использовать мультиоблачные решения, чтобы снизить риски зависания на одной платформе.\r\n\r\n3. Угрозы безопасности данных\r\n\r\nЕще одной острой проблемой является защита данных, особенно в свете новых законодательных инициатив, направленных на усиление контроля над персональной информацией. Компании должны адаптироваться к изменениям в законодательстве, таким как Общий регламент по защите данных (GDPR), и следить за соблюдением новых стандартов безопасности. Нарушение этих стандартов может привести не только к утрате репутации, но и к штрафам.\r\n\r\n4. Решения для устранения проблем\r\n\r\nДля эффективного решения текущих IT-проблем компаниям рекомендуется инвестировать в обучение сотрудников, проведение регулярных аудитов безопасности, а также внедрение систем мониторинга и аналитики для своевременного обнаружения уязвимостей. Важно также не забывать о развитии корпоративной культуры безопасности и повышении осведомленности среди всех сотрудников.\r\n\r\nЗаключение\r\n\r\nIT-сфера продолжает сталкиваться с новыми вызовами, и организациям необходимо быть готовыми к адаптации в условиях быстроменяющегося технологического ландшафта. Проблемы с безопасностью, облачными сервисами и кибератаками остаются актуальными, но внедрение инновационных решений и соблюдение передовых стандартов могут помочь справиться с этими трудностями.",
+      "is_active": true,
+      "views_count": 9
+    }
+  },
+  {
+    "model": "user_guide.news",
+    "pk": "01JC94SC4KJNPXKRY47FK616J5",
+    "fields": {
+      "created": "2024-11-09T19:00:36.115Z",
+      "updated": "2024-11-09T19:09:13.425Z",
+      "name": "Как писать код",
+      "description": "Писать код — это процесс, который требует понимания нескольких ключевых аспектов программирования, включая выбор языка программирования, структуру программы и правила синтаксиса. Вот несколько шагов, которые помогут вам начать писать код:\r\n\r\n1. Выбор языка программирования\r\nВажно выбрать язык, который подходит для решения ваших задач. Например:\r\n\r\nДля веб-разработки: HTML, CSS, JavaScript, Python (с Django или Flask).\r\nДля разработки мобильных приложений: Swift (для iOS) или Kotlin (для Android).\r\nДля аналитики данных: Python, R, SQL.\r\n2. Настройка среды разработки\r\nПеред тем как начать писать код, настройте среду разработки (IDE) или текстовый редактор:\r\n\r\nДля Python — PyCharm, VS Code, Sublime Text.\r\nДля веб-разработки — Visual Studio Code, Sublime Text, WebStorm.\r\nДля мобильной разработки — Android Studio, Xcode.\r\n3. Основы синтаксиса\r\nЗнакомьтесь с основами синтаксиса выбранного языка. Например:\r\n\r\nКак писать переменные: x = 10\r\nКак делать вывод: print(\"Hello, World!\")\r\nКак писать условные операторы: if, else, elif (Python).\r\nКак создавать циклы: for, while.\r\n4. Структура программы\r\nКаждая программа состоит из нескольких частей:\r\n\r\nИмпорты/подключения библиотек: В некоторых языках для работы с определенными функциями нужно подключать внешние библиотеки.\r\nОсновной код: Основная логика программы, например, функции или классы.\r\nКомментарии: Хорошая практика — комментировать свой код, чтобы другие (и вы сами) могли понять, что делает каждая часть программы.",
+      "is_active": true,
+      "views_count": 2
+    }
+  },
+  {
+    "model": "user_guide.setting",
+    "pk": "01JC9159PJM3NFVNF8DYRXXS4R",
+    "fields": {
+      "created": "2024-11-09T17:57:12.556Z",
+      "updated": "2024-11-09T18:27:35.404Z",
+      "logo": "logo/Gemini_Generated_Image_pjtje0pjtje0pjtj.jpeg",
+      "name": "КСУ",
+      "info_description": "<p><strong>КСУ (Корпоративная Система Управления)</strong> &mdash; это комплексная информационная система, предназначенная для автоматизации управления процессами и ресурсами внутри организации. Она служит для повышения эффективности и упрощения процессов, таких как планирование, учет, контроль и анализ деятельности компании. Основные функции КСУ включают в себя:</p>\r\n\r\n<ol>\r\n\t<li><strong>Управление персоналом</strong>: автоматизация процессов найма, адаптации сотрудников, учета рабочего времени, расчета заработной платы и других HR-операций.</li>\r\n\t<li><strong>Финансовое управление</strong>: учет доходов и расходов компании, бюджетирование, финансовый анализ и отчетность.</li>\r\n\t<li><strong>Управление проектами</strong>: планирование и контроль за выполнением задач, отслеживание сроков и ресурсов, обеспечение взаимодействия между участниками проектов.</li>\r\n\t<li><strong>Аналитика и отчетность</strong>: сбор и анализ данных для принятия управленческих решений, создание отчетов по ключевым показателям деятельности.</li>\r\n\t<li><strong>Интеграция с другими системами</strong>: возможность интеграции с внешними сервисами и платформами для обмена данными и улучшения функциональности.</li>\r\n</ol>\r\n\r\n<p>КСУ помогает организации оптимизировать внутренние процессы, улучшить взаимодействие между подразделениями и повысить прозрачность управления.</p>\r\n\r\n<p><strong>Новости</strong> &mdash; раздел, в котором публикуются важные события и обновления компании или организации. Новости могут включать информацию о новых инициативах, изменениях в политике, корпоративных мероприятиях или достижениях. Этот раздел помогает сотрудникам оставаться в курсе актуальных событий и новостей внутри компании.</p>\r\n\r\n<p><strong>Сотрудники</strong> &mdash; категория, включающая информацию о работниках компании: их должности, биографии, контактные данные, а также исторические и текущие данные, связанные с работой, включая время работы и оценки производительности. Этот раздел важен для внутреннего учета и организации кадровых процессов.</p>\r\n\r\n<p><strong>Подразделения</strong> &mdash; описание структурных единиц компании, таких как отделы или службы, их функциональные обязанности, численность и состав. Подразделения могут включать информацию о руководителях, проектах и достижениях, а также о взаимодействии с другими частями организации.</p>\r\n\r\n<p><strong>Проекты</strong> &mdash; раздел, в котором отслеживаются текущие и завершенные проекты компании, включая информацию о задачах, сроках, бюджетах, а также о ключевых результатах и проблемах. Включает отчеты о ходе выполнения и управлении проектами, а также документацию и ресурсы, связанные с проектами.</p>\r\n\r\n<p><strong>Книги</strong> &mdash; в этом разделе могут быть представлены различные книги, связанные с деятельностью организации или корпоративной библиотекой. Это могут быть профессиональные книги, литература для обучения сотрудников или ресурсы для общего развития. Книги могут быть доступны для скачивания, чтения или взятия в библиотеке.</p>\r\n\r\n<p><strong>Профсоюз</strong> &mdash; раздел, посвященный профсоюзной деятельности в компании. Включает информацию о профсоюзных членах, их правах, а также новости и события, связанные с деятельностью профсоюза. Этот раздел может также содержать сведения о коллективных договорах и вопросах трудового права.</p>\r\n\r\n<p><strong>Чаты</strong> &mdash; система для мгновенного обмена сообщениями внутри компании, позволяющая сотрудникам общаться друг с другом, а также обсуждать рабочие вопросы, делиться файлами и получать уведомления в реальном времени. Чаты могут быть настроены по проектам, подразделениям или общими интересами.</p>",
+      "trade_union_name": "ППО КСУ",
+      "trade_union_description": "<p><strong>Профсоюз КСУ</strong> &mdash; это организационное объединение работников, созданное с целью защиты их прав и интересов внутри корпоративной системы управления (КСУ). Профсоюз играет ключевую роль в обеспечении справедливых условий труда, поддержке социальной ответственности работодателя и организации эффективного взаимодействия между сотрудниками и руководством компании.</p>\r\n\r\n<p>Основные задачи профсоюза КСУ:</p>\r\n\r\n<ol>\r\n\t<li>\r\n\t<p><strong>Защита прав работников</strong>: Профсоюз представляет интересы сотрудников в вопросах трудового законодательства, трудовых договоров, условий труда и заработной платы. Он работает над обеспечением равенства и справедливости для всех работников.</p>\r\n\t</li>\r\n\t<li>\r\n\t<p><strong>Коллективные переговоры</strong>: Профсоюз ведет переговоры с руководством организации по вопросам условий труда, социальных гарантий, бенефитов, а также для улучшения общей атмосферы в компании.</p>\r\n\t</li>\r\n\t<li>\r\n\t<p><strong>Образование и обучение</strong>: Профсоюз организует тренинги и курсы для сотрудников, направленные на повышение их квалификации, развитие личных и профессиональных навыков.</p>\r\n\t</li>\r\n\t<li>\r\n\t<p><strong>Социальные инициативы</strong>: Профсоюз КСУ может предлагать и поддерживать различные социальные программы для сотрудников, такие как медицинское страхование, пенсионные накопления, поддержка в сложных жизненных ситуациях и прочее.</p>\r\n\t</li>\r\n\t<li>\r\n\t<p><strong>Защита интересов на всех уровнях</strong>: В случае конфликта или трудовых споров профсоюз оказывает юридическую помощь, обеспечивает защиту работников в суде и других государственных органах.</p>\r\n\t</li>\r\n\t<li>\r\n\t<p><strong>Поддержка и взаимодействие с другими профсоюзами</strong>: Профсоюз КСУ может быть частью более широкой сети профсоюзных объединений, сотрудничать с другими организациями для достижения общих целей.</p>\r\n\t</li>\r\n</ol>\r\n\r\n<p>Работа профсоюза в рамках КСУ направлена на создание гармоничных, безопасных и справедливых условий для каждого сотрудника, что способствует повышению общей эффективности работы компании и удовлетворенности сотрудников.</p>",
+      "news_page": 5,
+      "subdivision_page": 5,
+      "project_page": 5,
+      "book_page": 5,
+      "trade_union_page": 5,
+      "time_page": 5
+    }
+  },
+  {
+    "model": "user_guide.room",
+    "pk": 1,
+    "fields": {
+      "created": "2024-11-09T18:10:13.335Z",
+      "updated": "2024-11-09T18:10:13.335Z",
+      "name": "Хранилище данных",
+      "slug": "hranilishe-dannyh",
+      "is_active": true
+    }
+  },
+  {
+    "model": "user_guide.message",
+    "pk": 4,
+    "fields": {
+      "created": "2024-11-09T18:15:44.732Z",
+      "updated": "2024-11-09T18:15:44.732Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "room": 1,
+      "content": "Привет"
+    }
+  },
+  {
+    "model": "user_guide.message",
+    "pk": 5,
+    "fields": {
+      "created": "2024-11-09T18:19:14.678Z",
+      "updated": "2024-11-09T18:19:14.678Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "room": 1,
+      "content": "Готов работать!"
+    }
+  },
+  {
+    "model": "user_guide.message",
+    "pk": 6,
+    "fields": {
+      "created": "2024-11-09T19:10:07.798Z",
+      "updated": "2024-11-09T19:10:07.798Z",
+      "user": "01JC912D2N7PCCBR9PD0HDA6TY",
+      "room": 1,
+      "content": "Всем хай"
+    }
+  },
+  {
+    "model": "user_guide.message",
+    "pk": 7,
+    "fields": {
+      "created": "2024-11-09T19:34:11.419Z",
+      "updated": "2024-11-09T19:34:11.419Z",
+      "user": "01JC93G8B8CE2CN79VZVDEKKRV",
+      "room": 1,
+      "content": "Привет"
+    }
+  }
+]
