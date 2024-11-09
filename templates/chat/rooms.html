@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Список чатов{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="card">
+            <h1>Список чатов</h1>
+            {% if rooms %}
+                <div>
+                    {% for room in rooms %}
+                        <h3 class="span-size">
+                            <a href="{% url 'room' room.slug %}" class="btn btn-outline-secondary">{{ room.name }}</a>
+                            <span class="badge bg-info">Количество сотрудников: {{ room.user_count }}</span>
+                        </h3>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <h2 class="no-results">В настоящий момент нет активных чатов</h2>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

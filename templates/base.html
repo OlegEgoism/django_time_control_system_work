@@ -7,39 +7,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <title>{% block title %}Default Title{% endblock %}</title>
+    <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
 
 <nav>
-    <div class="left">
-        <div class="logo_image">
-            {% if settings.logo %}
-                <a href="{% url 'user_list' %}">
-                    <img src="{{ settings.logo.url }}" alt="Логотип организации">
-                    {% else %}
-                    <img class="logo_image" src="/media/logo/default_logo.png" alt="Логотип">
-                </a>
-            {% endif %}
-        </div>
-        <a class="nav-link">{{ settings.name }}</a>
-        {#        <a class="nav-link" data-target="home" href="#">Список пользователей</a>#}
-        {#        <a class="nav-link" data-target="news_all" href="#">Новости</a>#}
-        {#        {% if not user.is_authenticated %}#}
-        {#            <a class="nav-link" data-target="login" href="#">Войти</a>#}
-        {#        {% endif %}#}
-        {#        {% if user.is_authenticated %}#}
-        {#            <a class="nav-link" data-target="logout" href="#">Выйти</a>#}
-        {#        {% endif %}#}
+    <div class="logo-container">
+        <h2>
+            <img class="logo" src="{{ config.logo.url }}" alt="Логотип">{{ config.name }}
+        </h2>
     </div>
+    <ul>
+        <li><a href="{% url 'home' %}">Главная</a></li>
+        <li><a href="{% url 'news_list' %}">Новости</a></li>
+        <li><a href="{% url 'user_list' %}">Сотрудники</a></li>
+        <li><a href="{% url 'subdivision_list' %}">Подразделения</a></li>
+        <li><a href="{% url 'project_list' %}">Проекты</a></li>
+        <li><a href="{% url 'book_list' %}">Книги</a></li>
+        <li><a href="{% url 'trade_union' %}">Профсоюз</a></li>
+    
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'rooms' %}">Чаты</a></li>
+            
+            <li><a href="#"># Проверка знаний</a></li>
+            <li><a href="#"># Органайзер</a></li>
+            
+            <li>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger mr-1">Выйти</button>
+                </form>
+            </li>
+        {% else %}
+            <li><a class="btn btn-primary mr-1" href="{% url 'login' %}">Войти</a></li>
+        {% endif %}
+    </ul>
 </nav>
 
-<div class="content">
+<div>
     {% block content %}
     {% endblock %}
 </div>
 
 </body>
 </html>
-
-

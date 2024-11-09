@@ -1,40 +1,154 @@
+.logo-container {
+    width: 180px;
+}
+
+.logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #f0f4f8;
+    display: flex;
+}
+
+nav {
+    background-color: #3a3f44;
+    height: 100vh; /* Полная высота для навигации */
     padding: 20px;
+}
+
+nav h2 {
+    color: white;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 15px 0;
+}
+
+nav ul li a {
+    color: white;
+    font-size: 18px;
+}
+
+.container {
+    padding: 20px;
+    width: 100%;
+}
+
+.card {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    width: 150%;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-}
-
-table, th, td {
-    border: 2px solid #ddd;
-}
-
-th, td {
-    padding: 8px;
-    text-align: left;
+    margin-bottom: 20px;
+    table-layout: fixed; /* Фиксированная ширина таблицы */
 }
 
 th {
-    background-color: #ece8e8;
+    background-color: #f5f7fa;
+}
+
+th, td {
+    border: 2px solid rgba(85, 71, 71, 0.88);
+    padding: 4px;
     text-align: center;
 }
 
-img {
-    max-width: 80px;
-    margin-right: 10px;
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    transition: transform 0.2s ease; /* Плавный переход для масштабирования */
+th.subdivision-number {
+    width: 140px;
+}
+
+th.subdivision-name {
+    width: 400px;
+}
+
+th.subdivision-description {
+    width: 800px;
+}
+
+th.project-name {
+    width: 200px;
+}
+
+th.project-owner {
+    width: 150px;
+}
+
+th.project-description {
+    width: 600px;
+}
+
+th.project-number {
+    width: 100px;
+}
+
+.book-logo img {
+    max-width: 100px;
+    max-height: 150px;
+    transition: transform 0.3s ease; /* Плавный переход при увеличении */
+    border-radius: 5%;
+}
+
+.book-logo img:hover {
+    transform: scale(2.0); /* Увеличение изображения */
+}
+
+th.book-logo {
+    width: 100px;
+}
+
+td.book-logo {
+    width: 100px;
+    height: 150px;
+}
+
+th.book-name {
+    width: 500px;
+}
+
+th.book-author {
+    width: 300px;
+}
+
+
+th.book-file {
+    width: 100px;
+}
+
+th.book-downloads {
+    width: 160px;
+}
+
+th.trade_union_fio {
+    width: 300px;
 }
 
 .photo-fio {
     display: flex;
-    align-items: center; /* Центрирует текст и изображение по вертикали */
+    align-items: initial;
+}
+
+.photo-fio img {
+    max-width: 80px;
+    border-radius: 20%;
+    margin-right: 10px;
+    border: 2px solid #fff; /* Добавление белой рамки вокруг изображения (по желанию) */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Добавление тени (по желанию) */
+    transition: transform 0.3s ease; /* Плавный переход при увеличении */
 }
 
 .photo-fio span {
@@ -42,40 +156,158 @@ img {
 }
 
 .photo-fio img:hover {
-    transform: scale(2); /* Увеличение изображения в 4 раза */
+    transform: scale(1.4); /* Увеличение изображения */
 }
 
-.header-search {
+.fio-text {
+    text-align: left; /* Выровнять текст ФИО по левому краю */
+}
+
+h1 {
+    width: 100%;
+    text-align: left;
+}
+
+.photo-user {
     display: flex;
-    align-items: center; /* Выравнивание по вертикали */
-    justify-content: space-between; /* Отступ между заголовком и формой */
 }
 
-.search-input {
-    width: 300px; /* Ширина поля поиска */
+.photo-user img {
+    width: 260px;
+    height: 260px;
+    object-fit: cover; /* Чтобы изображение не деформировалось и вписывалось в рамки */
+    border-radius: 20%; /* Скругление изображения до круга */
+    border: 2px solid #fff; /* Добавление белой рамки вокруг изображения (по желанию) */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Добавление тени (по желанию) */
 }
 
-.logo_image {
-    cursor: pointer;
-    margin: 0 0px;
+.user-details {
+    margin-left: 20px; /* Отступ между изображением и текстом */
 }
 
-summary {
+.user-details p {
+    margin: 5px 0; /* Уменьшить вертикальный отступ между элементами <p> */
+}
+
+.user-bio p {
+    margin: 5px 0; /* Уменьшить вертикальный отступ между элементами <p> */
+}
+
+.text-danger {
+    color: red;
+}
+
+.form-group {
+    display: flex;
+    margin-bottom: 5px; /* Пространство между группами форм */
+}
+
+.form-group label {
+    min-width: 180px; /* Фиксированная ширина этикеток*/
+}
+
+.details {
+    justify-content: space-between;
+}
+
+.news-item {
+    border: 2px solid rgba(154, 185, 204, 0.88); /* Цвет и толщина рамки */
+    border-radius: 10px; /* Скругление углов */
+    padding: 15px; /* Внутренний отступ */
+    margin-bottom: 15px; /* Отступ между новостями */
+    background-color: #f5f7fa; /* Цвет фона, если нужно */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень для глубины */
+}
+
+.no-results {
+    text-align: center; /* Центрирование текста */
+    margin: 80px; /* Добавление отступа */
+    font-size: 30px; /* Опционально: изменение размера шрифта */
+}
+
+.span-error {
+    color: red;
+}
+
+form input, form select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    box-sizing: border-box;
+}
+
+.form-group-time {
+    display: flex;
+    margin-bottom: 1px; /* Пространство между группами форм */
+    max-height: 36px; /* Фиксированная высота этикеток*/
+}
+
+.d-inline-block {
+    margin-right: 2px; /* Можно изменить значение для большего или меньшего отступа */
+}
+
+.worked-time {
+    margin-top: 20px;
+}
+
+
+.hover-photo {
+    transition: transform 0.2s ease; /* Анимация плавного увеличения */
+}
+
+.hover-photo:hover {
+    transform: scale(2); /* Увеличение изображения в 2 раза */
+}
+
+.hover-photo {
+    transition: transform 0.2s ease; /* Анимация плавного увеличения */
+    width: 300px;
+}
+
+.hover-photo:hover {
+    transform: scale(1.5); /* Увеличение изображения */
+}
+
+.chatbox {
+    height: 600px;
+    overflow-y: scroll;
+}
+
+.created_date {
+    font-size: 12px
+}
+
+.chat-photo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.card-chatbox {
     padding: 10px;
-    border-radius: 5px;
 }
 
-summary:hover {
-    background-color: #aaeccb;
+.small-button {
+    width: 200px;
 }
 
-.subdivision-table th, .subdivision-table td {
-    width: auto; /* Позволяет вложенной таблице иметь свою ширину */
+.span-size {
+    font-size: 14px;
 }
 
-table {
-    table-layout: fixed; /* Фиксированная ширина таблицы */
-    width: 100%; /* Ширина таблицы будет 100% */
+.card-chat-user {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    width: 100%;
+    margin-left: 340px;
+    background-color: white;
 }
 
-
+.user-link {
+    color: black;
+    font-weight: bold;
+}

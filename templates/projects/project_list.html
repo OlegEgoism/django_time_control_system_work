@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Проекты{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="card">
+            <form method="get" action="{% url 'project_list' %}" class="d-flex align-items-center">
+                <h1>Проекты</h1>
+                <input type="text" class="form-control mr-1 search-input" name="q" value="{{ search_query }}" placeholder="Поиск по названию, описанию и владельцу">
+                <button type="submit" class="btn btn-primary mr-1">Поиск</button>
+                <a href="{% url 'project_list' %}" class="btn btn-secondary">Очистить</a>
+            </form>
+            {% if projects %}
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th class="project-name">Название</th>
+                        <th class="project-description">Описание</th>
+                        <th class="project-owner">Владелец</th>
+                        <th class="project-number">Готовность</th>
+                        <th class="project-number">Количество сотрудников</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for project in projects %}
+                        <tr>
+                            <td class="project-name">
+                                <a href="{% url 'project_info' project.id_project %}">{{ project.name }}</a>
+                            </td>
+
+                            <td class="project-description text-left">
+                                {% if project.description %}
+                                    <span id="short-desc-{{ forloop.counter }}">{{ project.description|slice:":500" }}{% if project.description|length > 500 %}...{% endif %}</span>
+                                    <span id="full-desc-{{ forloop.counter }}" style="display: none;">{{ project.description }}</span>
+                                    {% if project.description|length > 500 %}
+                                        <a href="javascript:void(0)" id="toggle-desc-{{ forloop.counter }}" onclick="toggleDescriptionProd({{ forloop.counter }})">Развернуть</a>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="text-danger">Информация не заполнена</span>
+                                {% endif %}
+                            </td>
+
+                            <td class="project-owner">{{ project.owner }}</td>
+                            <td class="project-number">{{ project.percentage_completion }} %</td>
+                            <td class="project-number">{{ project.employee_count }}</td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if projects.has_previous %}
+                            <a href="?page={{ projects.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-outline-primary"><<</a>
+                        {% endif %}
+                        {% for page_num in projects.paginator.page_range %}
+                            {% if page_num == projects.number %}
+                                <strong class="btn btn-primary">{{ page_num }}</strong>
+                            {% else %}
+                                <a href="?page={{ page_num }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-outline-primary">{{ page_num }}</a>
+                            {% endif %}
+                        {% endfor %}
+                        {% if projects.has_next %}
+                            <a href="?page={{ projects.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-outline-primary">>></a>
+                        {% endif %}
+                    </span>
+                </div>
+                <p>Страница {{ projects.number }} из {{ projects.paginator.num_pages }}</p>
+            {% else %}
+                <h2 class="no-results">В настоящий момент нет информации</h2>
+            {% endif %}
+        </div>
+    </div>
+    <script src="{% static 'js/roll.js' %}"></script>
+{% endblock %}

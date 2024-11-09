@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ project.name }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="card">
+            <h1>Проект: {{ project.name }}</h1>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th class="project-name">Название</th>
+                    <th class="project-description">Описание</th>
+                    <th class="project-owner">Владелец</th>
+                    <th class="project-number">Готовность</th>
+                    <th class="project-number">Количество сотрудников</th>
+                </tr>
+                </thead>
+                <tr>
+                    <td class="project-name">{{ project.name }}</td>
+                    <td class="project-description text-left">
+                        {% if project.description %}
+                            <span id="short-description">{{ project.description|slice:":500" }}{% if project.description|length > 500 %}...{% endif %}</span>
+                            <span id="full-description" style="display: none;">{{ project.description }}</span>
+                            {% if project.description|length > 500 %}
+                                <a href="javascript:void(0)" id="toggle-description" onclick="toggleDescription()">Развернуть</a>
+                            {% endif %}
+                        {% else %}
+                            <span class="text-danger">Информация не заполнена</span>
+                        {% endif %}
+                    </td>
+                    <td class="project-owner">{{ project.owner }}</td>
+                    <td class="project-number">{{ project.percentage_completion }} %</td>
+                    <td class="project-number">{{ project.employee_count }}</td>
+                </tr>
+            </table>
+
+            <h2>Сотрудники проекта</h2>
+            {% if employees %}
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>ФИО</th>
+                        <th>Подразделение</th>
+                        <th>Должность</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for employee in employees %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'user_info' employee.slug %}">{{ employee.fio }}</a>
+{#                                {{ employee.fio }}#}
+                            </td>
+                            <td>{{ employee.subdivision.name }}</td>
+                            <td>{{ employee.position.name }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Сотрудники не назначены в проект</p>
+            {% endif %}
+        </div>
+        <a href="{% url 'project_list' %}" class="btn btn-secondary">Назад</a>
+    </div>
+    <script src="{% static 'js/roll.js' %}"></script>
+{% endblock %}

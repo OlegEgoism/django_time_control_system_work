@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %}Чат: {{ room_name }} {% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-8 col-md-12">
+                <div class="card">
+                    <div class="alert alert-info d-flex justify-content-between">
+                        <h5>Чат: {{ room_name }}</h5>
+                        <p class="created_date">Дата создания: {{ created_date|date:"d.m.Y" }}</p>
+                    </div>
+
+                    <form>
+                        <div class="card-chatbox">
+                            {% if messages %}
+                                <div class="chatbox" id="chatbox">
+                                    {% for message in messages %}
+                                        <img class="chat-photo" src="{{ message.user.photo.url }}" alt="User Photo">
+                                        <b>{{ message.user.fio }}</b>: {{ message.content }}<br>
+                                        <p class="created_date">{{ message.created|date:"Y.m.d H:i" }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <b>В этом чате нет сообщений</b>
+                            {% endif %}
+                        </div>
+                        <div class="card-chatbox">
+                            <input class="form-control" placeholder="Введите текст здесь" id="my_input" type="text">
+                        </div>
+                        <div class="card-chatbox text-left">
+                            <input class="btn btn-primary small-button" id="submit_button" type="button" value="Отправить">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <div class="card-chat-user">
+                    <div class="alert alert-info d-flex justify-content-between">
+                        <h5>Список сотрудников в чате</h5>
+                    </div>
+                    {% if unique_users %}
+                        {% for user in unique_users %}
+                            <a href="{% url 'user_info' user.slug %}" class="user-link">{{ user.fio }}</a><br>
+                        {% endfor %}
+                    {% else %}
+                        <p>Нет сотрудников, оставивших сообщения в этом чате.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+
+        <a href="{% url 'rooms' %}" class="btn btn-secondary">Назад</a>
+    </div>
+
+    {{ slug|json_script:"room_slug" }}
+
+    <script>
+        const chatbox = document.querySelector("#chatbox");
+
+        function scrollToBottom() {
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        scrollToBottom();
+
+        const roomName = JSON.parse(document.getElementById('room_slug').textContent) || "default_room";
+        const chatSocket = new WebSocket("ws://" + window.location.host + "/ws/" + roomName + "/");
+
+        chatSocket.onopen = function (e) {
+            console.log("The connection was setup successfully!");
+        };
+
+        chatSocket.onclose = function (e) {
+            console.log("Something unexpected happened!");
+        };
+
+        document.querySelector("#my_input").focus();
+
+        document.querySelector("#my_input").addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+                e.preventDefault();  // Остановить стандартное поведение Enter
+                document.querySelector("#submit_button").click();  // Симулировать нажатие кнопки
+            }
+        });
+
+        document.querySelector("#submit_button").onclick = function (e) {
+            const messageInput = document.querySelector("#my_input").value.trim();  // Убираем пробелы
+
+            if (messageInput.length === 0) {
+                alert("Введите сообщение");  // Вывод предупреждающего сообщения
+            } else {
+                chatSocket.send(JSON.stringify({
+                    message: messageInput,
+                    username: "{{ request.user.username }}",
+                    room_name: "{{ room_name }}"
+                }));
+                document.querySelector("#my_input").value = "";  // Очищаем поле ввода после отправки
+            }
+        };
+
+        chatSocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            const div = document.createElement("div");
+
+            div.innerHTML = `
+                <img class="chat-photo" src="${data.photo}" alt="User Photo">
+                <b>${data.fio}</b> : ${data.message}
+                <p style="font-size: 10px">${data.created}</p>
+            `;
+
+            document.querySelector("#my_input").value = "";
+            document.querySelector("#chatbox").appendChild(div);
+            scrollToBottom();
+        };
+    </script>
+{% endblock %}

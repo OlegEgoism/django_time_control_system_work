@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Новость:{{ news.name }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="card">
+            <h1>{{ news.name }}</h1>
+            <div>
+                <div class="box_content"><p>{{ news.description|safe }}</p></div>
+                {% if news.files_news.exists %}
+                    <h3>Файлы</h3>
+                    Всего файлов:{{ news.files_news.all.count }}
+                    <ul>
+                        {% for file, file_exists in files_with_existence %}
+                            <li>
+                                Скачать файл:
+                                {% if file_exists and file.files.name %}
+                                    <a href="{% url 'news_download_file' file.id_files %}">{{ file.files.name|cut:"files/" }}</a>
+                                {% else %}
+                                    <span class="span-error">(Файл отсутствует)</span>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <p class="details">
+                    <span>Дата публикации: {{ news.created|date:"d.m.Y г. H:i" }}</span><br>
+                    <span>Просмотров: {{ news.views_count }}</span>
+                </p>
+            </div>
+        </div>
+        <a href="{% url 'news_list' %}" class="btn btn-secondary">Назад</a>
+    </div>
+{% endblock %}

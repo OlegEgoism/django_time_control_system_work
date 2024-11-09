@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Подразделения{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="card">
+            <form method="get" action="{% url 'subdivision_list' %}" class="d-flex align-items-center">
+                <h1>Подразделения</h1>
+                <input type="text" class="form-control mr-1 search-input" name="q" value="{{ search_query }}" placeholder="Поиск по названию и описанию">
+                <button type="submit" class="btn btn-primary mr-1">Поиск</button>
+                <a href="{% url 'subdivision_list' %}" class="btn btn-secondary">Очистить</a>
+            </form>
+            {% if subdivisions %}
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th class="subdivision-name">Название</th>
+                        <th class="subdivision-description">Описание</th>
+                        <th class="subdivision-number">Количество сотрудников</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for subdivision in subdivisions %}
+                        <tr>
+                            <td class="subdivision-name">{{ subdivision.name }}</td>
+                            <td class="subdivision-description text-left">
+                                {% if subdivision.description %}
+                                    <span id="sub-short-{{ forloop.counter }}">{{ subdivision.description|slice:":100" }}{% if subdivision.description|length > 100 %}...{% endif %}</span>
+                                    <span id="sub-full-{{ forloop.counter }}" style="display: none;">{{ subdivision.description }}</span>
+                                    {% if subdivision.description|length > 100 %}
+                                        <a href="javascript:void(0)" id="sub-toggle-{{ forloop.counter }}" onclick="toggleDescriptionSub({{ forloop.counter }})">Развернуть</a>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="text-danger">Информация не заполнена</span>
+                                {% endif %}
+                            </td>
+                            <td class="subdivision-number">{{ subdivision.employee_count }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if subdivisions.has_previous %}
+                            <a href="?page={{ subdivisions.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-outline-primary"><<</a>
+                        {% endif %}
+                        {% for page_num in subdivisions.paginator.page_range %}
+                            {% if page_num == subdivisions.number %}
+                                <strong class="btn btn-primary">{{ page_num }}</strong>
+                            {% else %}
+                                <a href="?page={{ page_num }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-outline-primary">{{ page_num }}</a>
+                            {% endif %}
+                        {% endfor %}
+                        {% if subdivisions.has_next %}
+                            <a href="?page={{ subdivisions.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-outline-primary">>></a>
+                        {% endif %}
+                    </span>
+                </div>
+                <p>Страница {{ subdivisions.number }} из {{ subdivisions.paginator.num_pages }}</p>
+            {% else %}
+                <h2 class="no-results">В настоящий момент нет информации</h2>
+            {% endif %}
+        </div>
+    </div>
+    <script src="{% static 'js/roll.js' %}"></script>
+{% endblock %}
