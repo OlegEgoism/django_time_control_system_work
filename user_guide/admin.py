@@ -423,8 +423,8 @@ class MessageAdmin(admin.ModelAdmin):
     list_display = 'user', 'room', 'short_content', 'created', 'updated',
     list_filter = 'room',
     readonly_fields = 'user', 'room', 'created', 'updated',
-    search_fields = 'user', 'content',
-    search_help_text = 'Поиск по названию чата'
+    search_fields = 'user__fio', 'content',
+    search_help_text = 'Поиск по названию чата и сотруднику'
     date_hierarchy = 'created'
     ordering = 'room',
     list_per_page = 20

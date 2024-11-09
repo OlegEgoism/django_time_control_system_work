@@ -53,18 +53,12 @@
                                             {% endif %}
                                         </td>
                                         <td>
-
                                             {{ position.custom_user.address.name }}
                                             {% if position.custom_user.office.name %}
-                                                {% if position.custom_user.office.name %}кабинет {{ position.custom_user.office.name }}{% endif %}
+                                                {% if position.custom_user.office.name %}<br>
+                                                    кабинет {{ position.custom_user.office.name }}{% endif %}
                                             {% endif %}
-
                                         </td>
-
-
-                                        {% if user.office %}
-                                            {% if user.office %}кабинет {{ user.office }}{% endif %}
-                                        {% endif %}
 
 
                                     </tr>

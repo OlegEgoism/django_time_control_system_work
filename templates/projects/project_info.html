@@ -49,7 +49,10 @@
                     <tbody>
                     {% for employee in employees %}
                         <tr>
-                            <td>{{ employee.fio }}</td>
+                            <td>
+                                <a href="{% url 'user_info' employee.slug %}">{{ employee.fio }}</a>
+{#                                {{ employee.fio }}#}
+                            </td>
                             <td>{{ employee.subdivision.name }}</td>
                             <td>{{ employee.position.name }}</td>
                         </tr>
