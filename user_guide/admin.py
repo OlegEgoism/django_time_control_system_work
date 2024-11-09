@@ -421,8 +421,8 @@ class RoomAdmin(admin.ModelAdmin):
 class MessageAdmin(admin.ModelAdmin):
     """Сообщение"""
     list_display = 'user', 'room', 'short_content', 'created', 'updated',
-    list_filter = 'room',
-    readonly_fields = 'user', 'room', 'created', 'updated',
+    list_filter = 'room__name',
+    readonly_fields = 'user', 'created', 'updated',
     search_fields = 'user__fio', 'content',
     search_help_text = 'Поиск по названию чата и сотруднику'
     date_hierarchy = 'created'
@@ -436,3 +436,9 @@ class MessageAdmin(admin.ModelAdmin):
         return "Информация не заполнена"
 
     short_content.short_description = 'Сообщение'
+
+    def save_model(self, request, obj, form, change):
+        # Автоматически назначать текущего пользователя, если он не указан.
+        if not obj.user_id:
+            obj.user = request.user
+        super().save_model(request, obj, form, change)
