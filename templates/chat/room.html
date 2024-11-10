@@ -138,40 +138,58 @@
             const created = data.created;
             const file = data.file;
 
-            // Создаем HTML для сообщения
-            const messageContainer = document.createElement('div');
-            messageContainer.classList.add('message');
+           const messageContainer = document.createElement('div');
+messageContainer.classList.add('message');
 
-            // Добавляем фото пользователя и сообщение
-            const userPhoto = document.createElement('img');
-            userPhoto.src = photo;
-            userPhoto.classList.add('chat-photo');
-            messageContainer.appendChild(userPhoto);
+// Создаем контейнер для фото и сообщения в одной строке
+const messageContent = document.createElement('div');
+messageContent.classList.add('message-content');
+messageContent.style.display = 'flex';  // Используем flexbox для выравнивания по горизонтали
+messageContent.style.alignItems = 'center';  // Вертикальное выравнивание элементов по центру
 
-            const messageText = document.createElement('b');
-            messageText.textContent = `${fio}: ${message}`;
-            messageContainer.appendChild(messageText);
+// Создаем элемент для фото пользователя
+const userPhoto = document.createElement('img');
+userPhoto.src = photo;
+userPhoto.classList.add('chat-photo');
+userPhoto.style.width = '30px';  // Устанавливаем размер фото
+userPhoto.style.height = '30px';  // Устанавливаем размер фото
+userPhoto.style.borderRadius = '50%';  // Делаем фото круглым
+messageContent.appendChild(userPhoto);
 
-            // Если есть файл, добавляем ссылку для его скачивания
-            if (file) {
-                const fileLink = document.createElement('a');
-                fileLink.href = file;  // Путь к файлу, который передается с сервера
-                fileLink.textContent = 'Скачать файл';
-                messageContainer.appendChild(fileLink);
-            }
+// Создаем элемент для имени пользователя (жирным)
+const userName = document.createElement('b');
+userName.textContent = fio;  // Имя пользователя будет жирным
+messageContent.appendChild(userName);
 
-            // Добавляем информацию о времени
-            const createdDate = document.createElement('p');
-            createdDate.style.fontSize = '10px';
-            createdDate.textContent = created;
-            messageContainer.appendChild(createdDate);
+// Создаем элемент для текста сообщения
+const messageText = document.createElement('span');
+messageText.textContent = `: ${message}`;  // Сообщение будет обычным
+messageContent.appendChild(messageText);
 
-            // Отображаем сообщение в чате
-            const chatBox = document.getElementById('chatbox');
-            chatBox.appendChild(messageContainer);
+// Добавляем сообщение в контейнер
+messageContainer.appendChild(messageContent);
 
-            // Прокручиваем чат в самый низ
-            scrollToBottom();
+// Если есть файл, добавляем ссылку для его скачивания
+if (file) {
+    const fileLink = document.createElement('a');
+    fileLink.href = file;  // Путь к файлу, который передается с сервера
+    fileLink.textContent = 'Скачать файл';
+    messageContainer.appendChild(fileLink);
+}
+
+// Добавляем информацию о времени
+const createdDate = document.createElement('p');
+createdDate.style.fontSize = '10px';
+createdDate.textContent = created;
+messageContainer.appendChild(createdDate);
+
+// Отображаем сообщение в чате
+const chatBox = document.getElementById('chatbox');
+chatBox.appendChild(messageContainer);
+
+// Прокручиваем чат в самый низ
+scrollToBottom();
+
         };
     </script>
 {% endblock %}
