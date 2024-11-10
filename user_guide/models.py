@@ -325,6 +325,7 @@ class Message(DateStamp):
     user = models.ForeignKey(CustomUser, verbose_name='Сотрудник', db_comment='Сотрудник', on_delete=models.CASCADE, related_name='message_user')
     room = models.ForeignKey(Room, verbose_name='Чат', db_comment='Чат', on_delete=models.CASCADE, related_name='message_content')
     content = models.TextField(verbose_name='Текст сообщения', db_comment='Текст сообщения',)
+    file = models.FileField(verbose_name='Файл', db_comment='Файл', upload_to='chat_files/', blank=True, null=True)
 
     class Meta:
         verbose_name = 'Сообщение'

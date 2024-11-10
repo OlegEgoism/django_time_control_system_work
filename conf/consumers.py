@@ -1,13 +1,18 @@
-import json
 from channels.generic.websocket import AsyncWebsocketConsumer
-from asgiref.sync import sync_to_async
 from user_guide.models import CustomUser, Room, Message
+import base64
+import json
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
+from channels.db import database_sync_to_async
+
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.room_name = self.scope['url_route']['kwargs']['room_slug']
-        self.roomGroupName = 'chat_%s' % self.room_name
+        self.room_name = self.scope['url_route']['kwargs']['room_slug']  # Получаем название комнаты
+        self.roomGroupName = f'chat_{self.room_name}'  # Инициализируем имя группы
 
+        # Добавляем канал в группу, которая будет обрабатывать сообщения для этой комнаты
         await self.channel_layer.group_add(
             self.roomGroupName,
             self.channel_name
@@ -15,6 +20,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     async def disconnect(self, close_code):
+        # Убираем канал из группы, когда клиент отключается
         await self.channel_layer.group_discard(
             self.roomGroupName,
             self.channel_name
@@ -25,40 +31,81 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = text_data_json["message"]
         username = text_data_json["username"]
         room_name = text_data_json["room_name"]
+        file_data = text_data_json.get("file", None)
 
-        created_message = await self.save_message(message, username, room_name)
+        if file_data:
+            # Обрабатываем файл
+            file_name = file_data["name"]
+            file_content = base64.b64decode(file_data["content"])
 
-        user = await sync_to_async(CustomUser.objects.get)(username=username)
-        fio = user.fio
-        photo = user.photo.url
-        created = created_message.created.strftime("%Y-%m-%d %H:%M:%S")
+            file = ContentFile(file_content, name=file_name)
 
-        await self.channel_layer.group_send(
-            self.roomGroupName, {
-                "type": "sendMessage",
-                "message": message,
-                "fio": fio,
-                "photo": photo,
-                "created": created,
-                "room_name": room_name,
-            }
-        )
+            # Сохраняем файл
+            file_path = default_storage.save(f'chat_files/{file_name}', file)
+
+            # Сохраняем сообщение с файлом
+            created_message = await self.save_message(message, username, room_name, file_path)
+
+            user = await database_sync_to_async(CustomUser.objects.get)(username=username)
+            fio = user.fio
+            photo = user.photo.url
+            created = created_message.created.strftime("%Y.%m.%d %H:%M:%S")
+
+            # Отправляем сообщение с файлом
+            await self.channel_layer.group_send(
+                self.roomGroupName, {
+                    "type": "sendMessage",
+                    "message": message,
+                    "fio": fio,
+                    "photo": photo,
+                    "created": created,
+                    "room_name": room_name,
+                    "file": file_path,  # Путь к файлу
+                }
+            )
+        else:
+            # Если файла нет, отправляем просто сообщение
+            created_message = await self.save_message(message, username, room_name)
+
+            user = await database_sync_to_async(CustomUser.objects.get)(username=username)
+            fio = user.fio
+            photo = user.photo.url
+            created = created_message.created.strftime("%Y.%m.%d %H:%M:%S")
+
+            await self.channel_layer.group_send(
+                self.roomGroupName, {
+                    "type": "sendMessage",
+                    "message": message,
+                    "fio": fio,
+                    "photo": photo,
+                    "created": created,
+                    "room_name": room_name,
+                }
+            )
 
     async def sendMessage(self, event):
         message = event["message"]
         fio = event["fio"]
         photo = event["photo"]
         created = event["created"]
+        room_name = event["room_name"]
+        file = event.get("file", None)
 
+        # Отправляем сообщение обратно в WebSocket клиент
         await self.send(text_data=json.dumps({
             "message": message,
             "fio": fio,
             "photo": photo,
-            "created": created
+            "created": created,
+            "room_name": room_name,
+            "file": file,  # Добавляем путь к файлу
         }))
 
-    @sync_to_async
-    def save_message(self, message, username, room_name):
+    @database_sync_to_async
+    def save_message(self, message, username, room_name, file_path=None):
         user = CustomUser.objects.get(username=username)
         room = Room.objects.get(name=room_name)
-        return Message.objects.create(user=user, room=room, content=message)
+
+        # Сохраняем сообщение с файлом (если он есть)
+        return Message.objects.create(user=user, room=room, content=message, file=file_path)
+

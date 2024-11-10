@@ -12,14 +12,19 @@
                         <p class="created_date">Дата создания: {{ created_date|date:"d.m.Y" }}</p>
                     </div>
 
-                    <form>
+                    <form id="message_form">
                         <div class="card-chatbox">
                             {% if messages %}
                                 <div class="chatbox" id="chatbox">
                                     {% for message in messages %}
-                                        <img class="chat-photo" src="{{ message.user.photo.url }}" alt="User Photo">
-                                        <b>{{ message.user.fio }}</b>: {{ message.content }}<br>
-                                        <p class="created_date">{{ message.created|date:"Y.m.d H:i" }}</p>
+                                        <div class="message">
+                                            <img class="chat-photo" src="{{ message.user.photo.url }}" alt="User Photo">
+                                            <b>{{ message.user.fio }}</b>: {{ message.content }}<br>
+                                            {% if message.file %}
+                                                <a href="{{ message.file.url }}" target="_blank">Скачать файл</a><br>
+                                            {% endif %}
+                                            <p class="created_date">{{ message.created|date:"Y.m.d H:i" }}</p>
+                                        </div>
                                     {% endfor %}
                                 </div>
                             {% else %}
@@ -28,6 +33,9 @@
                         </div>
                         <div class="card-chatbox">
                             <input class="form-control" placeholder="Введите текст здесь" id="my_input" type="text">
+                        </div>
+                        <div class="card-chatbox">
+                            <input type="file" id="file_input" class="form-control">
                         </div>
                         <div class="card-chatbox text-left">
                             <input class="btn btn-primary small-button" id="submit_button" type="button" value="Отправить">
@@ -49,7 +57,6 @@
                     {% endif %}
                 </div>
             </div>
-
         </div>
 
         <a href="{% url 'rooms' %}" class="btn btn-secondary">Назад</a>
@@ -58,9 +65,8 @@
     {{ slug|json_script:"room_slug" }}
 
     <script>
-        const chatbox = document.querySelector("#chatbox");
-
         function scrollToBottom() {
+            const chatbox = document.getElementById("chatbox");
             chatbox.scrollTop = chatbox.scrollHeight;
         }
 
@@ -87,32 +93,84 @@
         });
 
         document.querySelector("#submit_button").onclick = function (e) {
-            const messageInput = document.querySelector("#my_input").value.trim();  // Убираем пробелы
+            const messageInput = document.querySelector("#my_input").value.trim();
+            const fileInput = document.querySelector("#file_input").files[0];  // Получаем файл из input
 
-            if (messageInput.length === 0) {
-                alert("Введите сообщение");  // Вывод предупреждающего сообщения
+            if (messageInput.length === 0 && !fileInput) {
+                alert("Введите сообщение или выберите файл.");
+                return;
+            }
+
+            let fileData = null;
+
+            if (fileInput) {
+                const reader = new FileReader();
+                reader.onload = function () {
+                    const base64Content = reader.result.split(",")[1];  // Извлекаем base64 из результата
+                    fileData = {
+                        name: fileInput.name,
+                        content: base64Content
+                    };
+                    sendMessage(fileData);
+                };
+                reader.readAsDataURL(fileInput);
             } else {
+                sendMessage();  // Отправляем только текстовое сообщение, если нет файла
+            }
+
+            function sendMessage(fileData) {
                 chatSocket.send(JSON.stringify({
                     message: messageInput,
                     username: "{{ request.user.username }}",
-                    room_name: "{{ room_name }}"
+                    room_name: "{{ room_name }}",
+                    file: fileData
                 }));
-                document.querySelector("#my_input").value = "";  // Очищаем поле ввода после отправки
+                document.querySelector("#my_input").value = "";
+                document.querySelector("#file_input").value = "";  // Сбрасываем выбранный файл
             }
         };
 
         chatSocket.onmessage = function (e) {
             const data = JSON.parse(e.data);
-            const div = document.createElement("div");
+            const message = data.message;
+            const fio = data.fio;
+            const photo = data.photo;
+            const created = data.created;
+            const file = data.file;
 
-            div.innerHTML = `
-                <img class="chat-photo" src="${data.photo}" alt="User Photo">
-                <b>${data.fio}</b> : ${data.message}
-                <p style="font-size: 10px">${data.created}</p>
-            `;
+            // Создаем HTML для сообщения
+            const messageContainer = document.createElement('div');
+            messageContainer.classList.add('message');
 
-            document.querySelector("#my_input").value = "";
-            document.querySelector("#chatbox").appendChild(div);
+            // Добавляем фото пользователя и сообщение
+            const userPhoto = document.createElement('img');
+            userPhoto.src = photo;
+            userPhoto.classList.add('chat-photo');
+            messageContainer.appendChild(userPhoto);
+
+            const messageText = document.createElement('b');
+            messageText.textContent = `${fio}: ${message}`;
+            messageContainer.appendChild(messageText);
+
+            // Если есть файл, добавляем ссылку для его скачивания
+            if (file) {
+                const fileLink = document.createElement('a');
+                fileLink.href = file;  // Путь к файлу, который передается с сервера
+                fileLink.textContent = 'Скачать файл';
+                messageContainer.appendChild(fileLink);
+            }
+
+            // Добавляем информацию о времени
+            const createdDate = document.createElement('p');
+            createdDate.style.fontSize = '10px';
+            createdDate.textContent = created;
+            messageContainer.appendChild(createdDate);
+
+            // Отображаем сообщение в чате
+            const chatBox = document.getElementById('chatbox');
+            chatBox.appendChild(messageContainer);
+
+            // Прокручиваем чат в самый низ
             scrollToBottom();
         };
     </script>
