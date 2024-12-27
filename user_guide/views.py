@@ -492,9 +492,21 @@ def organizer(request):
     })
 
 
+from django.shortcuts import render
+from .forms import OrganizerForm
+from .models import Setting
+from datetime import datetime
+
+
 def add_event(request):
     """Добавить мероприятие"""
     config = Setting.objects.first()
+    initial_date = request.GET.get('date', None)
+
+    # Преобразуем дату в объект datetime, если она передана
+    if initial_date:
+        initial_date = datetime.fromisoformat(initial_date)
+
     if request.method == 'POST':
         form = OrganizerForm(request.POST)
         if form.is_valid():
@@ -502,7 +514,8 @@ def add_event(request):
             messages.success(request, 'Мероприятие успешно добавлено.')
             return redirect('organizer')  # Замените 'organizer' на имя URL страницы календаря
     else:
-        form = OrganizerForm()
+        form = OrganizerForm(initial={'start_time': initial_date, 'end_time': initial_date})
+
     return render(request, template_name='organizer/add_event.html', context={
         'config': config,
         'form': form
