@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'admin_auto_filters',  # Фильтрация по полям и поиску по названию
     'rangefilter',  # Фильтрация для времени
     'ckeditor',  # Отображение текста на страницах
+    'colorfield'  # Цвета
 ]
 
 ASGI_APPLICATION = 'conf.asgi.application'
