@@ -30,9 +30,6 @@
         {% if user.is_authenticated %}
         <li><a href="{% url 'rooms' %}">Чаты</a></li>
         <li><a href="{% url 'organizer' %}">Органайзер</a></li>
-
-            <li><a href="#"># Проверка знаний</a></li>
-
             <li>
                 <form action="{% url 'logout' %}" method="post">
                     {% csrf_token %}
