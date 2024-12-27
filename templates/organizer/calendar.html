@@ -28,6 +28,8 @@ $(document).ready(function () {
                 title: '{{ event.title }} - ({{ event.description }})',
                 start: '{{ event.start_time|date:"Y-m-d\\TH:i:s" }}',
                 end: '{{ event.end_time|date:"Y-m-d\\TH:i:s" }}',
+                backgroundColor: '{{ event.color }}', 
+                borderColor: '{{ event.color }}',
             },
             {% endfor %}
         ],

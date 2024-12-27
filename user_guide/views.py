@@ -46,7 +46,7 @@ from user_guide.models import (
     Book,
     TradeUnionPosition,
     TradeUnionPhoto,
-    TradeUnionEvent, Room, Message, Organizer
+    TradeUnionEvent, Room, Message, Organizer, generate_random_color
 )
 
 
@@ -492,34 +492,24 @@ def organizer(request):
     })
 
 
-from django.shortcuts import render
-from .forms import OrganizerForm
-from .models import Setting
-from datetime import datetime
-
-
 def add_event(request):
     """Добавить мероприятие"""
     config = Setting.objects.first()
-    initial_date = request.GET.get('date', None)
-
-    # Преобразуем дату в объект datetime, если она передана
-    if initial_date:
-        initial_date = datetime.fromisoformat(initial_date)
-
     if request.method == 'POST':
         form = OrganizerForm(request.POST)
         if form.is_valid():
+            # Генерация случайного цвета перед сохранением
+            form.instance.color = generate_random_color()
             form.save()
             messages.success(request, 'Мероприятие успешно добавлено.')
-            return redirect('organizer')  # Замените 'organizer' на имя URL страницы календаря
+            return redirect('organizer')
     else:
-        form = OrganizerForm(initial={'start_time': initial_date, 'end_time': initial_date})
-
+        form = OrganizerForm()
     return render(request, template_name='organizer/add_event.html', context={
         'config': config,
         'form': form
     })
+
 
 
 def edit_event(request, event_id):

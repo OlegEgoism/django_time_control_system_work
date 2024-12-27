@@ -447,7 +447,8 @@ class MessageAdmin(admin.ModelAdmin):
 @admin.register(Organizer)
 class OrganizerAdmin(admin.ModelAdmin):
     """Органайзер"""
-    list_display = 'title', 'description', 'start_time', 'end_time', 'custom_user', 'updated',
+    list_display = 'title', 'description', 'start_time', 'end_time', 'color', 'custom_user', 'updated',
+    list_editable = 'color',
     list_filter = 'start_time',
     readonly_fields = 'custom_user', 'created', 'updated',
     search_fields = 'custom_user__fio', 'title',

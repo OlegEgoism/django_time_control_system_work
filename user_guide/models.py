@@ -1,4 +1,5 @@
 from ckeditor.fields import RichTextField
+from colorfield.fields import ColorField
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -335,6 +336,12 @@ class Message(DateStamp):
         return f'{self.room}'
 
 
+import random
+
+def generate_random_color():
+    """Генерация случайного цвета в формате HEX"""
+    return f"#{random.randint(0, 0xFFFFFF):06x}"
+
 class Organizer(DateStamp):
     """Календарь"""
     title = models.CharField(max_length=200, verbose_name='Заголовок')
@@ -342,6 +349,8 @@ class Organizer(DateStamp):
     start_time = models.DateTimeField(verbose_name='Время начала')
     end_time = models.DateTimeField(verbose_name='Время окончания')
     custom_user = models.ForeignKey(CustomUser, verbose_name='Сотрудник', on_delete=models.CASCADE, related_name='organizer_customuser')
+    color = ColorField(verbose_name='Цвет заливки мероприятия', default=generate_random_color)
+    # color = models.CharField(max_length=7, default=generate_random_color, verbose_name='Цвет события')  # Новое поле для цвета
 
     class Meta:
         verbose_name = 'Органайзер'
@@ -349,6 +358,7 @@ class Organizer(DateStamp):
 
     def __str__(self):
         return f'{self.title}'
+
 
 
 
