@@ -1,3 +1,6 @@
+
+
+
 {% extends 'base.html' %}
 
 {% block title %}Чат: {{ room_name }} {% endblock %}
@@ -171,12 +174,16 @@ messageContainer.appendChild(messageContent);
 
 // Если есть файл, добавляем ссылку для его скачивания
 if (file) {
-    const fileLink = document.createElement('a');
-    fileLink.href = file;  // Путь к файлу, который передается с сервера
-    fileLink.textContent = 'Скачать файл';
-    messageContainer.appendChild(fileLink);
+    fetch(file)
+        .then(response => response.blob())
+        .then(blob => {
+            saveAs(blob, file.split('/').pop());  // Функция из FileSaver.js
+        })
+        .catch(error => console.error('Ошибка при загрузке файла:', error));
 }
 
+
+  
 // Добавляем информацию о времени
 const createdDate = document.createElement('p');
 createdDate.style.fontSize = '10px';

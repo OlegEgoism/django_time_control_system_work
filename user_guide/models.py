@@ -333,3 +333,23 @@ class Message(DateStamp):
 
     def __str__(self):
         return f'{self.room}'
+
+
+class Organizer(DateStamp):
+    """Календарь"""
+    title = models.CharField(max_length=200, verbose_name='Заголовок')
+    description = models.TextField(verbose_name='Описание', blank=True, null=True)
+    start_time = models.DateTimeField(verbose_name='Время начала')
+    end_time = models.DateTimeField(verbose_name='Время окончания')
+    custom_user = models.ForeignKey(CustomUser, verbose_name='Сотрудник', on_delete=models.CASCADE, related_name='organizer_customuser')
+
+    class Meta:
+        verbose_name = 'Органайзер'
+        verbose_name_plural = 'Органайзер'
+
+    def __str__(self):
+        return f'{self.title}'
+
+
+
+

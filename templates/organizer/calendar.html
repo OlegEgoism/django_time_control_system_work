@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Органайзер{% endblock %}
+
+{% block content %}
+<div class="container">
+<div class="d-flex justify-content-between mb-3">
+    <a href="{% url 'add_event' %}" class="btn btn-success">Добавить мероприятие</a>
+</div>
+    <div class="card">
+        <div id="calendar"></div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/locale/ru.js"></script>
+<script>
+$(document).ready(function () {
+    $('#calendar').fullCalendar({
+        header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
+        },
+        locale: 'ru',
+        events: [
+            {% for event in events %}
+            {
+                id: '{{ event.id }}',
+                title: '{{ event.title }} - ({{ event.description }})',
+                start: '{{ event.start_time|date:"Y-m-d\\TH:i:s" }}',
+                end: '{{ event.end_time|date:"Y-m-d\\TH:i:s" }}',
+            },
+            {% endfor %}
+        ],
+        eventClick: function(event) {
+            // Перенаправление на страницу редактирования
+            window.location.href = "/organizer/edit/" + event.id + "/";
+        }
+    });
+});
+</script>
+{% endblock %}

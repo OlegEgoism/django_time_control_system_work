@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <title>{% block title %}{% endblock %}</title>
@@ -25,13 +26,13 @@
         <li><a href="{% url 'project_list' %}">Проекты</a></li>
         <li><a href="{% url 'book_list' %}">Книги</a></li>
         <li><a href="{% url 'trade_union' %}">Профсоюз</a></li>
-    
+
         {% if user.is_authenticated %}
         <li><a href="{% url 'rooms' %}">Чаты</a></li>
-            
+        <li><a href="{% url 'organizer' %}">Органайзер</a></li>
+
             <li><a href="#"># Проверка знаний</a></li>
-            <li><a href="#"># Органайзер</a></li>
-            
+
             <li>
                 <form action="{% url 'logout' %}" method="post">
                     {% csrf_token %}
