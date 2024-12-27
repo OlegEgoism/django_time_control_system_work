@@ -35,8 +35,12 @@ $(document).ready(function () {
             {% endfor %}
         ],
         eventClick: function(event) {
-            // Перенаправление на страницу редактирования
+            // Перенаправление на страницу редактирования события
             window.location.href = "/organizer/edit/" + event.id + "/";
+        },
+        dayClick: function(date, jsEvent, view) {
+            // Перенаправление на страницу добавления мероприятия с выбранной датой
+            window.location.href = "/organizer/add/?date=" + date.format();
         }
     });
 });
