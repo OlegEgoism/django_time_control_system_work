@@ -1,6 +1,3 @@
-
-
-
 {% extends 'base.html' %}
 
 {% block title %}Чат: {{ room_name }} {% endblock %}
@@ -24,7 +21,9 @@
                                             <img class="chat-photo" src="{{ message.user.photo.url }}" alt="User Photo">
                                             <b>{{ message.user.fio }}</b>: {{ message.content }}<br>
                                             {% if message.file %}
-                                                <a href="{{ message.file.url }}" target="_blank">Скачать файл</a><br>
+                                             <img class="image_chat" src="{{ message.file.url }}" alt="Image" /><br>
+                                                <a href="{{ message.file.url }}" target="_blank">Открыть</a>
+                                                <a href="{{ message.file.url }}" download="{{ message.file.name }}" target="_blank">Скачать</a><br>
                                             {% endif %}
                                             <p class="created_date">{{ message.created|date:"Y.m.d H:i" }}</p>
                                         </div>
@@ -133,70 +132,67 @@
             }
         };
 
-        chatSocket.onmessage = function (e) {
-            const data = JSON.parse(e.data);
-            const message = data.message;
-            const fio = data.fio;
-            const photo = data.photo;
-            const created = data.created;
-            const file = data.file;
+chatSocket.onmessage = function (e) {
+    const data = JSON.parse(e.data);
+    const message = data.message;
+    const fio = data.fio;
+    const photo = data.photo;
+    const created = data.created;
+    const file = data.file;  // Получаем путь к файлу
 
-           const messageContainer = document.createElement('div');
-messageContainer.classList.add('message');
+    const messageContainer = document.createElement('div');
+    messageContainer.classList.add('message');
 
-// Создаем контейнер для фото и сообщения в одной строке
-const messageContent = document.createElement('div');
-messageContent.classList.add('message-content');
-messageContent.style.display = 'flex';  // Используем flexbox для выравнивания по горизонтали
-messageContent.style.alignItems = 'center';  // Вертикальное выравнивание элементов по центру
+    // Создаем контейнер для фото и сообщения в одной строке
+    const messageContent = document.createElement('div');
+    messageContent.classList.add('message-content');
+    messageContent.style.display = 'flex';  // Используем flexbox для выравнивания по горизонтали
+    messageContent.style.alignItems = 'center';  // Вертикальное выравнивание элементов по центру
 
-// Создаем элемент для фото пользователя
-const userPhoto = document.createElement('img');
-userPhoto.src = photo;
-userPhoto.classList.add('chat-photo');
-userPhoto.style.width = '30px';  // Устанавливаем размер фото
-userPhoto.style.height = '30px';  // Устанавливаем размер фото
-userPhoto.style.borderRadius = '50%';  // Делаем фото круглым
-messageContent.appendChild(userPhoto);
+    // Создаем элемент для фото пользователя
+    const userPhoto = document.createElement('img');
+    userPhoto.src = photo;
+    userPhoto.classList.add('chat-photo');
+    userPhoto.style.width = '30px';  // Устанавливаем размер фото
+    userPhoto.style.height = '30px';  // Устанавливаем размер фото
+    userPhoto.style.borderRadius = '50%';  // Делаем фото круглым
+    messageContent.appendChild(userPhoto);
 
-// Создаем элемент для имени пользователя (жирным)
-const userName = document.createElement('b');
-userName.textContent = fio;  // Имя пользователя будет жирным
-messageContent.appendChild(userName);
+    // Создаем элемент для имени пользователя (жирным)
+    const userName = document.createElement('b');
+    userName.textContent = fio;  // Имя пользователя будет жирным
+    messageContent.appendChild(userName);
 
-// Создаем элемент для текста сообщения
-const messageText = document.createElement('span');
-messageText.textContent = `: ${message}`;  // Сообщение будет обычным
-messageContent.appendChild(messageText);
+    // Создаем элемент для текста сообщения
+    const messageText = document.createElement('span');
+    messageText.textContent = `: ${message}`;  // Сообщение будет обычным
+    messageContent.appendChild(messageText);
 
-// Добавляем сообщение в контейнер
-messageContainer.appendChild(messageContent);
+    // Добавляем сообщение в контейнер
+    messageContainer.appendChild(messageContent);
 
-// Если есть файл, добавляем ссылку для его скачивания
-if (file) {
-    fetch(file)
-        .then(response => response.blob())
-        .then(blob => {
-            saveAs(blob, file.split('/').pop());  // Функция из FileSaver.js
-        })
-        .catch(error => console.error('Ошибка при загрузке файла:', error));
-}
+    // Если есть файл, добавляем ссылку для его скачивания
+    if (file) {
+        const fileLink = document.createElement('a');
+        fileLink.href = file;  // Путь к файлу, который был передан через WebSocket
+        fileLink.textContent = "Скачать файл";  // Текст для ссылки
+        fileLink.target = "_blank";  // Открыть файл в новом окне
+        messageContainer.appendChild(fileLink);
+    }
 
+    // Добавляем информацию о времени
+    const createdDate = document.createElement('p');
+    createdDate.style.fontSize = '10px';
+    createdDate.textContent = created;
+    messageContainer.appendChild(createdDate);
 
-  
-// Добавляем информацию о времени
-const createdDate = document.createElement('p');
-createdDate.style.fontSize = '10px';
-createdDate.textContent = created;
-messageContainer.appendChild(createdDate);
+    // Отображаем сообщение в чате
+    const chatBox = document.getElementById('chatbox');
+    chatBox.appendChild(messageContainer);
 
-// Отображаем сообщение в чате
-const chatBox = document.getElementById('chatbox');
-chatBox.appendChild(messageContainer);
+    // Прокручиваем чат в самый низ
+    scrollToBottom();
+};
 
-// Прокручиваем чат в самый низ
-scrollToBottom();
-
-        };
     </script>
 {% endblock %}

@@ -20,7 +20,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     async def disconnect(self, close_code):
-        # Убираем канал из группы, когда клиент отключается
         await self.channel_layer.group_discard(
             self.roomGroupName,
             self.channel_name
@@ -34,24 +33,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
         file_data = text_data_json.get("file", None)
 
         if file_data:
-            # Обрабатываем файл
             file_name = file_data["name"]
             file_content = base64.b64decode(file_data["content"])
-
             file = ContentFile(file_content, name=file_name)
-
-            # Сохраняем файл
             file_path = default_storage.save(f'chat_files/{file_name}', file)
-
-            # Сохраняем сообщение с файлом
             created_message = await self.save_message(message, username, room_name, file_path)
-
             user = await database_sync_to_async(CustomUser.objects.get)(username=username)
             fio = user.fio
             photo = user.photo.url
             created = created_message.created.strftime("%Y.%m.%d %H:%M:%S")
-
-            # Отправляем сообщение с файлом
             await self.channel_layer.group_send(
                 self.roomGroupName, {
                     "type": "sendMessage",
@@ -63,6 +53,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     "file": file_path,  # Путь к файлу
                 }
             )
+
         else:
             # Если файла нет, отправляем просто сообщение
             created_message = await self.save_message(message, username, room_name)
