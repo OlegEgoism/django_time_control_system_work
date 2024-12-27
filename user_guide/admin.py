@@ -19,7 +19,7 @@ from user_guide.models import (
     Files,
     News,
     Office,
-    Project, Book, TradeUnionPosition, TradeUnionPhoto, TradeUnionEvent, Room, Message
+    Project, Book, TradeUnionPosition, TradeUnionPhoto, TradeUnionEvent, Room, Message, Organizer
 )
 
 
@@ -442,3 +442,15 @@ class MessageAdmin(admin.ModelAdmin):
         if not obj.user_id:
             obj.user = request.user
         super().save_model(request, obj, form, change)
+
+
+@admin.register(Organizer)
+class OrganizerAdmin(admin.ModelAdmin):
+    """Органайзер"""
+    list_display = 'title', 'description', 'start_time', 'end_time', 'custom_user', 'updated',
+    list_filter = 'start_time',
+    readonly_fields = 'custom_user', 'created', 'updated',
+    search_fields = 'custom_user__fio', 'title',
+    search_help_text = 'Поиск по названию заголовку и сотруднику'
+    date_hierarchy = 'created'
+    list_per_page = 20
