@@ -42,6 +42,7 @@ class StatusLocationFilterForm(forms.Form):
 
 
 class OrganizerForm(forms.ModelForm):
+    """Календарь органайзер"""
     class Meta:
         model = Organizer
         fields = ['title', 'description', 'start_time', 'end_time', 'custom_user']
