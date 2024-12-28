@@ -9,10 +9,8 @@ from channels.db import database_sync_to_async
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.room_name = self.scope['url_route']['kwargs']['room_slug']  # Получаем название комнаты
-        self.roomGroupName = f'chat_{self.room_name}'  # Инициализируем имя группы
-
-        # Добавляем канал в группу, которая будет обрабатывать сообщения для этой комнаты
+        self.room_name = self.scope['url_route']['kwargs']['room_slug']
+        self.roomGroupName = f'chat_{self.room_name}'
         await self.channel_layer.group_add(
             self.roomGroupName,
             self.channel_name
@@ -50,19 +48,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     "photo": photo,
                     "created": created,
                     "room_name": room_name,
-                    "file": file_path,  # Путь к файлу
+                    "file": file_path,
                 }
             )
 
         else:
-            # Если файла нет, отправляем просто сообщение
             created_message = await self.save_message(message, username, room_name)
-
             user = await database_sync_to_async(CustomUser.objects.get)(username=username)
             fio = user.fio
             photo = user.photo.url
             created = created_message.created.strftime("%Y.%m.%d %H:%M:%S")
-
             await self.channel_layer.group_send(
                 self.roomGroupName, {
                     "type": "sendMessage",
@@ -82,21 +77,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
         room_name = event["room_name"]
         file = event.get("file", None)
 
-        # Отправляем сообщение обратно в WebSocket клиент
         await self.send(text_data=json.dumps({
             "message": message,
             "fio": fio,
             "photo": photo,
             "created": created,
             "room_name": room_name,
-            "file": file,  # Добавляем путь к файлу
+            "file": file,
         }))
 
     @database_sync_to_async
     def save_message(self, message, username, room_name, file_path=None):
         user = CustomUser.objects.get(username=username)
         room = Room.objects.get(name=room_name)
-
-        # Сохраняем сообщение с файлом (если он есть)
         return Message.objects.create(user=user, room=room, content=message, file=file_path)
 
