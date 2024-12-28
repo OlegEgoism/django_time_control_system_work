@@ -19,7 +19,14 @@ from user_guide.models import (
     Files,
     News,
     Office,
-    Project, Book, TradeUnionPosition, TradeUnionPhoto, TradeUnionEvent, Room, Message, Organizer
+    Project,
+    Book,
+    TradeUnionPosition,
+    TradeUnionPhoto,
+    TradeUnionEvent,
+    Room,
+    Message,
+    Organizer
 )
 
 
@@ -56,6 +63,16 @@ class CustomUserFilter(AutocompleteFilter):
 class CameraFilter(AutocompleteFilter):
     title = 'Камера'
     field_name = 'camera'
+
+
+class RoomFilter(AutocompleteFilter):
+    title = 'Чаты'
+    field_name = 'room'
+
+
+class UserRoomFilter(AutocompleteFilter):
+    title = 'Сотрудник'
+    field_name = 'user'
 
 
 # ______________________________________________________
@@ -421,7 +438,7 @@ class RoomAdmin(admin.ModelAdmin):
 class MessageAdmin(admin.ModelAdmin):
     """Сообщение"""
     list_display = 'user', 'room', 'short_content', 'created', 'updated',
-    list_filter = 'room__name',
+    list_filter = 'room__name', RoomFilter, UserRoomFilter
     readonly_fields = 'user', 'created', 'updated',
     search_fields = 'user__fio', 'content',
     search_help_text = 'Поиск по названию чата и сотруднику'
@@ -449,7 +466,7 @@ class OrganizerAdmin(admin.ModelAdmin):
     """Органайзер"""
     list_display = 'title', 'description', 'start_time', 'end_time', 'color', 'custom_user', 'updated',
     list_editable = 'color',
-    list_filter = 'start_time',
+    list_filter = 'start_time', CustomUserFilter
     readonly_fields = 'custom_user', 'created', 'updated',
     search_fields = 'custom_user__fio', 'title',
     search_help_text = 'Поиск по названию заголовку и сотруднику'
