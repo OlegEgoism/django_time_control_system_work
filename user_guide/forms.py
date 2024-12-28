@@ -1,7 +1,7 @@
 from django import forms
 from .all_validator import phone_mobile_validator
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import CustomUser, Camera, Address
+from .models import CustomUser, Camera, Address, Organizer
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -41,3 +41,12 @@ class StatusLocationFilterForm(forms.Form):
     address = forms.ModelChoiceField(queryset=Address.objects.all(), required=False, label="Адрес камеры")
 
 
+class OrganizerForm(forms.ModelForm):
+    """Календарь органайзер"""
+    class Meta:
+        model = Organizer
+        fields = ['title', 'description', 'start_time', 'end_time', 'custom_user']
+        widgets = {
+            'start_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'end_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        }

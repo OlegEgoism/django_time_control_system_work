@@ -27,8 +27,14 @@ from user_guide.views import (
     user_logout,
 
     trade_union,
-    trade_union_event, rooms, room,
+    trade_union_event,
 
+    rooms,
+    room,
+
+    organizer,
+    add_event,
+    edit_event, delete_event
 )
 from ckeditor_uploader import views as ckeditor_views
 urlpatterns = [
@@ -66,6 +72,11 @@ urlpatterns = [
     # Чат
     path("rooms/", rooms, name="rooms"),
     path("room/<str:slug>", room, name="room"),
+    # Органайзер
+    path("organizer/", organizer, name="organizer"),
+    path('organizer/add/', add_event, name='add_event'),
+    path('organizer/edit/<int:event_id>/', edit_event, name='edit_event'),
+    path('organizer/delete/<int:event_id>/', delete_event, name='delete_event'),
 
 ]
 if settings.DEBUG:

@@ -6,7 +6,7 @@ from itertools import groupby
 from operator import attrgetter
 from pyexpat.errors import messages
 from urllib.parse import quote
-from django.http import JsonResponse, Http404
+from django.http import JsonResponse, Http404, HttpResponseForbidden
 from django.conf import settings
 from django.contrib.auth import logout
 from django.contrib import messages
@@ -33,7 +33,7 @@ from django.shortcuts import (
 )
 from user_guide.forms import (
     CustomUserForm,
-    StatusLocationFilterForm
+    StatusLocationFilterForm, OrganizerForm
 )
 from user_guide.models import (
     CustomUser,
@@ -46,7 +46,7 @@ from user_guide.models import (
     Book,
     TradeUnionPosition,
     TradeUnionPhoto,
-    TradeUnionEvent, Room, Message
+    TradeUnionEvent, Room, Message, Organizer, generate_random_color
 )
 
 
@@ -480,3 +480,59 @@ def room(request, slug):
         'created_date': created_date,
         'unique_users': unique_users
     })
+
+
+def organizer(request):
+    """Органайзер"""
+    config = Setting.objects.first()
+    events = Organizer.objects.all()
+    return render(request, template_name="organizer/calendar.html", context={
+        'config': config,
+        'events': events,
+    })
+
+
+def add_event(request):
+    """Добавить мероприятие"""
+    config = Setting.objects.first()
+    if request.method == 'POST':
+        form = OrganizerForm(request.POST)
+        if form.is_valid():
+            # Генерация случайного цвета перед сохранением
+            form.instance.color = generate_random_color()
+            form.save()
+            messages.success(request, 'Мероприятие успешно добавлено.')
+            return redirect('organizer')
+    else:
+        form = OrganizerForm()
+    return render(request, template_name='organizer/add_event.html', context={
+        'config': config,
+        'form': form
+    })
+
+
+
+def edit_event(request, event_id):
+    """Редактирование события"""
+    config = Setting.objects.first()
+    event = get_object_or_404(Organizer, id=event_id)
+    if request.method == 'POST':
+        form = OrganizerForm(request.POST, instance=event)
+        if form.is_valid():
+            form.save()
+            return redirect('organizer')
+    else:
+        form = OrganizerForm(instance=event)
+    return render(request, template_name='organizer/edit_event.html', context={
+        'config': config,
+        'form': form,
+        'event':event
+    })
+
+
+def delete_event(request, event_id):
+    """Удалить мероприятие"""
+    event = get_object_or_404(Organizer, id=event_id)
+    event.delete()
+    messages.success(request, 'Мероприятие успешно удалено.')
+    return redirect('organizer')  # Перенаправление на страницу календаря

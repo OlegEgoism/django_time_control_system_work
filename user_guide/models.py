@@ -1,8 +1,11 @@
 from ckeditor.fields import RichTextField
+from colorfield.fields import ColorField
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.db import models
 from django_ulid.models import default, ULIDField
+
+from user_guide.adaptation import generate_random_color
 from user_guide.all_validator import phone_mobile_validator, percentage_completion_validator
 
 
@@ -311,7 +314,6 @@ class Room(DateStamp):
     slug = models.SlugField(verbose_name='slug', db_comment='slug', max_length=50, unique=True, db_index=True, blank=True, null=True)
     is_active = models.BooleanField(verbose_name='Активный', db_comment='Активный', default=True)
 
-
     class Meta:
         verbose_name = 'Чат'
         verbose_name_plural = 'Чаты'
@@ -324,7 +326,8 @@ class Message(DateStamp):
     """Сообщение"""
     user = models.ForeignKey(CustomUser, verbose_name='Сотрудник', db_comment='Сотрудник', on_delete=models.CASCADE, related_name='message_user')
     room = models.ForeignKey(Room, verbose_name='Чат', db_comment='Чат', on_delete=models.CASCADE, related_name='message_content')
-    content = models.TextField(verbose_name='Текст сообщения', db_comment='Текст сообщения',)
+    content = models.TextField(verbose_name='Текст сообщения', db_comment='Текст сообщения', )
+    file = models.FileField(verbose_name='Файл', db_comment='Файл', upload_to='chat_files/', blank=True, null=True)
 
     class Meta:
         verbose_name = 'Сообщение'
@@ -332,3 +335,20 @@ class Message(DateStamp):
 
     def __str__(self):
         return f'{self.room}'
+
+
+class Organizer(DateStamp):
+    """Календарь"""
+    title = models.CharField(max_length=200, verbose_name='Заголовок')
+    description = models.TextField(verbose_name='Описание', blank=True, null=True)
+    start_time = models.DateTimeField(verbose_name='Время начала')
+    end_time = models.DateTimeField(verbose_name='Время окончания')
+    custom_user = models.ForeignKey(CustomUser, verbose_name='Сотрудник', on_delete=models.CASCADE, related_name='organizer_customuser')
+    color = ColorField(verbose_name='Цвет заливки мероприятия', default=generate_random_color)
+
+    class Meta:
+        verbose_name = 'Органайзер'
+        verbose_name_plural = 'Органайзер'
+
+    def __str__(self):
+        return f'{self.title}'
