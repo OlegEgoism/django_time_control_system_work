@@ -31,9 +31,12 @@ from django.shortcuts import (
     get_object_or_404,
     redirect
 )
+
+from user_guide.adaptation import generate_random_color
 from user_guide.forms import (
     CustomUserForm,
-    StatusLocationFilterForm, OrganizerForm
+    StatusLocationFilterForm,
+    OrganizerForm
 )
 from user_guide.models import (
     CustomUser,
@@ -46,7 +49,10 @@ from user_guide.models import (
     Book,
     TradeUnionPosition,
     TradeUnionPhoto,
-    TradeUnionEvent, Room, Message, Organizer, generate_random_color
+    TradeUnionEvent,
+    Room,
+    Message,
+    Organizer
 )
 
 
@@ -498,7 +504,6 @@ def add_event(request):
     if request.method == 'POST':
         form = OrganizerForm(request.POST)
         if form.is_valid():
-            # Генерация случайного цвета перед сохранением
             form.instance.color = generate_random_color()
             form.save()
             messages.success(request, 'Мероприятие успешно добавлено.')

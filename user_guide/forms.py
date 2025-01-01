@@ -1,7 +1,10 @@
 from django import forms
+from django.utils.timezone import make_aware
+
 from .all_validator import phone_mobile_validator
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import CustomUser, Camera, Address, Organizer
+from .models import CustomUser, Organizer, Camera, Address
+from django.forms.widgets import DateTimeInput
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -43,10 +46,27 @@ class StatusLocationFilterForm(forms.Form):
 
 class OrganizerForm(forms.ModelForm):
     """Календарь органайзер"""
+
     class Meta:
         model = Organizer
         fields = ['title', 'description', 'start_time', 'end_time', 'custom_user']
         widgets = {
-            'start_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
-            'end_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'start_time': DateTimeInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
+            'end_time': DateTimeInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['start_time'].initial = self.instance.start_time.strftime('%Y-%m-%dT%H:%M')
+            self.fields['end_time'].initial = self.instance.end_time.strftime('%Y-%m-%dT%H:%M')
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if instance.start_time and not instance.start_time.tzinfo:
+            instance.start_time = make_aware(instance.start_time)
+        if instance.end_time and not instance.end_time.tzinfo:
+            instance.end_time = make_aware(instance.end_time)
+        if commit:
+            instance.save()
+        return instance
