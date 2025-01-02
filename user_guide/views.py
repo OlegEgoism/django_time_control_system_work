@@ -1,3 +1,4 @@
+import json
 import math
 import os
 from collections import defaultdict
@@ -216,6 +217,8 @@ def user_edit(request, slug):
     })
 
 
+from datetime import datetime
+
 def user_time(request, slug):
     """Контроль рабочего времени"""
     config = Setting.objects.first()
@@ -255,6 +258,12 @@ def user_time(request, slug):
             date_key = enter.created.date()
             daily_worked_time[date_key] += worked_duration
 
+    # Подготовка данных для графика
+    daily_worked_time_data = [
+        {'date': date.strftime('%Y-%m-%d'), 'worked_time': int(worked_time.total_seconds())}
+        for date, worked_time in sorted(daily_worked_time.items())
+    ]
+
     total_seconds = int(total_worked_time.total_seconds())
     hours, remainder = divmod(total_seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
@@ -266,7 +275,9 @@ def user_time(request, slug):
         'form': form,
         'page_obj': page_obj,
         'total_worked_time': formatted_time,
+        'daily_worked_time_data': daily_worked_time_data,  # данные для графика
     })
+
 
 
 # TODO Подразделения
