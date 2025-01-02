@@ -330,7 +330,6 @@ def project_info(request, id_project):
     })
 
 
-
 # TODO Книги
 def book_list(request):
     """Книги"""
@@ -516,7 +515,6 @@ def add_event(request):
     })
 
 
-
 def edit_event(request, event_id):
     """Редактирование события"""
     config = Setting.objects.first()
@@ -531,7 +529,7 @@ def edit_event(request, event_id):
     return render(request, template_name='organizer/edit_event.html', context={
         'config': config,
         'form': form,
-        'event':event
+        'event': event
     })
 
 

@@ -26,10 +26,10 @@
         <li><a href="{% url 'project_list' %}">Проекты</a></li>
         <li><a href="{% url 'book_list' %}">Книги</a></li>
         <li><a href="{% url 'trade_union' %}">Профсоюз</a></li>
-
         {% if user.is_authenticated %}
         <li><a href="{% url 'rooms' %}">Чаты</a></li>
         <li><a href="{% url 'organizer' %}">Органайзер</a></li>
+        <li><a href="{% url 'user_info' slug=user.slug %}">Мои данные</a></li>
             <li>
                 <form action="{% url 'logout' %}" method="post">
                     {% csrf_token %}

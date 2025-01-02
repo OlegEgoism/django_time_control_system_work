@@ -54,7 +54,7 @@
                     <p>Нет данных о нахождении сотрудника</p>
                 {% endif %}
             </div>
-        
+
             <div class="pagination">
             <span class="step-links">
             {% if page_obj.has_previous %}
@@ -78,7 +78,7 @@
             </span>
             </div>
             <p>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</p>
-        
+
         </div>
         <a href="{% url 'user_info' user.slug %}" class="btn btn-secondary">Назад</a>
     </div>
