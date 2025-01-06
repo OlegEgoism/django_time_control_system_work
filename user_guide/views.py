@@ -267,7 +267,7 @@ def user_time(request, slug):
     total_seconds = int(total_worked_time.total_seconds())
     hours, remainder = divmod(total_seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
-    formatted_time = f'{hours:02d} часов {minutes:02d} минут {seconds:02d} секунд'
+    formatted_time = f'{hours:02d} часов {minutes:02d} минут' # {seconds:02d} секунд'
 
     return render(request, template_name='users/user_time.html', context={
         'config': config,
@@ -550,3 +550,28 @@ def delete_event(request, event_id):
     event.delete()
     messages.success(request, 'Мероприятие успешно удалено.')
     return redirect('organizer')  # Перенаправление на страницу календаря
+
+
+
+from django.http import HttpResponse
+from docx import Document
+from django.shortcuts import get_object_or_404
+from .models import CustomUser
+
+def save_user_to_word(request, slug):
+    user = get_object_or_404(CustomUser, slug=slug)
+    document = Document()
+    document.add_heading('Информация о сотруднике', level=1)
+    document.add_paragraph(f"ФИО: {user.fio or 'Информация не заполнена'}")
+    document.add_paragraph(f"Подразделение: {user.subdivision.name if user.subdivision else 'Информация не заполнена'}")
+    document.add_paragraph(f"Должность: {user.position.name if user.position else 'Информация не заполнена'}")
+    document.add_paragraph(f"Почта: {user.email or 'Информация не заполнена'}")
+    document.add_paragraph(f"Мобильный телефон: {user.phone_mobile or 'Информация не заполнена'}")
+    document.add_paragraph(f"Рабочий телефон: {user.phone_working or 'Информация не заполнена'}")
+    document.add_paragraph(f"Адрес рабочего места: {user.address.name if user.address else 'Информация не заполнена'}")
+    document.add_paragraph(f"Дата рождения: {user.birthday.strftime('%d.%m.%Y') if user.birthday else 'Информация не заполнена'}")
+    document.add_paragraph(f"Биография: {user.biography or 'Информация не заполнена'}")
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = f'attachment; filename="{user.fio or "user"}.docx"'
+    document.save(response)
+    return response

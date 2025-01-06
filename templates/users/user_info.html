@@ -94,6 +94,7 @@
                 </p>
                 {% if is_owner_or_admin %}
                     <a href="{% url 'user_edit' user.slug %}" class="btn btn-warning btn-sm">Редактировать данные</a>
+                    <a href="{% url 'save_user_to_word' user.slug %}" class="btn btn-success btn-sm">Сохранить в Word</a>
                 {% endif %}
             </div>
         </div>

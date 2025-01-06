@@ -34,7 +34,10 @@ from user_guide.views import (
 
     organizer,
     add_event,
-    edit_event, delete_event
+    edit_event,
+    delete_event,
+
+    save_user_to_word
 )
 from ckeditor_uploader import views as ckeditor_views
 urlpatterns = [
@@ -77,6 +80,8 @@ urlpatterns = [
     path('organizer/add/', add_event, name='add_event'),
     path('organizer/edit/<int:event_id>/', edit_event, name='edit_event'),
     path('organizer/delete/<int:event_id>/', delete_event, name='delete_event'),
+
+    path('user/<slug:slug>/save-to-word/', save_user_to_word, name='save_user_to_word'),
 
 ]
 if settings.DEBUG:

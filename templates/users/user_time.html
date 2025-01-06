@@ -6,6 +6,7 @@
     <div class="container">
         <div class="card">
             <h1>Контроль рабочего времени сотрудника: {{ user.fio }}</h1>
+            <p class="worked-time"><strong>Всего отработано времени: </strong>{{ total_worked_time }}</p>
             <form method="get" class="d-inline-block ">
                 <label for="id_date_from"><strong>Дата с:</strong></label>
                 <div class="d-inline-block">
@@ -26,7 +27,79 @@
                 <button type="submit" class="btn btn-primary">Поиск</button>
                 <a href="{% url 'user_time' user.slug %}" class="btn btn-secondary">Очистить</a>
             </form>
-            <p class="worked-time"><strong>Всего отработано времени: </strong>{{ total_worked_time }}</p>
+
+            <div>
+                <!-- График отработанного времени -->
+                <canvas id="workedTimeChart" width="1600" height="200"></canvas>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script>
+                    // Данные для графика
+                    const dailyWorkedTimeData = {{ daily_worked_time_data|safe }};
+
+                    // Функция для преобразования секунд в строку формата "X часов: Y минут"
+                    function formatWorkedTime(seconds) {
+                        const hours = Math.floor(seconds / 3600);
+                        const minutes = Math.floor((seconds % 3600) / 60);
+                        return `${hours} ч. ${minutes} мин.`;
+                    }
+
+                    // Подготовка данных для Chart.js
+                    const labels = dailyWorkedTimeData.map(item => {
+                        const date = new Date(item.date);
+                        return date.toLocaleDateString('ru-RU', {day: '2-digit', month: '2-digit', year: 'numeric'});
+                    });
+
+                    const data = dailyWorkedTimeData.map(item => item.worked_time / 3600); // Время в часах для числовой шкалы
+
+                    // Настройка графика
+                    const ctx = document.getElementById('workedTimeChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'bar', // или 'line'
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Отработанное время',
+                                data: data, // Данные в часах для графика
+                                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: false,
+                            plugins: {
+                                tooltip: {
+                                    callbacks: {
+                                        label: function (context) {
+                                            // Преобразование времени в "X часов: Y минут" для подсказок
+                                            const seconds = dailyWorkedTimeData[context.dataIndex].worked_time;
+                                            return `${formatWorkedTime(seconds)}`;
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Часы'
+                                    }
+                                },
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Дата'
+                                    }
+                                }
+                            }
+                        }
+                    });
+                </script>
+
+
+            </div>
+
 
             <div class="user-info">
                 {% if page_obj.object_list %}
@@ -58,81 +131,36 @@
             <div class="pagination">
             <span class="step-links">
             {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}"
+                <a href="?page=
+                        
+                        
+                        {{ page_obj.previous_page_number }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}"
                    class="btn btn-outline-primary"><<</a>
             {% endif %}
-
-            {% for page_num in page_obj.paginator.page_range %}
-                {% if page_num == page_obj.number %}
-                    <strong class="btn btn-primary">{{ page_num }}</strong>
-                {% else %}
-                    <a href="?page={{ page_num }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}"
-                       class="btn btn-outline-primary">{{ page_num }}</a>
+                {% for page_num in page_obj.paginator.page_range %}
+                    {% if page_num == page_obj.number %}
+                        <strong class="btn btn-primary">{{ page_num }}</strong>
+                    {% else %}
+                        <a href="?page=
+                                
+                                
+                                {{ page_num }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}"
+                           class="btn btn-outline-primary">{{ page_num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <a href="?page=
+                            
+                            
+                            {{ page_obj.next_page_number }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}"
+                       class="btn btn-outline-primary">>></a>
                 {% endif %}
-            {% endfor %}
-
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}"
-                   class="btn btn-outline-primary">>></a>
-            {% endif %}
             </span>
             </div>
             <p>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</p>
-
         </div>
         <a href="{% url 'user_info' user.slug %}" class="btn btn-secondary">Назад</a>
-    </div>
-
-
-            <!-- График отработанного времени -->
-        <canvas id="workedTimeChart" width="400" height="200"></canvas>
-
 
     </div>
-</div>
 
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // Данные для графика
-    const dailyWorkedTimeData = {{ daily_worked_time_data|safe }};
-
-    // Подготовка данных для Chart.js
-    const labels = dailyWorkedTimeData.map(item => item.date);
-    const data = dailyWorkedTimeData.map(item => (item.worked_time / 3600).toFixed(2)); // Время в часах
-
-    // Настройка графика
-    const ctx = document.getElementById('workedTimeChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'bar', // или 'line'
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Отработанное время (часы)',
-                data: data,
-                backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 2
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Часы'
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Дата'
-                    }
-                }
-            }
-        }
-    });
-</script>
 {% endblock %}
