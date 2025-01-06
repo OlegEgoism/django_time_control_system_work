@@ -7,7 +7,7 @@
         <div class="card">
             <h1>Контроль рабочего времени сотрудника: {{ user.fio }}</h1>
             <p class="worked-time"><strong>Всего отработано времени: </strong>{{ total_worked_time }}</p>
-            <form method="get" class="d-inline-block ">
+            <form method="get" class="d-inline-block">
                 <label for="id_date_from"><strong>Дата с:</strong></label>
                 <div class="d-inline-block">
                     {{ form.date_from }}
@@ -26,6 +26,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Поиск</button>
                 <a href="{% url 'user_time' user.slug %}" class="btn btn-secondary">Очистить</a>
+                <button type="submit" formaction="{% url 'user_time_export' user.slug %}" class="btn btn-success">Экспортировать в Word</button>
             </form>
 
             <div>
@@ -96,8 +97,6 @@
                         }
                     });
                 </script>
-
-
             </div>
 
 
@@ -134,6 +133,7 @@
                 <a href="?page=
                         
                         
+                        
                         {{ page_obj.previous_page_number }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}"
                    class="btn btn-outline-primary"><<</a>
             {% endif %}
@@ -144,12 +144,14 @@
                         <a href="?page=
                                 
                                 
+                                
                                 {{ page_num }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}"
                            class="btn btn-outline-primary">{{ page_num }}</a>
                     {% endif %}
                 {% endfor %}
                 {% if page_obj.has_next %}
                     <a href="?page=
+                            
                             
                             
                             {{ page_obj.next_page_number }}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}{% if request.GET.finding %}&finding={{ request.GET.finding }}{% endif %}{% if request.GET.address %}&address={{ request.GET.address }}{% endif %}"

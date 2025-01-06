@@ -32,6 +32,8 @@ from django.shortcuts import (
     get_object_or_404,
     redirect
 )
+from docx import Document
+from docx.shared import Cm
 
 from user_guide.adaptation import generate_random_color
 from user_guide.forms import (
@@ -217,8 +219,6 @@ def user_edit(request, slug):
     })
 
 
-from datetime import datetime
-
 def user_time(request, slug):
     """Контроль рабочего времени"""
     config = Setting.objects.first()
@@ -267,7 +267,7 @@ def user_time(request, slug):
     total_seconds = int(total_worked_time.total_seconds())
     hours, remainder = divmod(total_seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
-    formatted_time = f'{hours:02d} часов {minutes:02d} минут' # {seconds:02d} секунд'
+    formatted_time = f'{hours:02d} часов {minutes:02d} минут'  # {seconds:02d} секунд'
 
     return render(request, template_name='users/user_time.html', context={
         'config': config,
@@ -277,7 +277,6 @@ def user_time(request, slug):
         'total_worked_time': formatted_time,
         'daily_worked_time_data': daily_worked_time_data,  # данные для графика
     })
-
 
 
 # TODO Подразделения
@@ -498,6 +497,7 @@ def room(request, slug):
     })
 
 
+# TODO Органайзер
 def organizer(request):
     """Органайзер"""
     config = Setting.objects.first()
@@ -552,13 +552,8 @@ def delete_event(request, event_id):
     return redirect('organizer')  # Перенаправление на страницу календаря
 
 
-
-from django.http import HttpResponse
-from docx import Document
-from django.shortcuts import get_object_or_404
-from .models import CustomUser
-
 def save_user_to_word(request, slug):
+    """Экспорт данных "Информация о сотруднике" в Word"""
     user = get_object_or_404(CustomUser, slug=slug)
     document = Document()
     document.add_heading('Информация о сотруднике', level=1)
@@ -571,7 +566,73 @@ def save_user_to_word(request, slug):
     document.add_paragraph(f"Адрес рабочего места: {user.address.name if user.address else 'Информация не заполнена'}")
     document.add_paragraph(f"Дата рождения: {user.birthday.strftime('%d.%m.%Y') if user.birthday else 'Информация не заполнена'}")
     document.add_paragraph(f"Биография: {user.biography or 'Информация не заполнена'}")
+    current_date = datetime.now().strftime('%Y-%m-%d')
+    file_name = f"{user.fio or 'user'}_{user.position.name or 'user'}_{current_date}.docx"
+    safe_file_name = file_name.replace(" ", "_")
+    encoded_file_name = quote(safe_file_name)
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-    response['Content-Disposition'] = f'attachment; filename="{user.fio or "user"}.docx"'
+    response['Content-Disposition'] = f"attachment; filename*=UTF-8''{encoded_file_name}"
+    document.save(response)
+    return response
+
+
+def user_time_export(request, slug):
+    """Экспорт данных "Рабочее время" в Word"""
+    user = get_object_or_404(CustomUser, slug=slug)
+    form = StatusLocationFilterForm(request.GET or None)
+    status_locations = StatusLocation.objects.filter(custom_user=user).order_by('created')
+    date_from = None
+    date_to = None
+    if form.is_valid():
+        date_from = form.cleaned_data.get('date_from')
+        date_to = form.cleaned_data.get('date_to')
+        finding = form.cleaned_data.get('finding')
+        address = form.cleaned_data.get('address')
+        if date_from:
+            status_locations = status_locations.filter(created__gte=date_from)
+        if date_to:
+            date_to_inclusive = date_to + timedelta(days=1)
+            status_locations = status_locations.filter(created__lt=date_to_inclusive)
+        if finding:
+            status_locations = status_locations.filter(camera__finding=finding)
+        if address:
+            status_locations = status_locations.filter(camera__address=address)
+    document = Document()
+    document.add_heading(f'Рабочее время сотрудника: {user.fio}', level=1)
+    filters = []
+    if date_from and date_to:
+        filters.append(f"Дата с: {date_from.strftime('%d.%m.%Y')} по: {date_to.strftime('%d.%m.%Y')}")
+    if filters:
+        for filter_item in filters:
+            document.add_paragraph(f"{filter_item}")
+    if status_locations.exists():
+        table = document.add_table(rows=1, cols=4)
+        table.style = 'Table Grid'
+        headers = table.rows[0].cells
+        headers[0].text = '№'
+        headers[1].text = 'Нахождение'
+        headers[2].text = 'Дата и время'
+        headers[3].text = 'Камера'
+        for cell in headers:
+            for paragraph in cell.paragraphs:
+                for run in paragraph.runs:
+                    run.bold = True
+        table.columns[0].width = Cm(1)
+        table.columns[1].width = Cm(3.5)
+        table.columns[2].width = Cm(4.5)
+        table.columns[3].width = Cm(8)
+        for idx, status in enumerate(status_locations, start=1):
+            row_cells = table.add_row().cells
+            row_cells[0].text = str(idx)
+            row_cells[1].text = status.camera.get_finding_display()
+            row_cells[2].text = status.created.strftime('%d.%m.%Y %H:%M')
+            row_cells[3].text = status.camera.address.name
+    else:
+        document.add_paragraph('Нет данных для отображения.')
+    file_name = f"Рабочее_время_{user.fio or 'user'}_с_{date_from.strftime('%d.%m.%Y')}_по_{date_to.strftime('%d.%m.%Y')}.docx"
+    safe_file_name = file_name.replace(" ", "_")
+    encoded_file_name = quote(safe_file_name)
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = f"attachment; filename*=UTF-8''{encoded_file_name}"
     document.save(response)
     return response

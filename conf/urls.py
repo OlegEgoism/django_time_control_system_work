@@ -37,7 +37,7 @@ from user_guide.views import (
     edit_event,
     delete_event,
 
-    save_user_to_word
+    save_user_to_word, user_time_export
 )
 from ckeditor_uploader import views as ckeditor_views
 urlpatterns = [
@@ -82,7 +82,7 @@ urlpatterns = [
     path('organizer/delete/<int:event_id>/', delete_event, name='delete_event'),
 
     path('user/<slug:slug>/save-to-word/', save_user_to_word, name='save_user_to_word'),
-
+    path('user_time/export/<slug:slug>/', user_time_export, name='user_time_export'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
